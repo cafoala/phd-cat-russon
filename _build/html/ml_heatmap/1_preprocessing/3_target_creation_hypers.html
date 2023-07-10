@@ -1,0 +1,1807 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>3. Target creation &#8212; Machine learning for glycaemia prediction around exercise</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'ml_heatmap/1_preprocessing/3_target_creation_hypers';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../0_landing_page.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">Machine learning for glycaemia prediction around exercise</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../0_landing_page.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Chapter 1 - Python package and Webapp for calculating the metrics of glycemic control</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../diametrics/0_overview.html">Diametrics Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../diametrics/1_upload_demo.html">1. Uploading and transforming data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../diametrics/2_preprocessing_demo.html">2. Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../diametrics/3_metrics_demo.html">3. Metrics of glycemic control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../diametrics/4_visualizations_demo.html">4. Visualizations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../diametrics/5_webapp.html">5. Web Application</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Chapter 2 - Interpolation for the improved identification of hypoglycaemic episodes</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../interpolation/1_create_df.html">1. Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../interpolation/2_EDA.html">2. Exploratory data analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../interpolation/3_other_metrics.html">3. Comparing metrics of glycemic control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../interpolation/4_identifying_hypos.html">4. Hypoglycaemic episodes</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Chapter 3 - Machine learning to predict hypoglycemia during exercise</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="0_landing.html">Preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="1_preprocessing_101.html">1. Preprocessing of EXTOD 101 for ML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_preprocessing_edu.html">2. Preprocessing EXTOD education dataset</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="3_target_creation.html">3. Target creation</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="4_ml_preparation.html">4. Preparation for machine learning</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../2_feature_selection/forward_feature_selection.html">Forward feature selection</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../3_ml/0_landing.html">Machine learning</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../3_ml/figs_during_5.html">4. Predicting Euglycemia During Exercise</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../3_ml/contour_plot_lr.html">Heatmap (countour plot) of model predictions</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/ml_heatmap/1_preprocessing/3_target_creation_hypers.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>3. Target creation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">3. Target creation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#target-variables">Target variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#features">Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objectives">Objectives:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-packages">3.0. Import packages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#upload-data">3.1. Upload data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#upload-extod-101-data">3.1.1. Upload EXTOD 101 data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#upload-extod-education-data">3.1.2. Upload EXTOD education data</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-start-and-end-glucose">3.2. Calculate start and end glucose</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#divide-cgm-data-into-bouts">3.3. Divide CGM data into bouts</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#during">During</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-dataframes-for-predicting-during-exercise">3.5.1. Create the dataframes for predicting during exercise</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-glycemic-metrics">3.4.1.1. Extract glycemic metrics</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-glycemic-metrics-during">3.4.2.1. Extract glycemic metrics (during)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-target-features-y-for-during-exercise">3.4.2.2. Extract target features (y) for during exercise</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#combine-dataframes-for-the-machine-learning-tasks">3.5. Combine dataframes for the machine learning tasks</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">During</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#changing-the-time-in-ranges-to-binary">Changing the time in ranges to binary</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#save-to-csv">3.6. Save to csv</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="target-creation">
+<h1>3. Target creation<a class="headerlink" href="#target-creation" title="Permalink to this heading">#</a></h1>
+<p>The objective of this notebook is to create the target variables for ML and statistical analysis.</p>
+<section id="target-variables">
+<h2>Target variables<a class="headerlink" href="#target-variables" title="Permalink to this heading">#</a></h2>
+<p>The targets of interest are hypo- and hyper-glycemia. A single point in either is considered as a positive result.
+The time periods of interest for prediction are:</p>
+<ul class="simple">
+<li><p>during exercise</p></li>
+<li><p>the 1 hr after exercise</p></li>
+<li><p>the 4 hrs after exercise</p></li>
+</ul>
+</section>
+<section id="features">
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>CGM extracted features</p>
+<ul>
+<li><p>Start and end glucose</p></li>
+<li><p>Metrics of glycemic control (e.g. time in range, average glucose) calculated using diametrics</p></li>
+<li><p>features extracted using tsfresh, a python package that automatically calculates a large number of time series characteristics (<a class="reference external" href="https://tsfresh.readthedocs.io/en/latest/">https://tsfresh.readthedocs.io/en/latest/</a>)</p></li>
+<li><p>Time series itself</p></li>
+</ul>
+</li>
+<li><p>Exercise diary data (e.g. duration of bout, type of exercise)</p></li>
+<li><p>Demographics data</p></li>
+<li><p>Lab data</p></li>
+</ul>
+</section>
+<section id="objectives">
+<h2>Objectives:<a class="headerlink" href="#objectives" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Calculate start and end glucose for each bout</p></li>
+<li><p>Divide CGM data into periods of interest</p></li>
+<li><p>Extract metrics of glycemic control for each period</p></li>
+<li><p>Extract tsfresh metrics for each period</p></li>
+<li><p>Extract time series</p></li>
+<li><p>Combine extracted features into dataframes</p></li>
+</ol>
+</section>
+<section id="import-packages">
+<h2>3.0. Import packages<a class="headerlink" href="#import-packages" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
+<span class="kn">import</span> <span class="nn">preprocess_helper</span>
+<span class="kn">from</span> <span class="nn">tsfresh</span> <span class="kn">import</span> <span class="n">extract_features</span><span class="p">,</span> <span class="n">extract_relevant_features</span><span class="p">,</span> <span class="n">select_features</span>
+<span class="kn">from</span> <span class="nn">tsfresh.utilities.dataframe_functions</span> <span class="kn">import</span> <span class="n">impute</span><span class="p">,</span> <span class="n">make_forecasting_frame</span>
+<span class="kn">from</span> <span class="nn">tsfresh.feature_extraction</span> <span class="kn">import</span> <span class="n">ComprehensiveFCParameters</span><span class="p">,</span> <span class="n">settings</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="c1"># Change path to wherever Diametrics is</span>
+<span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;../../diametrics/diametrics&quot;</span> <span class="c1">#### CHANGE</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">metrics</span> <span class="k">as</span> <span class="nn">cgm</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_rows&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_columns&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define global parameters</span>
+<span class="n">fift_mins</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">thirt_mins</span> <span class="o">=</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">directory</span> <span class="o">=</span> <span class="s1">&#39;../../Data/tidy_data/&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="upload-data">
+<h2>3.1. Upload data<a class="headerlink" href="#upload-data" title="Permalink to this heading">#</a></h2>
+<section id="upload-extod-101-data">
+<h3>3.1.1. Upload EXTOD 101 data<a class="headerlink" href="#upload-extod-101-data" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Exercise diaries</span>
+<span class="n">extod_101_diaries</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">directory</span> <span class="o">+</span> <span class="s1">&#39;extod_101_diaries.csv&#39;</span><span class="p">)</span>
+<span class="n">extod_101_diaries</span><span class="p">[</span><span class="s1">&#39;start_datetime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">extod_101_diaries</span><span class="p">[</span><span class="s1">&#39;start_datetime&#39;</span><span class="p">])</span>
+<span class="n">extod_101_diaries</span><span class="p">[</span><span class="s1">&#39;finish_datetime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">extod_101_diaries</span><span class="p">[</span><span class="s1">&#39;finish_datetime&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">extod_101_diaries</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>776
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the durations of interest to 10-120 mins </span>
+<span class="n">extod_101_diaries</span> <span class="o">=</span> <span class="n">extod_101_diaries</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">extod_101_diaries</span><span class="o">.</span><span class="n">duration</span><span class="o">&gt;=</span><span class="mi">10</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">extod_101_diaries</span><span class="o">.</span><span class="n">duration</span><span class="o">&lt;=</span><span class="mi">120</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">extod_101_diaries</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>688
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">extod_101_diaries</span> <span class="o">=</span> <span class="n">extod_101_diaries</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># CGM data</span>
+<span class="n">extod_101_cgm</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">directory</span> <span class="o">+</span><span class="s1">&#39;extod_101_cgm.csv&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">extod_101_cgm</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">extod_101_cgm</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Demo lab data</span>
+<span class="n">extod_101_demo_lab</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">directory</span> <span class="o">+</span> <span class="s1">&#39;extod_101_demo_lab.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="upload-extod-education-data">
+<h3>3.1.2. Upload EXTOD education data<a class="headerlink" href="#upload-extod-education-data" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Exercise diaries</span>
+<span class="n">extod_edu_diaries</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">directory</span> <span class="o">+</span> <span class="s1">&#39;extod_edu_diaries.csv&#39;</span><span class="p">)</span>
+<span class="n">extod_edu_diaries</span><span class="p">[</span><span class="s1">&#39;start_datetime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span>
+    <span class="n">extod_edu_diaries</span><span class="p">[</span><span class="s1">&#39;start_datetime&#39;</span><span class="p">])</span>
+<span class="n">extod_edu_diaries</span><span class="p">[</span><span class="s1">&#39;finish_datetime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span>
+    <span class="n">extod_edu_diaries</span><span class="p">[</span><span class="s1">&#39;finish_datetime&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">extod_edu_diaries</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>875
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the durations of interest to 10-300 mins </span>
+<span class="n">extod_edu_diaries</span> <span class="o">=</span> <span class="n">extod_edu_diaries</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">extod_edu_diaries</span><span class="o">.</span><span class="n">duration</span><span class="o">&gt;=</span><span class="mi">10</span><span class="p">)</span> <span class="o">&amp;</span>
+                                          <span class="p">(</span><span class="n">extod_edu_diaries</span><span class="o">.</span><span class="n">duration</span><span class="o">&lt;=</span><span class="mi">120</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">extod_edu_diaries</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>804
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">extod_edu_diaries</span> <span class="o">=</span> <span class="n">extod_edu_diaries</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># CGM data</span>
+<span class="n">extod_edu_cgm</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">directory</span> <span class="o">+</span> <span class="s1">&#39;extod_edu_cgm.csv&#39;</span><span class="p">)</span>
+<span class="n">extod_edu_cgm</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">extod_edu_cgm</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">])</span>
+<span class="c1">#extod_edu_cgm[&#39;id&#39;] = str(extod_edu_cgm.ID) + extod_edu_cgm.period</span>
+<span class="c1"># Drop scan_glc column and null values</span>
+<span class="n">extod_edu_cgm</span> <span class="o">=</span> <span class="n">extod_edu_cgm</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s1">&#39;period&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Demo lab data</span>
+<span class="n">extod_edu_demo_lab</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">directory</span> <span class="o">+</span> <span class="s1">&#39;extod_edu_demo_lab.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Combine demo-lab data from both studied</span>
+<span class="n">demo_lab</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">extod_101_demo_lab</span><span class="p">,</span> <span class="n">extod_edu_demo_lab</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="calculate-start-and-end-glucose">
+<h2>3.2. Calculate start and end glucose<a class="headerlink" href="#calculate-start-and-end-glucose" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">extod_101_cgm</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>time</th>
+      <th>glc</th>
+      <th>scan_glc</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>509287</th>
+      <td>3035</td>
+      <td>2018-09-05 07:57:00</td>
+      <td>NaN</td>
+      <td>5.9</td>
+    </tr>
+    <tr>
+      <th>509288</th>
+      <td>3035</td>
+      <td>2018-09-05 08:48:00</td>
+      <td>8.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>509289</th>
+      <td>3035</td>
+      <td>2018-09-05 09:03:00</td>
+      <td>7.4</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>509290</th>
+      <td>3035</td>
+      <td>2018-09-05 09:19:00</td>
+      <td>7.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>509291</th>
+      <td>3035</td>
+      <td>2018-09-05 09:31:00</td>
+      <td>NaN</td>
+      <td>7.8</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">extod_101_cgm</span> <span class="o">=</span> <span class="n">extod_101_cgm</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">extod_101_cgm</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>index</th>
+      <th>ID</th>
+      <th>time</th>
+      <th>glc</th>
+      <th>scan_glc</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>509287</th>
+      <td>509287</td>
+      <td>3035</td>
+      <td>2018-09-05 07:57:00</td>
+      <td>NaN</td>
+      <td>5.9</td>
+    </tr>
+    <tr>
+      <th>509288</th>
+      <td>509288</td>
+      <td>3035</td>
+      <td>2018-09-05 08:48:00</td>
+      <td>8.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>509289</th>
+      <td>509289</td>
+      <td>3035</td>
+      <td>2018-09-05 09:03:00</td>
+      <td>7.4</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>509290</th>
+      <td>509290</td>
+      <td>3035</td>
+      <td>2018-09-05 09:19:00</td>
+      <td>7.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>509291</th>
+      <td>509291</td>
+      <td>3035</td>
+      <td>2018-09-05 09:31:00</td>
+      <td>NaN</td>
+      <td>7.8</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calc_glc</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">libre</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculates the starting glucose from the time and cgm data</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+    <span class="c1"># treating the exercise period as truth, so only look before</span>
+    <span class="n">sub_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="n">time</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="n">window</span><span class="p">)))</span> <span class="o">&amp;</span>
+                <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">time</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sub_df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">libre</span><span class="p">:</span>
+            <span class="n">sub_df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;glc&#39;</span><span class="p">,</span> <span class="s1">&#39;scan_glc&#39;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">sub_df</span><span class="p">[</span><span class="s1">&#39;glc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">sub_df</span><span class="o">.</span><span class="n">scan_glc</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        
+        <span class="c1"># Calculate diff</span>
+        <span class="n">sub_df</span><span class="p">[</span><span class="s1">&#39;one_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span>
+        <span class="n">sub_df</span><span class="p">[</span><span class="s1">&#39;diff&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sub_df</span><span class="p">[[</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;one_time&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="s1">&#39;one_time&#39;</span><span class="p">]</span>
+        <span class="n">sub_df</span><span class="p">[</span><span class="s1">&#39;diff&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sub_df</span><span class="p">[</span><span class="s1">&#39;diff&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()))</span>
+        <span class="n">ind</span> <span class="o">=</span> <span class="n">sub_df</span><span class="p">[</span><span class="s1">&#39;diff&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">idxmin</span><span class="p">()</span>
+        <span class="n">glc</span> <span class="o">=</span> <span class="n">sub_df</span><span class="p">[</span><span class="s1">&#39;glc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ind_prev</span> <span class="o">=</span> <span class="n">ind</span><span class="o">-</span><span class="mi">1</span>
+            
+            <span class="k">if</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span><span class="o">.</span><span class="n">time</span> <span class="o">-</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ind_prev</span><span class="p">]</span><span class="o">.</span><span class="n">time</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">60</span><span class="p">):</span>
+                <span class="n">prec_reading_glc</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">ind_prev</span><span class="p">]</span><span class="o">.</span><span class="n">glc</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">prec_reading_glc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">prec_reading_glc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">glc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">prec_reading_glc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    
+    <span class="k">return</span> <span class="n">glc</span><span class="p">,</span> <span class="n">prec_reading_glc</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate start + end glucose for 101 diaries</span>
+<span class="n">extod_101_diaries</span><span class="p">[</span><span class="s1">&#39;start_glc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">extod_101_diaries</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">calc_glc</span><span class="p">(</span>
+    <span class="n">extod_101_cgm</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">extod_101_cgm</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">row</span><span class="o">.</span><span class="n">ID</span><span class="p">],</span> <span class="n">row</span><span class="o">.</span><span class="n">start_datetime</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="kc">True</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">extod_edu_cgm</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">106260</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time    2018-01-11 07:04:03
+glc                    8.49
+ID                     1006
+Name: 106260, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate start + end glucose for edu diaries</span>
+<span class="n">extod_edu_diaries</span><span class="p">[</span><span class="s1">&#39;start_glc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">extod_edu_diaries</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">preprocess_helper</span><span class="o">.</span><span class="n">calc_glc</span><span class="p">(</span>
+    <span class="n">extod_edu_cgm</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">extod_edu_cgm</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">row</span><span class="o">.</span><span class="n">ID</span><span class="p">],</span> <span class="n">row</span><span class="o">.</span><span class="n">start_datetime</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="kc">False</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyError</span><span class="g g-Whitespace">                                  </span>Traceback (most recent call last)
+<span class="nn">File ~/miniconda3/envs/ml_cgm_env_test/lib/python3.9/site-packages/pandas/core/indexes/base.py:3361,</span> in <span class="ni">Index.get_loc</span><span class="nt">(self, key, method, tolerance)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3360</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">3361</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_engine</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">casted_key</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3362</span> <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+
+<span class="nn">File ~/miniconda3/envs/ml_cgm_env_test/lib/python3.9/site-packages/pandas/_libs/index.pyx:76,</span> in <span class="ni">pandas._libs.index.IndexEngine.get_loc</span><span class="nt">()</span>
+
+<span class="nn">File ~/miniconda3/envs/ml_cgm_env_test/lib/python3.9/site-packages/pandas/_libs/index.pyx:108,</span> in <span class="ni">pandas._libs.index.IndexEngine.get_loc</span><span class="nt">()</span>
+
+<span class="nn">File pandas/_libs/hashtable_class_helper.pxi:2131,</span> in <span class="ni">pandas._libs.hashtable.Int64HashTable.get_item</span><span class="nt">()</span>
+
+<span class="nn">File pandas/_libs/hashtable_class_helper.pxi:2140,</span> in <span class="ni">pandas._libs.hashtable.Int64HashTable.get_item</span><span class="nt">()</span>
+
+<span class="ne">KeyError</span>: 106260
+
+<span class="n">The</span> <span class="n">above</span> <span class="n">exception</span> <span class="n">was</span> <span class="n">the</span> <span class="n">direct</span> <span class="n">cause</span> <span class="n">of</span> <span class="n">the</span> <span class="n">following</span> <span class="n">exception</span><span class="p">:</span>
+
+<span class="ne">KeyError</span><span class="g g-Whitespace">                                  </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">78</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Calculate start + end glucose for edu diaries</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">extod_edu_diaries</span><span class="p">[</span><span class="s1">&#39;start_glc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">extod_edu_diaries</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">preprocess_helper</span><span class="o">.</span><span class="n">calc_glc</span><span class="p">(</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="n">extod_edu_cgm</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">extod_edu_cgm</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">row</span><span class="o">.</span><span class="n">ID</span><span class="p">],</span> <span class="n">row</span><span class="o">.</span><span class="n">start_datetime</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="kc">False</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="nn">File ~/miniconda3/envs/ml_cgm_env_test/lib/python3.9/site-packages/pandas/core/frame.py:8740,</span> in <span class="ni">DataFrame.apply</span><span class="nt">(self, func, axis, raw, result_type, args, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">8729</span> <span class="kn">from</span> <span class="nn">pandas.core.apply</span> <span class="kn">import</span> <span class="n">frame_apply</span>
+<span class="g g-Whitespace">   </span><span class="mi">8731</span> <span class="n">op</span> <span class="o">=</span> <span class="n">frame_apply</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">8732</span>     <span class="bp">self</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">8733</span>     <span class="n">func</span><span class="o">=</span><span class="n">func</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">8738</span>     <span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">8739</span> <span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">8740</span> <span class="k">return</span> <span class="n">op</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+
+<span class="nn">File ~/miniconda3/envs/ml_cgm_env_test/lib/python3.9/site-packages/pandas/core/apply.py:688,</span> in <span class="ni">FrameApply.apply</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">685</span> <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">686</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_raw</span><span class="p">()</span>
+<span class="ne">--&gt; </span><span class="mi">688</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_standard</span><span class="p">()</span>
+
+<span class="nn">File ~/miniconda3/envs/ml_cgm_env_test/lib/python3.9/site-packages/pandas/core/apply.py:812,</span> in <span class="ni">FrameApply.apply_standard</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">811</span> <span class="k">def</span> <span class="nf">apply_standard</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">812</span>     <span class="n">results</span><span class="p">,</span> <span class="n">res_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_series_generator</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">814</span>     <span class="c1"># wrap results</span>
+<span class="g g-Whitespace">    </span><span class="mi">815</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrap_results</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">res_index</span><span class="p">)</span>
+
+<span class="nn">File ~/miniconda3/envs/ml_cgm_env_test/lib/python3.9/site-packages/pandas/core/apply.py:828,</span> in <span class="ni">FrameApply.apply_series_generator</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">825</span> <span class="k">with</span> <span class="n">option_context</span><span class="p">(</span><span class="s2">&quot;mode.chained_assignment&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">826</span>     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">series_gen</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">827</span>         <span class="c1"># ignore SettingWithCopy here in case the user mutates</span>
+<span class="ne">--&gt; </span><span class="mi">828</span>         <span class="n">results</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">829</span>         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ABCSeries</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">830</span>             <span class="c1"># If we have a view on v, we need to make a copy because</span>
+<span class="g g-Whitespace">    </span><span class="mi">831</span>             <span class="c1">#  series_generator will swap out the underlying data</span>
+<span class="g g-Whitespace">    </span><span class="mi">832</span>             <span class="n">results</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nn">Cell In[78], line 2,</span> in <span class="ni">&lt;lambda&gt;</span><span class="nt">(row)</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Calculate start + end glucose for edu diaries</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">extod_edu_diaries</span><span class="p">[</span><span class="s1">&#39;start_glc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">extod_edu_diaries</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">preprocess_helper</span><span class="o">.</span><span class="n">calc_glc</span><span class="p">(</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="n">extod_edu_cgm</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">extod_edu_cgm</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">row</span><span class="o">.</span><span class="n">ID</span><span class="p">],</span> <span class="n">row</span><span class="o">.</span><span class="n">start_datetime</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="kc">False</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="nn">File ~/Desktop/projects/ml-cgm/Code/1_preprocessing/preprocess_helper.py:311,</span> in <span class="ni">calc_glc</span><span class="nt">(df, time, window, libre)</span>
+<span class="g g-Whitespace">    </span><span class="mi">309</span>     <span class="n">glc</span> <span class="o">=</span> <span class="n">sub_df</span><span class="p">[</span><span class="s1">&#39;glc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+<span class="g g-Whitespace">    </span><span class="mi">310</span>     <span class="n">ind_prev</span> <span class="o">=</span> <span class="n">ind</span><span class="o">-</span><span class="mi">1</span>
+<span class="ne">--&gt; </span><span class="mi">311</span>     <span class="n">prec_reading_glc</span> <span class="o">=</span> <span class="n">sub_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">ind_prev</span><span class="p">]</span><span class="o">.</span><span class="n">glc</span>
+<span class="g g-Whitespace">    </span><span class="mi">312</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">313</span>     <span class="n">glc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+<span class="nn">File ~/miniconda3/envs/ml_cgm_env_test/lib/python3.9/site-packages/pandas/core/indexing.py:931,</span> in <span class="ni">_LocationIndexer.__getitem__</span><span class="nt">(self, key)</span>
+<span class="g g-Whitespace">    </span><span class="mi">928</span> <span class="n">axis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">axis</span> <span class="ow">or</span> <span class="mi">0</span>
+<span class="g g-Whitespace">    </span><span class="mi">930</span> <span class="n">maybe_callable</span> <span class="o">=</span> <span class="n">com</span><span class="o">.</span><span class="n">apply_if_callable</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">931</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getitem_axis</span><span class="p">(</span><span class="n">maybe_callable</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+
+<span class="nn">File ~/miniconda3/envs/ml_cgm_env_test/lib/python3.9/site-packages/pandas/core/indexing.py:1164,</span> in <span class="ni">_LocIndexer._getitem_axis</span><span class="nt">(self, key, axis)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1162</span> <span class="c1"># fall thru to straight lookup</span>
+<span class="g g-Whitespace">   </span><span class="mi">1163</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_key</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">1164</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_label</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+
+<span class="nn">File ~/miniconda3/envs/ml_cgm_env_test/lib/python3.9/site-packages/pandas/core/indexing.py:1113,</span> in <span class="ni">_LocIndexer._get_label</span><span class="nt">(self, label, axis)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1111</span> <span class="k">def</span> <span class="nf">_get_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">1112</span>     <span class="c1"># GH#5667 this will fail if the label is not present in the axis.</span>
+<span class="ne">-&gt; </span><span class="mi">1113</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+
+<span class="nn">File ~/miniconda3/envs/ml_cgm_env_test/lib/python3.9/site-packages/pandas/core/generic.py:3776,</span> in <span class="ni">NDFrame.xs</span><span class="nt">(self, key, axis, level, drop_level)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3774</span>         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected label or tuple of labels, got </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+<span class="g g-Whitespace">   </span><span class="mi">3775</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">3776</span>     <span class="n">loc</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3778</span>     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">3779</span>         <span class="k">if</span> <span class="n">loc</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">:</span>
+
+<span class="nn">File ~/miniconda3/envs/ml_cgm_env_test/lib/python3.9/site-packages/pandas/core/indexes/base.py:3363,</span> in <span class="ni">Index.get_loc</span><span class="nt">(self, key, method, tolerance)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3361</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_engine</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">casted_key</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3362</span>     <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">3363</span>         <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">err</span>
+<span class="g g-Whitespace">   </span><span class="mi">3365</span> <span class="k">if</span> <span class="n">is_scalar</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">and</span> <span class="n">isna</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">hasnans</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">3366</span>     <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+<span class="ne">KeyError</span>: 106260
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate start + end glucose for 101 diaries</span>
+<span class="n">extod_101_diaries</span><span class="p">[</span><span class="s1">&#39;start_glc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">extod_101_diaries</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">preprocess_helper</span><span class="o">.</span><span class="n">calc_glc</span><span class="p">(</span>
+    <span class="n">extod_101_cgm</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">extod_101_cgm</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">row</span><span class="o">.</span><span class="n">ID</span><span class="p">],</span> <span class="n">row</span><span class="o">.</span><span class="n">start_datetime</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="kc">True</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Calculate start + end glucose for edu diaries</span>
+<span class="n">extod_edu_diaries</span><span class="p">[</span><span class="s1">&#39;start_glc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">extod_edu_diaries</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">preprocess_helper</span><span class="o">.</span><span class="n">calc_glc</span><span class="p">(</span>
+    <span class="n">extod_edu_cgm</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">extod_edu_cgm</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">row</span><span class="o">.</span><span class="n">ID</span><span class="p">],</span> <span class="n">row</span><span class="o">.</span><span class="n">start_datetime</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="kc">False</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyError</span><span class="g g-Whitespace">                                  </span>Traceback (most recent call last)
+<span class="nn">File ~/miniconda3/envs/ml_cgm_env_test/lib/python3.9/site-packages/pandas/core/indexes/base.py:3361,</span> in <span class="ni">Index.get_loc</span><span class="nt">(self, key, method, tolerance)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3360</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">3361</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_engine</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">casted_key</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3362</span> <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+
+<span class="nn">File ~/miniconda3/envs/ml_cgm_env_test/lib/python3.9/site-packages/pandas/_libs/index.pyx:76,</span> in <span class="ni">pandas._libs.index.IndexEngine.get_loc</span><span class="nt">()</span>
+
+<span class="nn">File ~/miniconda3/envs/ml_cgm_env_test/lib/python3.9/site-packages/pandas/_libs/index.pyx:108,</span> in <span class="ni">pandas._libs.index.IndexEngine.get_loc</span><span class="nt">()</span>
+
+<span class="nn">File pandas/_libs/hashtable_class_helper.pxi:2131,</span> in <span class="ni">pandas._libs.hashtable.Int64HashTable.get_item</span><span class="nt">()</span>
+
+<span class="nn">File pandas/_libs/hashtable_class_helper.pxi:2140,</span> in <span class="ni">pandas._libs.hashtable.Int64HashTable.get_item</span><span class="nt">()</span>
+
+<span class="ne">KeyError</span>: 223141
+
+<span class="n">The</span> <span class="n">above</span> <span class="n">exception</span> <span class="n">was</span> <span class="n">the</span> <span class="n">direct</span> <span class="n">cause</span> <span class="n">of</span> <span class="n">the</span> <span class="n">following</span> <span class="n">exception</span><span class="p">:</span>
+
+<span class="ne">KeyError</span><span class="g g-Whitespace">                                  </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">50</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Calculate start + end glucose for 101 diaries</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">extod_101_diaries</span><span class="p">[</span><span class="s1">&#39;start_glc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">extod_101_diaries</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">preprocess_helper</span><span class="o">.</span><span class="n">calc_glc</span><span class="p">(</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="n">extod_101_cgm</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">extod_101_cgm</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">row</span><span class="o">.</span><span class="n">ID</span><span class="p">],</span> <span class="n">row</span><span class="o">.</span><span class="n">start_datetime</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="kc">True</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="c1"># Calculate start + end glucose for edu diaries</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="n">extod_edu_diaries</span><span class="p">[</span><span class="s1">&#39;start_glc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">extod_edu_diaries</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">preprocess_helper</span><span class="o">.</span><span class="n">calc_glc</span><span class="p">(</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span>     <span class="n">extod_edu_cgm</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">extod_edu_cgm</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">row</span><span class="o">.</span><span class="n">ID</span><span class="p">],</span> <span class="n">row</span><span class="o">.</span><span class="n">start_datetime</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span>     <span class="kc">False</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="nn">File ~/miniconda3/envs/ml_cgm_env_test/lib/python3.9/site-packages/pandas/core/frame.py:8740,</span> in <span class="ni">DataFrame.apply</span><span class="nt">(self, func, axis, raw, result_type, args, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">8729</span> <span class="kn">from</span> <span class="nn">pandas.core.apply</span> <span class="kn">import</span> <span class="n">frame_apply</span>
+<span class="g g-Whitespace">   </span><span class="mi">8731</span> <span class="n">op</span> <span class="o">=</span> <span class="n">frame_apply</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">8732</span>     <span class="bp">self</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">8733</span>     <span class="n">func</span><span class="o">=</span><span class="n">func</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">8738</span>     <span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">8739</span> <span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">8740</span> <span class="k">return</span> <span class="n">op</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+
+<span class="nn">File ~/miniconda3/envs/ml_cgm_env_test/lib/python3.9/site-packages/pandas/core/apply.py:688,</span> in <span class="ni">FrameApply.apply</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">685</span> <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">686</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_raw</span><span class="p">()</span>
+<span class="ne">--&gt; </span><span class="mi">688</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_standard</span><span class="p">()</span>
+
+<span class="nn">File ~/miniconda3/envs/ml_cgm_env_test/lib/python3.9/site-packages/pandas/core/apply.py:812,</span> in <span class="ni">FrameApply.apply_standard</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">811</span> <span class="k">def</span> <span class="nf">apply_standard</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">812</span>     <span class="n">results</span><span class="p">,</span> <span class="n">res_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_series_generator</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">814</span>     <span class="c1"># wrap results</span>
+<span class="g g-Whitespace">    </span><span class="mi">815</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">wrap_results</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">res_index</span><span class="p">)</span>
+
+<span class="nn">File ~/miniconda3/envs/ml_cgm_env_test/lib/python3.9/site-packages/pandas/core/apply.py:828,</span> in <span class="ni">FrameApply.apply_series_generator</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">825</span> <span class="k">with</span> <span class="n">option_context</span><span class="p">(</span><span class="s2">&quot;mode.chained_assignment&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">826</span>     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">series_gen</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">827</span>         <span class="c1"># ignore SettingWithCopy here in case the user mutates</span>
+<span class="ne">--&gt; </span><span class="mi">828</span>         <span class="n">results</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">829</span>         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ABCSeries</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">830</span>             <span class="c1"># If we have a view on v, we need to make a copy because</span>
+<span class="g g-Whitespace">    </span><span class="mi">831</span>             <span class="c1">#  series_generator will swap out the underlying data</span>
+<span class="g g-Whitespace">    </span><span class="mi">832</span>             <span class="n">results</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nn">Cell In[50], line 2,</span> in <span class="ni">&lt;lambda&gt;</span><span class="nt">(row)</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Calculate start + end glucose for 101 diaries</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">extod_101_diaries</span><span class="p">[</span><span class="s1">&#39;start_glc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">extod_101_diaries</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">preprocess_helper</span><span class="o">.</span><span class="n">calc_glc</span><span class="p">(</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="n">extod_101_cgm</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">extod_101_cgm</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">row</span><span class="o">.</span><span class="n">ID</span><span class="p">],</span> <span class="n">row</span><span class="o">.</span><span class="n">start_datetime</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="kc">True</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="c1"># Calculate start + end glucose for edu diaries</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="n">extod_edu_diaries</span><span class="p">[</span><span class="s1">&#39;start_glc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">extod_edu_diaries</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">preprocess_helper</span><span class="o">.</span><span class="n">calc_glc</span><span class="p">(</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span>     <span class="n">extod_edu_cgm</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">extod_edu_cgm</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">row</span><span class="o">.</span><span class="n">ID</span><span class="p">],</span> <span class="n">row</span><span class="o">.</span><span class="n">start_datetime</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span>     <span class="kc">False</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="nn">File ~/Desktop/projects/ml-cgm/Code/1_preprocessing/preprocess_helper.py:311,</span> in <span class="ni">calc_glc</span><span class="nt">(df, time, window, libre)</span>
+<span class="g g-Whitespace">    </span><span class="mi">309</span>     <span class="n">glc</span> <span class="o">=</span> <span class="n">sub_df</span><span class="p">[</span><span class="s1">&#39;glc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+<span class="g g-Whitespace">    </span><span class="mi">310</span>     <span class="n">ind_prev</span> <span class="o">=</span> <span class="n">ind</span><span class="o">-</span><span class="mi">1</span>
+<span class="ne">--&gt; </span><span class="mi">311</span>     <span class="n">prec_reading_glc</span> <span class="o">=</span> <span class="n">sub_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">ind_prev</span><span class="p">]</span><span class="o">.</span><span class="n">glc</span>
+<span class="g g-Whitespace">    </span><span class="mi">312</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">313</span>     <span class="n">glc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+<span class="nn">File ~/miniconda3/envs/ml_cgm_env_test/lib/python3.9/site-packages/pandas/core/indexing.py:931,</span> in <span class="ni">_LocationIndexer.__getitem__</span><span class="nt">(self, key)</span>
+<span class="g g-Whitespace">    </span><span class="mi">928</span> <span class="n">axis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">axis</span> <span class="ow">or</span> <span class="mi">0</span>
+<span class="g g-Whitespace">    </span><span class="mi">930</span> <span class="n">maybe_callable</span> <span class="o">=</span> <span class="n">com</span><span class="o">.</span><span class="n">apply_if_callable</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">931</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getitem_axis</span><span class="p">(</span><span class="n">maybe_callable</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+
+<span class="nn">File ~/miniconda3/envs/ml_cgm_env_test/lib/python3.9/site-packages/pandas/core/indexing.py:1164,</span> in <span class="ni">_LocIndexer._getitem_axis</span><span class="nt">(self, key, axis)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1162</span> <span class="c1"># fall thru to straight lookup</span>
+<span class="g g-Whitespace">   </span><span class="mi">1163</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_key</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">1164</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_label</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+
+<span class="nn">File ~/miniconda3/envs/ml_cgm_env_test/lib/python3.9/site-packages/pandas/core/indexing.py:1113,</span> in <span class="ni">_LocIndexer._get_label</span><span class="nt">(self, label, axis)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1111</span> <span class="k">def</span> <span class="nf">_get_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">1112</span>     <span class="c1"># GH#5667 this will fail if the label is not present in the axis.</span>
+<span class="ne">-&gt; </span><span class="mi">1113</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+
+<span class="nn">File ~/miniconda3/envs/ml_cgm_env_test/lib/python3.9/site-packages/pandas/core/generic.py:3776,</span> in <span class="ni">NDFrame.xs</span><span class="nt">(self, key, axis, level, drop_level)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3774</span>         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected label or tuple of labels, got </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+<span class="g g-Whitespace">   </span><span class="mi">3775</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">3776</span>     <span class="n">loc</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3778</span>     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">3779</span>         <span class="k">if</span> <span class="n">loc</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">:</span>
+
+<span class="nn">File ~/miniconda3/envs/ml_cgm_env_test/lib/python3.9/site-packages/pandas/core/indexes/base.py:3363,</span> in <span class="ni">Index.get_loc</span><span class="nt">(self, key, method, tolerance)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3361</span>         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_engine</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">casted_key</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3362</span>     <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">3363</span>         <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">err</span>
+<span class="g g-Whitespace">   </span><span class="mi">3365</span> <span class="k">if</span> <span class="n">is_scalar</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">and</span> <span class="n">isna</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">hasnans</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">3366</span>     <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+<span class="ne">KeyError</span>: 223141
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Drop scan_glc column and null values</span>
+<span class="n">extod_101_cgm</span> <span class="o">=</span> <span class="n">extod_101_cgm</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s1">&#39;scan_glc&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="divide-cgm-data-into-bouts">
+<h2>3.3. Divide CGM data into bouts<a class="headerlink" href="#divide-cgm-data-into-bouts" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create unique id for each bout</span>
+<span class="n">extod_101_diaries</span> <span class="o">=</span> <span class="n">preprocess_helper</span><span class="o">.</span><span class="n">create_bout_id</span><span class="p">(</span><span class="n">extod_101_diaries</span><span class="p">)</span>
+<span class="n">extod_edu_diaries</span> <span class="o">=</span> <span class="n">preprocess_helper</span><span class="o">.</span><span class="n">create_bout_id</span><span class="p">(</span><span class="n">extod_edu_diaries</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">extod_101_diaries</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>688
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">extod_edu_diaries</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>804
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Combine data from both studies</span>
+<span class="n">diaries</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">extod_101_diaries</span><span class="p">,</span> <span class="n">extod_edu_diaries</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="during">
+<h3>During<a class="headerlink" href="#during" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set up during CGM dataframe for each study</span>
+<span class="n">extod_101_during</span><span class="p">,</span> <span class="n">extod_101_during_series</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">preprocess_helper</span><span class="o">.</span><span class="n">set_up_dataframes</span><span class="p">(</span><span class="n">extod_101_cgm</span><span class="p">,</span> <span class="n">extod_101_diaries</span><span class="p">,</span> <span class="s1">&#39;during&#39;</span><span class="p">,</span>
+                                     <span class="mi">15</span><span class="p">)</span>
+<span class="n">extod_101_during</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">extod_edu_during</span><span class="p">,</span> <span class="n">extod_edu_during_series</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">preprocess_helper</span><span class="o">.</span><span class="n">set_up_dataframes</span><span class="p">(</span><span class="n">extod_edu_cgm</span><span class="p">,</span> <span class="n">extod_edu_diaries</span><span class="p">,</span> <span class="s1">&#39;during&#39;</span><span class="p">,</span>
+                                     <span class="mi">5</span><span class="p">)</span>
+<span class="n">extod_edu_during</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="create-the-dataframes-for-predicting-during-exercise">
+<h3>3.5.1. Create the dataframes for predicting during exercise<a class="headerlink" href="#create-the-dataframes-for-predicting-during-exercise" title="Permalink to this heading">#</a></h3>
+<section id="extract-glycemic-metrics">
+<h4>3.4.1.1. Extract glycemic metrics<a class="headerlink" href="#extract-glycemic-metrics" title="Permalink to this heading">#</a></h4>
+<p>before_cgm = pd.concat([extod_101_before, extod_edu_before]).reset_index(drop=True)</p>
+</section>
+<section id="extract-glycemic-metrics-during">
+<h4>3.4.2.1. Extract glycemic metrics (during)<a class="headerlink" href="#extract-glycemic-metrics-during" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate glycemic metrics for extod 101 datasets</span>
+<span class="n">glyc_metrics_101_during</span> <span class="o">=</span> <span class="n">cgm</span><span class="o">.</span><span class="n">all_metrics</span><span class="p">(</span><span class="n">extod_101_during</span><span class="p">,</span> <span class="n">ID</span><span class="o">=</span><span class="s1">&#39;bout_id&#39;</span><span class="p">,</span> <span class="n">interval_size</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+                  <span class="n">exercise_thresholds</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># Calculate glycemic metrics for extod education datasets</span>
+<span class="n">glyc_metrics_edu_during</span> <span class="o">=</span> <span class="n">cgm</span><span class="o">.</span><span class="n">all_metrics</span><span class="p">(</span><span class="n">extod_edu_during</span><span class="p">,</span> <span class="n">ID</span><span class="o">=</span><span class="s1">&#39;bout_id&#39;</span><span class="p">,</span> <span class="n">interval_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+                  <span class="n">exercise_thresholds</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># Concat the two</span>
+<span class="n">X_during_glyc_metrics</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">glyc_metrics_101_during</span><span class="p">,</span>
+                                   <span class="n">glyc_metrics_edu_during</span><span class="p">])</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;ID&#39;</span><span class="p">:</span><span class="s1">&#39;bout_id&#39;</span><span class="p">})</span>
+<span class="c1"># Label columns with &#39;during&#39;</span>
+<span class="n">X_during_glyc_metrics</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;during_&#39;</span><span class="o">+</span><span class="n">i</span>  <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;bout_id&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">X_during_glyc_metrics</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_during_glyc_metrics</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>bout_id</th>
+      <th>during_TIR_lv2_hypo</th>
+      <th>during_TIR_lv1_hypo</th>
+      <th>during_TIR_hypo</th>
+      <th>during_TIR_norm</th>
+      <th>during_TIR_hyper</th>
+      <th>during_TIR_lv1_hyper</th>
+      <th>during_TIR_lv2_hyper</th>
+      <th>during_TIR_hypo_exercise</th>
+      <th>during_TIR_normal_exercise</th>
+      <th>during_TIR_hyper_exercise</th>
+      <th>during_number_hypos</th>
+      <th>during_avg_length_of_hypo</th>
+      <th>during_total_time_in_hypos</th>
+      <th>during_number_lv1_hypos</th>
+      <th>during_number_lv2_hypos</th>
+      <th>during_number_hypos_below_5</th>
+      <th>during_avg_length_hypo_below_5</th>
+      <th>during_total_time_in_hypos_below_5</th>
+      <th>during_sd</th>
+      <th>during_cv</th>
+      <th>during_minimum_glucose</th>
+      <th>during_maximum_glucose</th>
+      <th>during_average_glucose</th>
+      <th>during_mage_mean</th>
+      <th>during_ea1c</th>
+      <th>during_percent_missing</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>3032_562</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>50.0</td>
+      <td>50.0</td>
+      <td>50.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>100.0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>2.333452</td>
+      <td>26.668027</td>
+      <td>7.1</td>
+      <td>10.4</td>
+      <td>8.750000</td>
+      <td>3.3</td>
+      <td>7.132075</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>3030_505</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>100.0</td>
+      <td>25.0</td>
+      <td>75.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.509902</td>
+      <td>3.565748</td>
+      <td>13.6</td>
+      <td>14.8</td>
+      <td>14.300000</td>
+      <td>1.2</td>
+      <td>10.622642</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3004_82</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>100.0</td>
+      <td>0.0</td>
+      <td>100.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>100.0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>16.4</td>
+      <td>16.4</td>
+      <td>16.400000</td>
+      <td>0.0</td>
+      <td>11.943396</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3002_26</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>100.0</td>
+      <td>0.0</td>
+      <td>100.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>100.0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.763763</td>
+      <td>3.301568</td>
+      <td>22.3</td>
+      <td>23.8</td>
+      <td>23.133333</td>
+      <td>1.5</td>
+      <td>16.178197</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>3026_420</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>100.0</td>
+      <td>0.0</td>
+      <td>100.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>100.0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.343503</td>
+      <td>6.292754</td>
+      <td>20.4</td>
+      <td>22.3</td>
+      <td>21.350000</td>
+      <td>1.9</td>
+      <td>15.056604</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_during_glyc_metrics</span><span class="p">[</span><span class="n">X_during_glyc_metrics</span><span class="o">.</span><span class="n">during_TIR_hyper</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>bout_id                               452
+during_TIR_lv2_hypo                   452
+during_TIR_lv1_hypo                   452
+during_TIR_hypo                       452
+during_TIR_norm                       452
+during_TIR_hyper                      452
+during_TIR_lv1_hyper                  452
+during_TIR_lv2_hyper                  452
+during_TIR_hypo_exercise              452
+during_TIR_normal_exercise            452
+during_TIR_hyper_exercise             452
+during_number_hypos                   452
+during_avg_length_of_hypo             452
+during_total_time_in_hypos            452
+during_number_lv1_hypos               452
+during_number_lv2_hypos               452
+during_number_hypos_below_5           452
+during_avg_length_hypo_below_5        452
+during_total_time_in_hypos_below_5    452
+during_sd                             425
+during_cv                             425
+during_minimum_glucose                452
+during_maximum_glucose                452
+during_average_glucose                452
+during_mage_mean                      452
+during_ea1c                           452
+during_percent_missing                452
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="extract-target-features-y-for-during-exercise">
+<h4>3.4.2.2. Extract target features (y) for during exercise<a class="headerlink" href="#extract-target-features-y-for-during-exercise" title="Permalink to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select the target features (y)</span>
+<span class="n">y_101_during</span> <span class="o">=</span> <span class="n">glyc_metrics_101_during</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,[</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="s1">&#39;TIR_hypo_exercise&#39;</span><span class="p">,</span> <span class="s1">&#39;TIR_hyper_exercise&#39;</span>
+                                              <span class="p">]]</span>
+<span class="n">y_101_during</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;bout_id&#39;</span><span class="p">,</span> <span class="s1">&#39;y_hypo&#39;</span><span class="p">,</span> <span class="s1">&#39;y_hyper&#39;</span><span class="p">]</span>
+<span class="n">y_101_during</span><span class="p">[</span><span class="s1">&#39;y_hypo&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_101_during</span><span class="p">[</span><span class="s1">&#39;y_hypo&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">0</span>
+<span class="n">y_101_during</span><span class="p">[</span><span class="s1">&#39;y_hyper&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_101_during</span><span class="p">[</span><span class="s1">&#39;y_hyper&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">0</span>
+
+<span class="n">y_edu_during</span> <span class="o">=</span> <span class="n">glyc_metrics_edu_during</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,[</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="s1">&#39;TIR_hypo_exercise&#39;</span><span class="p">,</span>  <span class="s1">&#39;TIR_hyper_exercise&#39;</span>
+                                              <span class="p">]]</span>
+<span class="n">y_edu_during</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;bout_id&#39;</span><span class="p">,</span> <span class="s1">&#39;y_hypo&#39;</span><span class="p">,</span> <span class="s1">&#39;y_hyper&#39;</span><span class="p">]</span>
+<span class="n">y_edu_during</span><span class="p">[</span><span class="s1">&#39;y_hypo&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_edu_during</span><span class="p">[</span><span class="s1">&#39;y_hypo&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">0</span>
+<span class="n">y_edu_during</span><span class="p">[</span><span class="s1">&#39;y_hyper&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_edu_during</span><span class="p">[</span><span class="s1">&#39;y_hyper&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">0</span>
+
+
+<span class="c1"># Concat the two</span>
+<span class="n">y_during</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">y_101_during</span><span class="p">,</span> <span class="n">y_edu_during</span><span class="p">])</span>
+<span class="c1"># Rename y columns</span>
+<span class="n">y_during</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;bout_id&#39;</span><span class="p">,</span> <span class="s1">&#39;y_hypo&#39;</span><span class="p">,</span> <span class="s1">&#39;y_hyper&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">during_merged</span> <span class="o">=</span> <span class="n">X_during_glyc_metrics</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">y_during</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;bout_id&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="combine-dataframes-for-the-machine-learning-tasks">
+<h2>3.5. Combine dataframes for the machine learning tasks<a class="headerlink" href="#combine-dataframes-for-the-machine-learning-tasks" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set directory for saving files</span>
+<span class="n">df_directory</span> <span class="o">=</span> <span class="s1">&#39;../../Data/tidy_data/&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="id1">
+<h3>During<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Frames to be merged, glyc metrics for 4hrs before, exercise diaries, TIR during</span>
+<span class="n">frames</span> <span class="o">=</span> <span class="p">[</span><span class="n">diaries</span><span class="p">,</span> <span class="n">y_during</span><span class="p">]</span>
+<span class="c1"># Merge &#39;em on bout_id</span>
+<span class="n">df_glyc_during</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span>
+                                                      <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;bout_id&#39;</span><span class="p">]),</span> <span class="n">frames</span><span class="p">)</span>
+<span class="c1"># Recreate ID from bout_id</span>
+<span class="n">df_glyc_during</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_glyc_during</span><span class="p">[</span><span class="s1">&#39;bout_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">[:</span><span class="mi">4</span><span class="p">]))</span>
+<span class="c1"># Merge with demographics and lab data on ID</span>
+<span class="n">df_glyc_during</span> <span class="o">=</span> <span class="n">df_glyc_during</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">demo_lab</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;ID&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_drop</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;start_datetime&#39;</span><span class="p">,</span> <span class="s1">&#39;finish_datetime&#39;</span><span class="p">,</span> <span class="s1">&#39;type_of_exercise&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;starting_glucose&#39;</span><span class="p">,</span> <span class="s1">&#39;finishing_glucose&#39;</span><span class="p">,</span> <span class="s1">&#39;insulin_administration&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;urine_cpep&#39;</span><span class="p">,</span> <span class="s1">&#39;urine_creat&#39;</span><span class="p">,</span> <span class="s1">&#39;chol&#39;</span><span class="p">,</span> <span class="s1">&#39;h_index&#39;</span><span class="p">,</span> <span class="s1">&#39;hdl&#39;</span><span class="p">,</span> <span class="s1">&#39;ldl&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;nhdl&#39;</span><span class="p">,</span> <span class="s1">&#39;trig&#39;</span><span class="p">,</span> <span class="s1">&#39;bout_id&#39;</span><span class="p">]</span>
+<span class="n">df_glyc_during</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">all_drop</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="changing-the-time-in-ranges-to-binary">
+<h1>Changing the time in ranges to binary<a class="headerlink" href="#changing-the-time-in-ranges-to-binary" title="Permalink to this heading">#</a></h1>
+<p>for i in during_frames + after_frames:
+i[‘y_hypo’] = i[‘y_hypo’] &gt; 0
+i[‘y_hyper’] = i[‘y_hyper’] &gt; 0
+# Add a column for stratification
+i[‘stratify’] = i[‘ID’].astype(str) + ‘_’ + i[‘y_hypo’].astype(str)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Glycemic metrics only</span>
+<span class="n">df_glyc_during</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>intensity</th>
+      <th>month</th>
+      <th>day</th>
+      <th>day_of_week</th>
+      <th>time_of_day</th>
+      <th>duration</th>
+      <th>form_of_exercise</th>
+      <th>start_glc</th>
+      <th>y_hypo</th>
+      <th>y_hyper</th>
+      <th>age</th>
+      <th>sex</th>
+      <th>years_since_diagnosis</th>
+      <th>bmi</th>
+      <th>hba1c</th>
+      <th>cpep</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>3001</td>
+      <td>15.0</td>
+      <td>5</td>
+      <td>19</td>
+      <td>5</td>
+      <td>morning</td>
+      <td>71.0</td>
+      <td>aer</td>
+      <td>15.3</td>
+      <td>False</td>
+      <td>True</td>
+      <td>41.615332</td>
+      <td>female</td>
+      <td>10.064339</td>
+      <td>23.112472</td>
+      <td>73.0</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>3001</td>
+      <td>15.0</td>
+      <td>5</td>
+      <td>29</td>
+      <td>1</td>
+      <td>morning</td>
+      <td>26.0</td>
+      <td>aer</td>
+      <td>12.7</td>
+      <td>False</td>
+      <td>False</td>
+      <td>41.615332</td>
+      <td>female</td>
+      <td>10.064339</td>
+      <td>23.112472</td>
+      <td>73.0</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3001</td>
+      <td>NaN</td>
+      <td>6</td>
+      <td>3</td>
+      <td>6</td>
+      <td>evening</td>
+      <td>76.0</td>
+      <td>aer</td>
+      <td>10.4</td>
+      <td>False</td>
+      <td>False</td>
+      <td>41.615332</td>
+      <td>female</td>
+      <td>10.064339</td>
+      <td>23.112472</td>
+      <td>73.0</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3001</td>
+      <td>NaN</td>
+      <td>6</td>
+      <td>11</td>
+      <td>0</td>
+      <td>afternoon</td>
+      <td>13.0</td>
+      <td>aer</td>
+      <td>22.0</td>
+      <td>False</td>
+      <td>True</td>
+      <td>41.615332</td>
+      <td>female</td>
+      <td>10.064339</td>
+      <td>23.112472</td>
+      <td>73.0</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>3001</td>
+      <td>15.0</td>
+      <td>6</td>
+      <td>13</td>
+      <td>2</td>
+      <td>afternoon</td>
+      <td>55.0</td>
+      <td>aer</td>
+      <td>21.8</td>
+      <td>False</td>
+      <td>True</td>
+      <td>41.615332</td>
+      <td>female</td>
+      <td>10.064339</td>
+      <td>23.112472</td>
+      <td>73.0</td>
+      <td>3.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<section id="save-to-csv">
+<h2>3.6. Save to csv<a class="headerlink" href="#save-to-csv" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># During</span>
+<span class="n">df_glyc_during</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">df_directory</span><span class="o">+</span><span class="s1">&#39;during_simple_only.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./ml_heatmap/1_preprocessing"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">3. Target creation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#target-variables">Target variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#features">Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objectives">Objectives:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-packages">3.0. Import packages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#upload-data">3.1. Upload data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#upload-extod-101-data">3.1.1. Upload EXTOD 101 data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#upload-extod-education-data">3.1.2. Upload EXTOD education data</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-start-and-end-glucose">3.2. Calculate start and end glucose</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#divide-cgm-data-into-bouts">3.3. Divide CGM data into bouts</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#during">During</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-dataframes-for-predicting-during-exercise">3.5.1. Create the dataframes for predicting during exercise</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-glycemic-metrics">3.4.1.1. Extract glycemic metrics</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-glycemic-metrics-during">3.4.2.1. Extract glycemic metrics (during)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-target-features-y-for-during-exercise">3.4.2.2. Extract target features (y) for during exercise</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#combine-dataframes-for-the-machine-learning-tasks">3.5. Combine dataframes for the machine learning tasks</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">During</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#changing-the-time-in-ranges-to-binary">Changing the time in ranges to binary</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#save-to-csv">3.6. Save to csv</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Catherine Russon
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

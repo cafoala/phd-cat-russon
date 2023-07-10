@@ -1,0 +1,4580 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>3. Comparing metrics of glycemic control &#8212; Machine learning for glycaemia prediction around exercise</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'interpolation/3_other_metrics';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4. Hypoglycaemic episodes" href="4_identifying_hypos.html" />
+    <link rel="prev" title="2. Exploratory data analysis" href="2_EDA.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../0_landing_page.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">Machine learning for glycaemia prediction around exercise</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../0_landing_page.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Chapter 1 - Python package and Webapp for calculating the metrics of glycemic control</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../diametrics/0_overview.html">Diametrics Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diametrics/1_upload_demo.html">1. Uploading and transforming data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diametrics/2_preprocessing_demo.html">2. Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diametrics/3_metrics_demo.html">3. Metrics of glycemic control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diametrics/4_visualizations_demo.html">4. Visualizations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../diametrics/5_webapp.html">5. Web Application</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Chapter 2 - Interpolation for the improved identification of hypoglycaemic episodes</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="1_create_df.html">1. Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_EDA.html">2. Exploratory data analysis</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">3. Comparing metrics of glycemic control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_identifying_hypos.html">4. Hypoglycaemic episodes</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Chapter 3 - Machine learning to predict hypoglycemia during exercise</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ml_heatmap/1_preprocessing/0_landing.html">Preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ml_heatmap/1_preprocessing/1_preprocessing_101.html">1. Preprocessing of EXTOD 101 for ML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml_heatmap/1_preprocessing/2_preprocessing_edu.html">2. Preprocessing EXTOD education dataset</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="../ml_heatmap/1_preprocessing/3_target_creation.html">3. Target creation</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../ml_heatmap/1_preprocessing/4_ml_preparation.html">4. Preparation for machine learning</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ml_heatmap/2_feature_selection/forward_feature_selection.html">Forward feature selection</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ml_heatmap/3_ml/0_landing.html">Machine learning</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ml_heatmap/3_ml/figs_during_5.html">4. Predicting Euglycemia During Exercise</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../ml_heatmap/3_ml/contour_plot_lr.html">Heatmap (countour plot) of model predictions</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/interpolation/3_other_metrics.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>3. Comparing metrics of glycemic control</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-packages-and-upload-data">3.1. Import packages and upload data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diabetes-metrics-for-each-person-for-each-interpolation-method">3.2. Diabetes metrics for each person for each interpolation method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mean-difference-for-all-of-the-metrics">4.3. Mean difference for all of the metrics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bland-altman-plots">4.4. Bland-Altman plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distribution-of-hypos-per-person">4.5. Distribution of hypos per person</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="comparing-metrics-of-glycemic-control">
+<h1>3. Comparing metrics of glycemic control<a class="headerlink" href="#comparing-metrics-of-glycemic-control" title="Permalink to this heading">#</a></h1>
+<p>Calculating the other metrics of diabetes control and comparing them.</p>
+<section id="import-packages-and-upload-data">
+<h2>3.1. Import packages and upload data<a class="headerlink" href="#import-packages-and-upload-data" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">pyCompare</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;/Users/cr591/OneDrive - University of Exeter/Desktop/diametrics/diametrics&quot;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">metrics</span> <span class="k">as</span> <span class="nn">cgm</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_rows&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_columns&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#df = pd.read_csv(&#39;~/OneDrive - University of Exeter/Desktop/PhD/Projects/interpolation-for-hypo-detection/dexcom-maths-exploration/data/tidy_data/interp_dataset.csv&#39;)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;interp_dataset.csv&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;glc&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Combine baseline and 6-month periods for those who have both by selecting only the ID</span>
+<span class="n">df_2weeks</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="c1">#df_2weeks[&#39;ID&#39;] = df[&#39;ID&#39;].apply(lambda x: x[:4])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="diabetes-metrics-for-each-person-for-each-interpolation-method">
+<h2>3.2. Diabetes metrics for each person for each interpolation method<a class="headerlink" href="#diabetes-metrics-for-each-person-for-each-interpolation-method" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Interpolation methods</span>
+<span class="n">methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;glc&#39;</span><span class="p">,</span> <span class="s1">&#39;cut_glc&#39;</span><span class="p">,</span> <span class="s1">&#39;pchip&#39;</span><span class="p">,</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="s1">&#39;cubicspline&#39;</span><span class="p">,</span> <span class="s1">&#39;akima&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;polynomial_3&#39;</span><span class="p">,</span> <span class="s1">&#39;polynomial_5&#39;</span><span class="p">,</span> <span class="s1">&#39;polynomial_7&#39;</span><span class="p">,</span> <span class="s1">&#39;matern&#39;</span><span class="p">,</span> <span class="s1">&#39;rq&#39;</span><span class="p">,</span> <span class="s1">&#39;rbf&#39;</span><span class="p">]</span>
+<span class="c1"># Dictionary for results</span>
+<span class="n">results_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="c1"># Loop through all of the columns and calculate all diabetes metrics</span>
+<span class="k">for</span> <span class="n">method</span> <span class="ow">in</span> <span class="n">methods</span><span class="p">:</span>
+    <span class="n">sub_df</span> <span class="o">=</span> <span class="n">df_2weeks</span><span class="p">[[</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="n">method</span><span class="p">]]</span>
+    <span class="n">sub_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="s1">&#39;glc&#39;</span><span class="p">]</span>
+    <span class="c1"># cut_glc is 15 min intervals, the rest are 5</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;cut_glc&#39;</span><span class="p">:</span>
+        <span class="n">interval_size</span> <span class="o">=</span> <span class="mi">15</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">interval_size</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="c1"># Add the results to the dictionary with method name as key</span>
+    <span class="n">results_dict</span><span class="p">[</span><span class="n">method</span><span class="p">]</span> <span class="o">=</span> <span class="n">cgm</span><span class="o">.</span><span class="n">all_metrics</span><span class="p">(</span><span class="n">sub_df</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;glc&#39;</span><span class="p">,</span> <span class="s1">&#39;ID&#39;</span><span class="p">,</span>
+                                           <span class="n">interval_size</span><span class="o">=</span><span class="n">interval_size</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Diabetes metrics for 5-minute data for each person</span>
+<span class="n">results_dict</span><span class="p">[</span><span class="s1">&#39;glc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;ID&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>TIR_lv2_hypo</th>
+      <th>TIR_lv1_hypo</th>
+      <th>TIR_hypo</th>
+      <th>TIR_norm</th>
+      <th>TIR_hyper</th>
+      <th>TIR_lv1_hyper</th>
+      <th>TIR_lv2_hyper</th>
+      <th>number_hypos</th>
+      <th>avg_length_of_hypo</th>
+      <th>total_time_in_hypos</th>
+      <th>number_lv1_hypos</th>
+      <th>number_lv2_hypos</th>
+      <th>sd</th>
+      <th>cv</th>
+      <th>minimum_glucose</th>
+      <th>maximum_glucose</th>
+      <th>average_glucose</th>
+      <th>mage_mean</th>
+      <th>ea1c</th>
+      <th>percent_missing</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>104</th>
+      <td>1003_6months</td>
+      <td>2.32</td>
+      <td>6.05</td>
+      <td>8.37</td>
+      <td>51.69</td>
+      <td>39.94</td>
+      <td>23.85</td>
+      <td>16.09</td>
+      <td>9</td>
+      <td>88.33</td>
+      <td>795.0</td>
+      <td>6</td>
+      <td>3</td>
+      <td>4.57</td>
+      <td>47.72</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>9.57</td>
+      <td>9.40</td>
+      <td>7.65</td>
+      <td>0.35</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>1003_baseline</td>
+      <td>2.44</td>
+      <td>9.76</td>
+      <td>12.20</td>
+      <td>57.06</td>
+      <td>30.74</td>
+      <td>22.51</td>
+      <td>8.23</td>
+      <td>10</td>
+      <td>112.50</td>
+      <td>1125.0</td>
+      <td>5</td>
+      <td>5</td>
+      <td>3.95</td>
+      <td>46.87</td>
+      <td>2.22</td>
+      <td>20.09</td>
+      <td>8.43</td>
+      <td>8.35</td>
+      <td>6.93</td>
+      <td>1.01</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>1004_6months</td>
+      <td>1.13</td>
+      <td>0.59</td>
+      <td>1.72</td>
+      <td>48.76</td>
+      <td>49.52</td>
+      <td>38.09</td>
+      <td>11.42</td>
+      <td>3</td>
+      <td>48.33</td>
+      <td>145.0</td>
+      <td>0</td>
+      <td>3</td>
+      <td>3.03</td>
+      <td>29.93</td>
+      <td>2.22</td>
+      <td>20.14</td>
+      <td>10.13</td>
+      <td>7.44</td>
+      <td>8.00</td>
+      <td>3.28</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1004_baseline</td>
+      <td>1.42</td>
+      <td>2.84</td>
+      <td>4.26</td>
+      <td>33.26</td>
+      <td>62.48</td>
+      <td>16.82</td>
+      <td>45.66</td>
+      <td>6</td>
+      <td>55.00</td>
+      <td>330.0</td>
+      <td>4</td>
+      <td>2</td>
+      <td>5.66</td>
+      <td>43.72</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>12.95</td>
+      <td>13.36</td>
+      <td>9.78</td>
+      <td>4.18</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1005_6months</td>
+      <td>0.00</td>
+      <td>0.70</td>
+      <td>0.70</td>
+      <td>34.49</td>
+      <td>64.80</td>
+      <td>24.62</td>
+      <td>40.18</td>
+      <td>2</td>
+      <td>27.50</td>
+      <td>55.0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>4.91</td>
+      <td>39.09</td>
+      <td>3.50</td>
+      <td>22.20</td>
+      <td>12.57</td>
+      <td>13.08</td>
+      <td>9.53</td>
+      <td>0.05</td>
+    </tr>
+    <tr>
+      <th>49</th>
+      <td>1007_baseline</td>
+      <td>0.00</td>
+      <td>1.02</td>
+      <td>1.02</td>
+      <td>45.98</td>
+      <td>53.00</td>
+      <td>25.41</td>
+      <td>27.60</td>
+      <td>2</td>
+      <td>27.50</td>
+      <td>55.0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>4.52</td>
+      <td>41.85</td>
+      <td>3.33</td>
+      <td>22.20</td>
+      <td>10.80</td>
+      <td>10.28</td>
+      <td>8.42</td>
+      <td>0.45</td>
+    </tr>
+    <tr>
+      <th>100</th>
+      <td>1008_baseline</td>
+      <td>7.04</td>
+      <td>8.53</td>
+      <td>15.56</td>
+      <td>58.35</td>
+      <td>26.09</td>
+      <td>19.47</td>
+      <td>6.63</td>
+      <td>17</td>
+      <td>84.71</td>
+      <td>1440.0</td>
+      <td>11</td>
+      <td>6</td>
+      <td>4.09</td>
+      <td>52.55</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>7.79</td>
+      <td>8.98</td>
+      <td>6.53</td>
+      <td>2.05</td>
+    </tr>
+    <tr>
+      <th>94</th>
+      <td>1010_6months</td>
+      <td>3.94</td>
+      <td>5.55</td>
+      <td>9.49</td>
+      <td>66.48</td>
+      <td>24.03</td>
+      <td>22.36</td>
+      <td>1.67</td>
+      <td>13</td>
+      <td>65.00</td>
+      <td>845.0</td>
+      <td>4</td>
+      <td>9</td>
+      <td>2.84</td>
+      <td>36.40</td>
+      <td>2.22</td>
+      <td>16.70</td>
+      <td>7.80</td>
+      <td>6.13</td>
+      <td>6.54</td>
+      <td>0.20</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>1010_baseline</td>
+      <td>2.73</td>
+      <td>10.60</td>
+      <td>13.33</td>
+      <td>77.99</td>
+      <td>8.68</td>
+      <td>8.38</td>
+      <td>0.30</td>
+      <td>20</td>
+      <td>59.50</td>
+      <td>1190.0</td>
+      <td>15</td>
+      <td>5</td>
+      <td>2.32</td>
+      <td>36.09</td>
+      <td>2.22</td>
+      <td>15.37</td>
+      <td>6.44</td>
+      <td>5.55</td>
+      <td>5.68</td>
+      <td>0.40</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>1011_baseline</td>
+      <td>0.00</td>
+      <td>0.28</td>
+      <td>0.28</td>
+      <td>33.41</td>
+      <td>66.31</td>
+      <td>39.78</td>
+      <td>26.52</td>
+      <td>1</td>
+      <td>20.00</td>
+      <td>20.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>3.47</td>
+      <td>29.90</td>
+      <td>3.39</td>
+      <td>22.20</td>
+      <td>11.60</td>
+      <td>8.66</td>
+      <td>8.92</td>
+      <td>1.57</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>1012_6months</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>14.36</td>
+      <td>85.64</td>
+      <td>21.67</td>
+      <td>63.96</td>
+      <td>0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4.07</td>
+      <td>27.22</td>
+      <td>6.22</td>
+      <td>22.20</td>
+      <td>14.95</td>
+      <td>9.36</td>
+      <td>11.03</td>
+      <td>0.04</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>1012_baseline</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>33.28</td>
+      <td>66.72</td>
+      <td>36.43</td>
+      <td>30.29</td>
+      <td>0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3.69</td>
+      <td>30.87</td>
+      <td>4.61</td>
+      <td>22.20</td>
+      <td>11.95</td>
+      <td>8.47</td>
+      <td>9.14</td>
+      <td>0.86</td>
+    </tr>
+    <tr>
+      <th>99</th>
+      <td>1013_6months</td>
+      <td>4.55</td>
+      <td>6.67</td>
+      <td>11.22</td>
+      <td>58.95</td>
+      <td>29.83</td>
+      <td>21.20</td>
+      <td>8.63</td>
+      <td>13</td>
+      <td>78.85</td>
+      <td>1025.0</td>
+      <td>8</td>
+      <td>5</td>
+      <td>3.99</td>
+      <td>48.21</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>8.27</td>
+      <td>8.73</td>
+      <td>6.83</td>
+      <td>2.21</td>
+    </tr>
+    <tr>
+      <th>96</th>
+      <td>1013_baseline</td>
+      <td>1.71</td>
+      <td>4.39</td>
+      <td>6.10</td>
+      <td>63.41</td>
+      <td>30.49</td>
+      <td>19.05</td>
+      <td>11.44</td>
+      <td>7</td>
+      <td>77.86</td>
+      <td>545.0</td>
+      <td>4</td>
+      <td>3</td>
+      <td>3.97</td>
+      <td>44.86</td>
+      <td>2.22</td>
+      <td>20.37</td>
+      <td>8.85</td>
+      <td>10.90</td>
+      <td>7.20</td>
+      <td>0.20</td>
+    </tr>
+    <tr>
+      <th>95</th>
+      <td>1014_6months</td>
+      <td>1.99</td>
+      <td>1.64</td>
+      <td>3.63</td>
+      <td>41.56</td>
+      <td>54.81</td>
+      <td>32.36</td>
+      <td>22.44</td>
+      <td>4</td>
+      <td>80.00</td>
+      <td>320.0</td>
+      <td>1</td>
+      <td>3</td>
+      <td>4.40</td>
+      <td>40.20</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>10.95</td>
+      <td>11.34</td>
+      <td>8.51</td>
+      <td>1.05</td>
+    </tr>
+    <tr>
+      <th>57</th>
+      <td>1014_baseline</td>
+      <td>3.45</td>
+      <td>10.04</td>
+      <td>13.49</td>
+      <td>45.01</td>
+      <td>41.51</td>
+      <td>29.33</td>
+      <td>12.18</td>
+      <td>12</td>
+      <td>105.83</td>
+      <td>1270.0</td>
+      <td>7</td>
+      <td>5</td>
+      <td>4.19</td>
+      <td>45.89</td>
+      <td>2.22</td>
+      <td>21.86</td>
+      <td>9.12</td>
+      <td>10.80</td>
+      <td>7.37</td>
+      <td>3.87</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>1015_baseline</td>
+      <td>1.57</td>
+      <td>0.15</td>
+      <td>1.72</td>
+      <td>42.32</td>
+      <td>55.97</td>
+      <td>25.83</td>
+      <td>30.13</td>
+      <td>1</td>
+      <td>165.00</td>
+      <td>165.0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>4.82</td>
+      <td>41.82</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>11.52</td>
+      <td>11.82</td>
+      <td>8.88</td>
+      <td>0.40</td>
+    </tr>
+    <tr>
+      <th>73</th>
+      <td>1019_baseline</td>
+      <td>0.00</td>
+      <td>0.21</td>
+      <td>0.21</td>
+      <td>85.17</td>
+      <td>14.62</td>
+      <td>12.29</td>
+      <td>2.33</td>
+      <td>0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2.29</td>
+      <td>28.48</td>
+      <td>3.72</td>
+      <td>16.65</td>
+      <td>8.03</td>
+      <td>5.25</td>
+      <td>6.68</td>
+      <td>3.03</td>
+    </tr>
+    <tr>
+      <th>68</th>
+      <td>1020_baseline</td>
+      <td>2.05</td>
+      <td>6.72</td>
+      <td>8.77</td>
+      <td>63.59</td>
+      <td>27.64</td>
+      <td>18.72</td>
+      <td>8.92</td>
+      <td>8</td>
+      <td>104.38</td>
+      <td>835.0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>3.55</td>
+      <td>42.65</td>
+      <td>2.22</td>
+      <td>19.81</td>
+      <td>8.33</td>
+      <td>9.35</td>
+      <td>6.87</td>
+      <td>1.66</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>1021_6months</td>
+      <td>0.06</td>
+      <td>0.61</td>
+      <td>0.67</td>
+      <td>33.07</td>
+      <td>66.26</td>
+      <td>34.05</td>
+      <td>32.21</td>
+      <td>2</td>
+      <td>20.00</td>
+      <td>40.0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>3.93</td>
+      <td>32.69</td>
+      <td>2.89</td>
+      <td>22.20</td>
+      <td>12.01</td>
+      <td>9.71</td>
+      <td>9.18</td>
+      <td>2.15</td>
+    </tr>
+    <tr>
+      <th>93</th>
+      <td>1021_baseline</td>
+      <td>0.00</td>
+      <td>0.40</td>
+      <td>0.40</td>
+      <td>25.11</td>
+      <td>74.49</td>
+      <td>45.98</td>
+      <td>28.51</td>
+      <td>1</td>
+      <td>30.00</td>
+      <td>30.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>3.43</td>
+      <td>28.29</td>
+      <td>3.61</td>
+      <td>22.20</td>
+      <td>12.12</td>
+      <td>7.54</td>
+      <td>9.25</td>
+      <td>11.36</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1022_baseline</td>
+      <td>0.90</td>
+      <td>2.46</td>
+      <td>3.37</td>
+      <td>68.73</td>
+      <td>27.90</td>
+      <td>21.72</td>
+      <td>6.18</td>
+      <td>5</td>
+      <td>63.00</td>
+      <td>315.0</td>
+      <td>3</td>
+      <td>2</td>
+      <td>3.12</td>
+      <td>35.57</td>
+      <td>2.22</td>
+      <td>21.48</td>
+      <td>8.78</td>
+      <td>8.20</td>
+      <td>7.15</td>
+      <td>0.14</td>
+    </tr>
+    <tr>
+      <th>92</th>
+      <td>1024_6months</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>72.71</td>
+      <td>27.29</td>
+      <td>23.13</td>
+      <td>4.15</td>
+      <td>0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2.73</td>
+      <td>30.30</td>
+      <td>4.22</td>
+      <td>22.09</td>
+      <td>9.01</td>
+      <td>5.98</td>
+      <td>7.30</td>
+      <td>3.65</td>
+    </tr>
+    <tr>
+      <th>103</th>
+      <td>1024_baseline</td>
+      <td>0.50</td>
+      <td>1.44</td>
+      <td>1.94</td>
+      <td>51.97</td>
+      <td>46.09</td>
+      <td>31.20</td>
+      <td>14.88</td>
+      <td>3</td>
+      <td>48.33</td>
+      <td>145.0</td>
+      <td>2</td>
+      <td>1</td>
+      <td>3.26</td>
+      <td>31.41</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>10.39</td>
+      <td>7.70</td>
+      <td>8.16</td>
+      <td>9.31</td>
+    </tr>
+    <tr>
+      <th>65</th>
+      <td>1025_6months</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>55.43</td>
+      <td>44.57</td>
+      <td>31.34</td>
+      <td>13.23</td>
+      <td>0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2.93</td>
+      <td>28.58</td>
+      <td>4.50</td>
+      <td>19.42</td>
+      <td>10.25</td>
+      <td>6.78</td>
+      <td>8.08</td>
+      <td>3.92</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>1025_baseline</td>
+      <td>0.00</td>
+      <td>0.42</td>
+      <td>0.42</td>
+      <td>80.71</td>
+      <td>18.87</td>
+      <td>14.84</td>
+      <td>4.03</td>
+      <td>1</td>
+      <td>25.00</td>
+      <td>25.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>2.41</td>
+      <td>28.58</td>
+      <td>3.11</td>
+      <td>18.59</td>
+      <td>8.45</td>
+      <td>6.43</td>
+      <td>6.94</td>
+      <td>1.72</td>
+    </tr>
+    <tr>
+      <th>71</th>
+      <td>1026_6months</td>
+      <td>0.22</td>
+      <td>0.90</td>
+      <td>1.12</td>
+      <td>42.66</td>
+      <td>56.22</td>
+      <td>36.27</td>
+      <td>19.96</td>
+      <td>1</td>
+      <td>100.00</td>
+      <td>100.0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>4.06</td>
+      <td>36.23</td>
+      <td>2.94</td>
+      <td>22.20</td>
+      <td>11.21</td>
+      <td>9.34</td>
+      <td>8.68</td>
+      <td>9.40</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>1026_baseline</td>
+      <td>0.91</td>
+      <td>1.55</td>
+      <td>2.45</td>
+      <td>56.48</td>
+      <td>41.07</td>
+      <td>19.68</td>
+      <td>21.39</td>
+      <td>3</td>
+      <td>71.67</td>
+      <td>215.0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>4.47</td>
+      <td>43.88</td>
+      <td>2.55</td>
+      <td>22.20</td>
+      <td>10.18</td>
+      <td>10.22</td>
+      <td>8.03</td>
+      <td>4.28</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>1027_6months</td>
+      <td>0.00</td>
+      <td>0.56</td>
+      <td>0.56</td>
+      <td>31.99</td>
+      <td>67.45</td>
+      <td>35.21</td>
+      <td>32.24</td>
+      <td>2</td>
+      <td>25.00</td>
+      <td>50.0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>3.84</td>
+      <td>31.63</td>
+      <td>3.27</td>
+      <td>22.20</td>
+      <td>12.14</td>
+      <td>8.57</td>
+      <td>9.26</td>
+      <td>0.76</td>
+    </tr>
+    <tr>
+      <th>79</th>
+      <td>1027_baseline</td>
+      <td>0.00</td>
+      <td>0.83</td>
+      <td>0.83</td>
+      <td>54.15</td>
+      <td>45.03</td>
+      <td>28.45</td>
+      <td>16.58</td>
+      <td>1</td>
+      <td>60.00</td>
+      <td>60.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>3.60</td>
+      <td>35.93</td>
+      <td>3.22</td>
+      <td>22.09</td>
+      <td>10.01</td>
+      <td>7.41</td>
+      <td>7.92</td>
+      <td>3.02</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>1029_6months</td>
+      <td>0.98</td>
+      <td>2.22</td>
+      <td>3.20</td>
+      <td>45.25</td>
+      <td>51.55</td>
+      <td>35.60</td>
+      <td>15.94</td>
+      <td>4</td>
+      <td>67.50</td>
+      <td>270.0</td>
+      <td>3</td>
+      <td>1</td>
+      <td>3.86</td>
+      <td>37.46</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>10.31</td>
+      <td>9.36</td>
+      <td>8.11</td>
+      <td>2.51</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>1029_baseline</td>
+      <td>0.00</td>
+      <td>0.28</td>
+      <td>0.28</td>
+      <td>33.41</td>
+      <td>66.31</td>
+      <td>39.78</td>
+      <td>26.52</td>
+      <td>1</td>
+      <td>20.00</td>
+      <td>20.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>3.47</td>
+      <td>29.90</td>
+      <td>3.39</td>
+      <td>22.20</td>
+      <td>11.60</td>
+      <td>8.66</td>
+      <td>8.92</td>
+      <td>1.57</td>
+    </tr>
+    <tr>
+      <th>43</th>
+      <td>1030_baseline</td>
+      <td>0.22</td>
+      <td>0.39</td>
+      <td>0.62</td>
+      <td>10.43</td>
+      <td>88.95</td>
+      <td>10.21</td>
+      <td>78.74</td>
+      <td>2</td>
+      <td>22.50</td>
+      <td>45.0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>4.99</td>
+      <td>28.70</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>17.38</td>
+      <td>10.04</td>
+      <td>12.56</td>
+      <td>9.72</td>
+    </tr>
+    <tr>
+      <th>72</th>
+      <td>1031_6months</td>
+      <td>0.27</td>
+      <td>0.54</td>
+      <td>0.81</td>
+      <td>75.64</td>
+      <td>23.55</td>
+      <td>16.71</td>
+      <td>6.83</td>
+      <td>1</td>
+      <td>35.00</td>
+      <td>35.0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>3.10</td>
+      <td>35.98</td>
+      <td>2.39</td>
+      <td>19.42</td>
+      <td>8.61</td>
+      <td>6.55</td>
+      <td>7.04</td>
+      <td>0.20</td>
+    </tr>
+    <tr>
+      <th>88</th>
+      <td>1031_baseline</td>
+      <td>0.00</td>
+      <td>0.55</td>
+      <td>0.55</td>
+      <td>75.98</td>
+      <td>23.47</td>
+      <td>21.28</td>
+      <td>2.20</td>
+      <td>0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2.57</td>
+      <td>31.23</td>
+      <td>3.66</td>
+      <td>16.32</td>
+      <td>8.23</td>
+      <td>5.80</td>
+      <td>6.80</td>
+      <td>0.48</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>1032_6months</td>
+      <td>0.23</td>
+      <td>0.63</td>
+      <td>0.87</td>
+      <td>20.88</td>
+      <td>78.26</td>
+      <td>23.70</td>
+      <td>54.56</td>
+      <td>2</td>
+      <td>32.50</td>
+      <td>65.0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>5.02</td>
+      <td>34.74</td>
+      <td>2.66</td>
+      <td>22.20</td>
+      <td>14.44</td>
+      <td>12.80</td>
+      <td>10.71</td>
+      <td>12.20</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>1032_baseline</td>
+      <td>0.61</td>
+      <td>0.98</td>
+      <td>1.60</td>
+      <td>10.99</td>
+      <td>87.42</td>
+      <td>13.87</td>
+      <td>73.54</td>
+      <td>4</td>
+      <td>28.75</td>
+      <td>115.0</td>
+      <td>2</td>
+      <td>2</td>
+      <td>5.07</td>
+      <td>30.58</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>16.57</td>
+      <td>11.11</td>
+      <td>12.05</td>
+      <td>16.11</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>1034_6months</td>
+      <td>1.35</td>
+      <td>5.96</td>
+      <td>7.31</td>
+      <td>82.51</td>
+      <td>10.18</td>
+      <td>10.18</td>
+      <td>0.00</td>
+      <td>8</td>
+      <td>75.62</td>
+      <td>605.0</td>
+      <td>6</td>
+      <td>2</td>
+      <td>2.18</td>
+      <td>30.76</td>
+      <td>2.22</td>
+      <td>13.37</td>
+      <td>7.10</td>
+      <td>5.11</td>
+      <td>6.09</td>
+      <td>0.04</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>1034_baseline</td>
+      <td>0.51</td>
+      <td>3.19</td>
+      <td>3.70</td>
+      <td>92.60</td>
+      <td>3.70</td>
+      <td>3.70</td>
+      <td>0.00</td>
+      <td>6</td>
+      <td>47.50</td>
+      <td>285.0</td>
+      <td>4</td>
+      <td>2</td>
+      <td>1.75</td>
+      <td>26.54</td>
+      <td>2.44</td>
+      <td>12.21</td>
+      <td>6.58</td>
+      <td>4.53</td>
+      <td>5.77</td>
+      <td>0.74</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>1035_6months</td>
+      <td>0.15</td>
+      <td>1.39</td>
+      <td>1.54</td>
+      <td>46.53</td>
+      <td>51.93</td>
+      <td>32.08</td>
+      <td>19.85</td>
+      <td>3</td>
+      <td>51.67</td>
+      <td>155.0</td>
+      <td>3</td>
+      <td>0</td>
+      <td>3.80</td>
+      <td>36.13</td>
+      <td>2.83</td>
+      <td>22.20</td>
+      <td>10.51</td>
+      <td>9.45</td>
+      <td>8.24</td>
+      <td>2.02</td>
+    </tr>
+    <tr>
+      <th>90</th>
+      <td>1035_baseline</td>
+      <td>0.20</td>
+      <td>3.60</td>
+      <td>3.80</td>
+      <td>42.17</td>
+      <td>54.03</td>
+      <td>32.18</td>
+      <td>21.84</td>
+      <td>5</td>
+      <td>70.00</td>
+      <td>350.0</td>
+      <td>4</td>
+      <td>1</td>
+      <td>3.76</td>
+      <td>36.25</td>
+      <td>2.94</td>
+      <td>20.59</td>
+      <td>10.38</td>
+      <td>10.54</td>
+      <td>8.15</td>
+      <td>1.14</td>
+    </tr>
+    <tr>
+      <th>75</th>
+      <td>1040_6months</td>
+      <td>2.72</td>
+      <td>6.86</td>
+      <td>9.59</td>
+      <td>44.80</td>
+      <td>45.61</td>
+      <td>27.40</td>
+      <td>18.21</td>
+      <td>15</td>
+      <td>57.67</td>
+      <td>865.0</td>
+      <td>8</td>
+      <td>7</td>
+      <td>4.36</td>
+      <td>45.64</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>9.56</td>
+      <td>11.96</td>
+      <td>7.64</td>
+      <td>0.30</td>
+    </tr>
+    <tr>
+      <th>83</th>
+      <td>1040_baseline</td>
+      <td>0.35</td>
+      <td>0.85</td>
+      <td>1.21</td>
+      <td>31.98</td>
+      <td>66.82</td>
+      <td>40.52</td>
+      <td>26.29</td>
+      <td>2</td>
+      <td>42.50</td>
+      <td>85.0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>4.22</td>
+      <td>36.38</td>
+      <td>2.55</td>
+      <td>22.20</td>
+      <td>11.59</td>
+      <td>10.84</td>
+      <td>8.92</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>56</th>
+      <td>1042_baseline</td>
+      <td>2.07</td>
+      <td>3.32</td>
+      <td>5.39</td>
+      <td>47.20</td>
+      <td>47.41</td>
+      <td>22.02</td>
+      <td>25.39</td>
+      <td>6</td>
+      <td>78.33</td>
+      <td>470.0</td>
+      <td>4</td>
+      <td>2</td>
+      <td>4.73</td>
+      <td>45.18</td>
+      <td>2.22</td>
+      <td>22.09</td>
+      <td>10.46</td>
+      <td>11.01</td>
+      <td>8.21</td>
+      <td>2.42</td>
+    </tr>
+    <tr>
+      <th>44</th>
+      <td>1045_6months</td>
+      <td>0.64</td>
+      <td>1.18</td>
+      <td>1.82</td>
+      <td>25.58</td>
+      <td>72.61</td>
+      <td>20.92</td>
+      <td>51.69</td>
+      <td>3</td>
+      <td>51.67</td>
+      <td>155.0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>5.35</td>
+      <td>38.80</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>13.78</td>
+      <td>11.97</td>
+      <td>10.29</td>
+      <td>3.00</td>
+    </tr>
+    <tr>
+      <th>61</th>
+      <td>1045_baseline</td>
+      <td>0.06</td>
+      <td>1.32</td>
+      <td>1.38</td>
+      <td>31.94</td>
+      <td>66.69</td>
+      <td>25.06</td>
+      <td>41.63</td>
+      <td>2</td>
+      <td>50.00</td>
+      <td>100.0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>4.85</td>
+      <td>37.71</td>
+      <td>2.83</td>
+      <td>22.20</td>
+      <td>12.85</td>
+      <td>13.03</td>
+      <td>9.71</td>
+      <td>13.66</td>
+    </tr>
+    <tr>
+      <th>50</th>
+      <td>1046_6months</td>
+      <td>2.55</td>
+      <td>2.15</td>
+      <td>4.69</td>
+      <td>45.74</td>
+      <td>49.56</td>
+      <td>39.97</td>
+      <td>9.59</td>
+      <td>3</td>
+      <td>225.00</td>
+      <td>675.0</td>
+      <td>2</td>
+      <td>1</td>
+      <td>3.29</td>
+      <td>33.66</td>
+      <td>2.22</td>
+      <td>18.20</td>
+      <td>9.77</td>
+      <td>8.19</td>
+      <td>7.77</td>
+      <td>23.89</td>
+    </tr>
+    <tr>
+      <th>48</th>
+      <td>1046_baseline</td>
+      <td>2.76</td>
+      <td>1.35</td>
+      <td>4.11</td>
+      <td>38.43</td>
+      <td>57.46</td>
+      <td>35.28</td>
+      <td>22.17</td>
+      <td>4</td>
+      <td>83.75</td>
+      <td>335.0</td>
+      <td>1</td>
+      <td>3</td>
+      <td>3.97</td>
+      <td>36.46</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>10.88</td>
+      <td>7.75</td>
+      <td>8.47</td>
+      <td>20.45</td>
+    </tr>
+    <tr>
+      <th>81</th>
+      <td>1047_6months</td>
+      <td>0.27</td>
+      <td>0.98</td>
+      <td>1.25</td>
+      <td>17.88</td>
+      <td>80.88</td>
+      <td>18.15</td>
+      <td>62.73</td>
+      <td>2</td>
+      <td>47.50</td>
+      <td>95.0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>5.29</td>
+      <td>34.82</td>
+      <td>2.44</td>
+      <td>22.20</td>
+      <td>15.18</td>
+      <td>13.13</td>
+      <td>11.18</td>
+      <td>7.24</td>
+    </tr>
+    <tr>
+      <th>51</th>
+      <td>1047_baseline</td>
+      <td>0.00</td>
+      <td>1.03</td>
+      <td>1.03</td>
+      <td>14.55</td>
+      <td>84.42</td>
+      <td>23.58</td>
+      <td>60.84</td>
+      <td>2</td>
+      <td>52.50</td>
+      <td>105.0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>4.85</td>
+      <td>31.84</td>
+      <td>3.39</td>
+      <td>22.20</td>
+      <td>15.24</td>
+      <td>12.56</td>
+      <td>11.22</td>
+      <td>2.42</td>
+    </tr>
+    <tr>
+      <th>64</th>
+      <td>1048_6months</td>
+      <td>1.97</td>
+      <td>3.54</td>
+      <td>5.51</td>
+      <td>42.60</td>
+      <td>51.89</td>
+      <td>32.39</td>
+      <td>19.50</td>
+      <td>6</td>
+      <td>86.67</td>
+      <td>520.0</td>
+      <td>4</td>
+      <td>2</td>
+      <td>4.12</td>
+      <td>39.46</td>
+      <td>2.39</td>
+      <td>21.86</td>
+      <td>10.43</td>
+      <td>9.37</td>
+      <td>8.19</td>
+      <td>0.50</td>
+    </tr>
+    <tr>
+      <th>42</th>
+      <td>1048_baseline</td>
+      <td>0.81</td>
+      <td>1.17</td>
+      <td>1.99</td>
+      <td>49.59</td>
+      <td>48.42</td>
+      <td>28.67</td>
+      <td>19.76</td>
+      <td>4</td>
+      <td>43.75</td>
+      <td>175.0</td>
+      <td>2</td>
+      <td>2</td>
+      <td>3.87</td>
+      <td>37.11</td>
+      <td>2.22</td>
+      <td>21.09</td>
+      <td>10.43</td>
+      <td>9.93</td>
+      <td>8.19</td>
+      <td>1.06</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1049_6months</td>
+      <td>16.02</td>
+      <td>8.04</td>
+      <td>24.06</td>
+      <td>40.71</td>
+      <td>35.23</td>
+      <td>19.11</td>
+      <td>16.13</td>
+      <td>10</td>
+      <td>218.00</td>
+      <td>2180.0</td>
+      <td>4</td>
+      <td>6</td>
+      <td>5.04</td>
+      <td>59.94</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>8.41</td>
+      <td>11.09</td>
+      <td>6.92</td>
+      <td>0.37</td>
+    </tr>
+    <tr>
+      <th>91</th>
+      <td>1049_baseline</td>
+      <td>12.95</td>
+      <td>11.32</td>
+      <td>24.27</td>
+      <td>56.17</td>
+      <td>19.56</td>
+      <td>11.52</td>
+      <td>8.04</td>
+      <td>20</td>
+      <td>114.50</td>
+      <td>2290.0</td>
+      <td>9</td>
+      <td>11</td>
+      <td>4.22</td>
+      <td>59.22</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>7.12</td>
+      <td>11.06</td>
+      <td>6.11</td>
+      <td>1.71</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>1051_6months</td>
+      <td>1.50</td>
+      <td>2.14</td>
+      <td>3.65</td>
+      <td>46.31</td>
+      <td>50.05</td>
+      <td>35.64</td>
+      <td>14.40</td>
+      <td>5</td>
+      <td>70.00</td>
+      <td>350.0</td>
+      <td>1</td>
+      <td>4</td>
+      <td>3.74</td>
+      <td>36.74</td>
+      <td>2.33</td>
+      <td>21.37</td>
+      <td>10.17</td>
+      <td>8.21</td>
+      <td>8.03</td>
+      <td>2.79</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>1051_baseline</td>
+      <td>2.48</td>
+      <td>2.93</td>
+      <td>5.41</td>
+      <td>55.56</td>
+      <td>39.03</td>
+      <td>29.88</td>
+      <td>9.15</td>
+      <td>7</td>
+      <td>66.43</td>
+      <td>465.0</td>
+      <td>3</td>
+      <td>4</td>
+      <td>3.57</td>
+      <td>38.27</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>9.33</td>
+      <td>8.94</td>
+      <td>7.50</td>
+      <td>0.49</td>
+    </tr>
+    <tr>
+      <th>59</th>
+      <td>2001_baseline</td>
+      <td>5.75</td>
+      <td>2.98</td>
+      <td>8.73</td>
+      <td>63.42</td>
+      <td>27.85</td>
+      <td>20.13</td>
+      <td>7.72</td>
+      <td>8</td>
+      <td>100.00</td>
+      <td>800.0</td>
+      <td>4</td>
+      <td>4</td>
+      <td>3.36</td>
+      <td>40.50</td>
+      <td>2.22</td>
+      <td>17.76</td>
+      <td>8.30</td>
+      <td>7.46</td>
+      <td>6.85</td>
+      <td>0.35</td>
+    </tr>
+    <tr>
+      <th>101</th>
+      <td>2003_6months</td>
+      <td>0.05</td>
+      <td>0.64</td>
+      <td>0.69</td>
+      <td>81.15</td>
+      <td>18.16</td>
+      <td>16.94</td>
+      <td>1.22</td>
+      <td>2</td>
+      <td>20.00</td>
+      <td>40.0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2.18</td>
+      <td>27.36</td>
+      <td>2.94</td>
+      <td>15.70</td>
+      <td>7.95</td>
+      <td>5.31</td>
+      <td>6.63</td>
+      <td>4.79</td>
+    </tr>
+    <tr>
+      <th>60</th>
+      <td>2003_baseline</td>
+      <td>0.00</td>
+      <td>0.16</td>
+      <td>0.16</td>
+      <td>65.37</td>
+      <td>34.47</td>
+      <td>32.71</td>
+      <td>1.76</td>
+      <td>0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2.49</td>
+      <td>27.86</td>
+      <td>3.78</td>
+      <td>16.00</td>
+      <td>8.94</td>
+      <td>6.05</td>
+      <td>7.25</td>
+      <td>5.68</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>2004_baseline</td>
+      <td>6.86</td>
+      <td>9.20</td>
+      <td>16.06</td>
+      <td>62.30</td>
+      <td>21.64</td>
+      <td>16.62</td>
+      <td>5.02</td>
+      <td>15</td>
+      <td>91.33</td>
+      <td>1370.0</td>
+      <td>9</td>
+      <td>6</td>
+      <td>3.35</td>
+      <td>45.16</td>
+      <td>2.22</td>
+      <td>16.48</td>
+      <td>7.41</td>
+      <td>8.11</td>
+      <td>6.29</td>
+      <td>8.44</td>
+    </tr>
+    <tr>
+      <th>78</th>
+      <td>2005_6months</td>
+      <td>0.06</td>
+      <td>0.00</td>
+      <td>0.06</td>
+      <td>48.99</td>
+      <td>50.95</td>
+      <td>30.26</td>
+      <td>20.69</td>
+      <td>0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3.57</td>
+      <td>32.28</td>
+      <td>2.22</td>
+      <td>21.59</td>
+      <td>11.05</td>
+      <td>8.70</td>
+      <td>8.58</td>
+      <td>8.12</td>
+    </tr>
+    <tr>
+      <th>80</th>
+      <td>2005_baseline</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>72.69</td>
+      <td>27.31</td>
+      <td>21.73</td>
+      <td>5.58</td>
+      <td>0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2.60</td>
+      <td>28.66</td>
+      <td>4.17</td>
+      <td>21.28</td>
+      <td>9.06</td>
+      <td>6.31</td>
+      <td>7.32</td>
+      <td>12.41</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>2008_baseline</td>
+      <td>3.33</td>
+      <td>4.16</td>
+      <td>7.48</td>
+      <td>38.88</td>
+      <td>53.64</td>
+      <td>23.02</td>
+      <td>30.61</td>
+      <td>6</td>
+      <td>110.00</td>
+      <td>660.0</td>
+      <td>2</td>
+      <td>4</td>
+      <td>5.30</td>
+      <td>47.94</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>11.06</td>
+      <td>13.84</td>
+      <td>8.58</td>
+      <td>1.54</td>
+    </tr>
+    <tr>
+      <th>102</th>
+      <td>2009_baseline</td>
+      <td>0.69</td>
+      <td>2.03</td>
+      <td>2.72</td>
+      <td>44.35</td>
+      <td>52.93</td>
+      <td>35.77</td>
+      <td>17.16</td>
+      <td>6</td>
+      <td>34.17</td>
+      <td>205.0</td>
+      <td>4</td>
+      <td>2</td>
+      <td>3.81</td>
+      <td>37.19</td>
+      <td>2.28</td>
+      <td>22.22</td>
+      <td>10.24</td>
+      <td>9.32</td>
+      <td>8.07</td>
+      <td>5.49</td>
+    </tr>
+    <tr>
+      <th>85</th>
+      <td>2010_baseline</td>
+      <td>1.17</td>
+      <td>5.33</td>
+      <td>6.50</td>
+      <td>53.20</td>
+      <td>40.29</td>
+      <td>28.75</td>
+      <td>11.54</td>
+      <td>11</td>
+      <td>53.64</td>
+      <td>590.0</td>
+      <td>8</td>
+      <td>3</td>
+      <td>3.83</td>
+      <td>42.67</td>
+      <td>2.22</td>
+      <td>21.03</td>
+      <td>8.98</td>
+      <td>9.31</td>
+      <td>7.28</td>
+      <td>8.21</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>2011_6months</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>59.69</td>
+      <td>40.31</td>
+      <td>40.31</td>
+      <td>0.00</td>
+      <td>0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1.84</td>
+      <td>19.24</td>
+      <td>4.61</td>
+      <td>13.82</td>
+      <td>9.57</td>
+      <td>4.31</td>
+      <td>7.65</td>
+      <td>1.14</td>
+    </tr>
+    <tr>
+      <th>66</th>
+      <td>2011_baseline</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>31.61</td>
+      <td>68.39</td>
+      <td>61.64</td>
+      <td>6.75</td>
+      <td>0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1.93</td>
+      <td>17.34</td>
+      <td>5.50</td>
+      <td>17.11</td>
+      <td>11.11</td>
+      <td>4.82</td>
+      <td>8.61</td>
+      <td>4.34</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>2012_6months</td>
+      <td>0.20</td>
+      <td>1.27</td>
+      <td>1.47</td>
+      <td>80.46</td>
+      <td>18.07</td>
+      <td>13.50</td>
+      <td>4.57</td>
+      <td>2</td>
+      <td>60.00</td>
+      <td>120.0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2.54</td>
+      <td>30.67</td>
+      <td>2.44</td>
+      <td>18.17</td>
+      <td>8.29</td>
+      <td>7.08</td>
+      <td>6.84</td>
+      <td>0.80</td>
+    </tr>
+    <tr>
+      <th>55</th>
+      <td>2012_baseline</td>
+      <td>0.10</td>
+      <td>0.81</td>
+      <td>0.92</td>
+      <td>75.28</td>
+      <td>23.80</td>
+      <td>17.19</td>
+      <td>6.61</td>
+      <td>3</td>
+      <td>21.67</td>
+      <td>65.0</td>
+      <td>3</td>
+      <td>0</td>
+      <td>2.99</td>
+      <td>34.73</td>
+      <td>2.89</td>
+      <td>19.17</td>
+      <td>8.62</td>
+      <td>9.20</td>
+      <td>7.05</td>
+      <td>0.85</td>
+    </tr>
+    <tr>
+      <th>76</th>
+      <td>2013_baseline</td>
+      <td>0.15</td>
+      <td>1.56</td>
+      <td>1.71</td>
+      <td>73.94</td>
+      <td>24.34</td>
+      <td>18.25</td>
+      <td>6.10</td>
+      <td>5</td>
+      <td>22.00</td>
+      <td>110.0</td>
+      <td>5</td>
+      <td>0</td>
+      <td>3.08</td>
+      <td>38.20</td>
+      <td>2.77</td>
+      <td>16.87</td>
+      <td>8.08</td>
+      <td>8.12</td>
+      <td>6.71</td>
+      <td>0.24</td>
+    </tr>
+    <tr>
+      <th>69</th>
+      <td>2016_baseline</td>
+      <td>1.50</td>
+      <td>3.25</td>
+      <td>4.76</td>
+      <td>33.92</td>
+      <td>61.33</td>
+      <td>28.41</td>
+      <td>32.92</td>
+      <td>3</td>
+      <td>130.00</td>
+      <td>390.0</td>
+      <td>2</td>
+      <td>1</td>
+      <td>4.71</td>
+      <td>40.33</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>11.68</td>
+      <td>11.97</td>
+      <td>8.97</td>
+      <td>9.55</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>2017_6months</td>
+      <td>0.00</td>
+      <td>0.30</td>
+      <td>0.30</td>
+      <td>30.66</td>
+      <td>69.03</td>
+      <td>33.38</td>
+      <td>35.65</td>
+      <td>1</td>
+      <td>20.00</td>
+      <td>20.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>4.23</td>
+      <td>34.26</td>
+      <td>3.11</td>
+      <td>22.22</td>
+      <td>12.35</td>
+      <td>9.94</td>
+      <td>9.40</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>58</th>
+      <td>2017_baseline</td>
+      <td>0.16</td>
+      <td>1.13</td>
+      <td>1.29</td>
+      <td>49.19</td>
+      <td>49.52</td>
+      <td>40.39</td>
+      <td>9.13</td>
+      <td>3</td>
+      <td>35.00</td>
+      <td>105.0</td>
+      <td>3</td>
+      <td>0</td>
+      <td>3.21</td>
+      <td>32.24</td>
+      <td>2.94</td>
+      <td>20.20</td>
+      <td>9.96</td>
+      <td>7.19</td>
+      <td>7.90</td>
+      <td>5.18</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>2018_baseline</td>
+      <td>2.14</td>
+      <td>2.34</td>
+      <td>4.48</td>
+      <td>46.59</td>
+      <td>48.93</td>
+      <td>19.71</td>
+      <td>29.22</td>
+      <td>4</td>
+      <td>73.75</td>
+      <td>295.0</td>
+      <td>2</td>
+      <td>2</td>
+      <td>4.54</td>
+      <td>42.85</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>10.59</td>
+      <td>10.97</td>
+      <td>8.29</td>
+      <td>25.51</td>
+    </tr>
+    <tr>
+      <th>38</th>
+      <td>2019_6months</td>
+      <td>0.00</td>
+      <td>0.26</td>
+      <td>0.26</td>
+      <td>35.07</td>
+      <td>64.68</td>
+      <td>42.64</td>
+      <td>22.04</td>
+      <td>0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>3.16</td>
+      <td>28.13</td>
+      <td>3.44</td>
+      <td>22.17</td>
+      <td>11.25</td>
+      <td>8.21</td>
+      <td>8.70</td>
+      <td>1.32</td>
+    </tr>
+    <tr>
+      <th>45</th>
+      <td>2019_baseline</td>
+      <td>1.09</td>
+      <td>1.29</td>
+      <td>2.38</td>
+      <td>46.72</td>
+      <td>50.90</td>
+      <td>30.28</td>
+      <td>20.62</td>
+      <td>4</td>
+      <td>51.25</td>
+      <td>205.0</td>
+      <td>2</td>
+      <td>2</td>
+      <td>3.92</td>
+      <td>37.37</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>10.49</td>
+      <td>8.72</td>
+      <td>8.22</td>
+      <td>2.12</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>2020_baseline</td>
+      <td>6.52</td>
+      <td>5.20</td>
+      <td>11.72</td>
+      <td>32.50</td>
+      <td>55.78</td>
+      <td>15.13</td>
+      <td>40.65</td>
+      <td>12</td>
+      <td>90.42</td>
+      <td>1085.0</td>
+      <td>3</td>
+      <td>9</td>
+      <td>6.32</td>
+      <td>53.40</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>11.83</td>
+      <td>16.23</td>
+      <td>9.07</td>
+      <td>0.30</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>2023_baseline</td>
+      <td>0.00</td>
+      <td>3.56</td>
+      <td>3.56</td>
+      <td>82.32</td>
+      <td>14.12</td>
+      <td>13.08</td>
+      <td>1.04</td>
+      <td>2</td>
+      <td>120.00</td>
+      <td>240.0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>2.38</td>
+      <td>30.95</td>
+      <td>3.00</td>
+      <td>18.65</td>
+      <td>7.68</td>
+      <td>5.87</td>
+      <td>6.46</td>
+      <td>1.34</td>
+    </tr>
+    <tr>
+      <th>97</th>
+      <td>2024_6months</td>
+      <td>0.67</td>
+      <td>3.26</td>
+      <td>3.93</td>
+      <td>78.09</td>
+      <td>17.98</td>
+      <td>15.11</td>
+      <td>2.87</td>
+      <td>5</td>
+      <td>57.00</td>
+      <td>285.0</td>
+      <td>4</td>
+      <td>1</td>
+      <td>2.72</td>
+      <td>35.02</td>
+      <td>2.22</td>
+      <td>15.76</td>
+      <td>7.76</td>
+      <td>6.21</td>
+      <td>6.51</td>
+      <td>3.04</td>
+    </tr>
+    <tr>
+      <th>74</th>
+      <td>2024_baseline</td>
+      <td>0.65</td>
+      <td>2.08</td>
+      <td>2.73</td>
+      <td>61.89</td>
+      <td>35.37</td>
+      <td>30.02</td>
+      <td>5.35</td>
+      <td>4</td>
+      <td>47.50</td>
+      <td>190.0</td>
+      <td>2</td>
+      <td>2</td>
+      <td>3.09</td>
+      <td>34.15</td>
+      <td>2.22</td>
+      <td>18.81</td>
+      <td>9.05</td>
+      <td>7.84</td>
+      <td>7.32</td>
+      <td>14.96</td>
+    </tr>
+    <tr>
+      <th>84</th>
+      <td>2026_baseline</td>
+      <td>0.45</td>
+      <td>2.20</td>
+      <td>2.65</td>
+      <td>45.89</td>
+      <td>51.46</td>
+      <td>21.06</td>
+      <td>30.41</td>
+      <td>4</td>
+      <td>47.50</td>
+      <td>190.0</td>
+      <td>2</td>
+      <td>2</td>
+      <td>5.17</td>
+      <td>45.57</td>
+      <td>2.61</td>
+      <td>22.20</td>
+      <td>11.34</td>
+      <td>13.05</td>
+      <td>8.76</td>
+      <td>19.23</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>2027_6months</td>
+      <td>3.88</td>
+      <td>6.53</td>
+      <td>10.41</td>
+      <td>43.50</td>
+      <td>46.09</td>
+      <td>21.03</td>
+      <td>25.06</td>
+      <td>5</td>
+      <td>189.00</td>
+      <td>945.0</td>
+      <td>2</td>
+      <td>3</td>
+      <td>5.27</td>
+      <td>51.66</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>10.21</td>
+      <td>11.28</td>
+      <td>8.05</td>
+      <td>1.63</td>
+    </tr>
+    <tr>
+      <th>62</th>
+      <td>2028_baseline</td>
+      <td>2.24</td>
+      <td>2.88</td>
+      <td>5.12</td>
+      <td>59.68</td>
+      <td>35.20</td>
+      <td>24.59</td>
+      <td>10.61</td>
+      <td>4</td>
+      <td>113.75</td>
+      <td>455.0</td>
+      <td>1</td>
+      <td>3</td>
+      <td>3.80</td>
+      <td>42.21</td>
+      <td>2.22</td>
+      <td>21.86</td>
+      <td>9.00</td>
+      <td>9.09</td>
+      <td>7.29</td>
+      <td>5.11</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>2029_6months</td>
+      <td>0.00</td>
+      <td>0.80</td>
+      <td>0.80</td>
+      <td>57.73</td>
+      <td>41.47</td>
+      <td>28.70</td>
+      <td>12.77</td>
+      <td>2</td>
+      <td>30.00</td>
+      <td>60.0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>3.62</td>
+      <td>35.72</td>
+      <td>3.50</td>
+      <td>22.20</td>
+      <td>10.15</td>
+      <td>8.57</td>
+      <td>8.01</td>
+      <td>5.67</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>2029_baseline</td>
+      <td>0.55</td>
+      <td>4.22</td>
+      <td>4.77</td>
+      <td>70.18</td>
+      <td>25.05</td>
+      <td>19.24</td>
+      <td>5.81</td>
+      <td>7</td>
+      <td>55.00</td>
+      <td>385.0</td>
+      <td>6</td>
+      <td>1</td>
+      <td>3.18</td>
+      <td>38.45</td>
+      <td>2.33</td>
+      <td>19.26</td>
+      <td>8.26</td>
+      <td>8.08</td>
+      <td>6.82</td>
+      <td>1.67</td>
+    </tr>
+    <tr>
+      <th>82</th>
+      <td>2030_6months</td>
+      <td>0.78</td>
+      <td>1.32</td>
+      <td>2.10</td>
+      <td>38.18</td>
+      <td>59.71</td>
+      <td>24.95</td>
+      <td>34.76</td>
+      <td>4</td>
+      <td>38.75</td>
+      <td>155.0</td>
+      <td>2</td>
+      <td>2</td>
+      <td>4.76</td>
+      <td>38.56</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>12.35</td>
+      <td>11.35</td>
+      <td>9.40</td>
+      <td>15.84</td>
+    </tr>
+    <tr>
+      <th>47</th>
+      <td>2030_baseline</td>
+      <td>3.13</td>
+      <td>2.44</td>
+      <td>5.57</td>
+      <td>40.21</td>
+      <td>54.22</td>
+      <td>25.64</td>
+      <td>28.58</td>
+      <td>6</td>
+      <td>70.83</td>
+      <td>425.0</td>
+      <td>3</td>
+      <td>3</td>
+      <td>5.08</td>
+      <td>44.97</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>11.29</td>
+      <td>12.92</td>
+      <td>8.73</td>
+      <td>10.07</td>
+    </tr>
+    <tr>
+      <th>98</th>
+      <td>2031_6months</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>38.58</td>
+      <td>61.42</td>
+      <td>32.60</td>
+      <td>28.82</td>
+      <td>0</td>
+      <td>0.00</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>4.33</td>
+      <td>37.24</td>
+      <td>4.00</td>
+      <td>22.20</td>
+      <td>11.63</td>
+      <td>10.47</td>
+      <td>8.95</td>
+      <td>7.92</td>
+    </tr>
+    <tr>
+      <th>77</th>
+      <td>2031_baseline</td>
+      <td>0.83</td>
+      <td>3.82</td>
+      <td>4.65</td>
+      <td>48.84</td>
+      <td>46.52</td>
+      <td>21.22</td>
+      <td>25.30</td>
+      <td>7</td>
+      <td>55.71</td>
+      <td>390.0</td>
+      <td>6</td>
+      <td>1</td>
+      <td>4.59</td>
+      <td>45.11</td>
+      <td>2.22</td>
+      <td>21.81</td>
+      <td>10.17</td>
+      <td>10.92</td>
+      <td>8.03</td>
+      <td>1.12</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>2032_6months</td>
+      <td>0.30</td>
+      <td>0.76</td>
+      <td>1.06</td>
+      <td>63.89</td>
+      <td>35.05</td>
+      <td>15.58</td>
+      <td>19.47</td>
+      <td>3</td>
+      <td>30.00</td>
+      <td>90.0</td>
+      <td>2</td>
+      <td>1</td>
+      <td>4.52</td>
+      <td>45.69</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>9.90</td>
+      <td>9.06</td>
+      <td>7.86</td>
+      <td>0.05</td>
+    </tr>
+    <tr>
+      <th>89</th>
+      <td>2032_baseline</td>
+      <td>0.43</td>
+      <td>3.32</td>
+      <td>3.75</td>
+      <td>66.01</td>
+      <td>30.24</td>
+      <td>12.42</td>
+      <td>17.82</td>
+      <td>4</td>
+      <td>57.50</td>
+      <td>230.0</td>
+      <td>3</td>
+      <td>1</td>
+      <td>4.82</td>
+      <td>51.91</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>9.29</td>
+      <td>9.76</td>
+      <td>7.47</td>
+      <td>2.68</td>
+    </tr>
+    <tr>
+      <th>52</th>
+      <td>2034_baseline</td>
+      <td>4.66</td>
+      <td>8.25</td>
+      <td>12.92</td>
+      <td>58.57</td>
+      <td>28.51</td>
+      <td>19.83</td>
+      <td>8.68</td>
+      <td>13</td>
+      <td>88.46</td>
+      <td>1150.0</td>
+      <td>6</td>
+      <td>7</td>
+      <td>4.10</td>
+      <td>50.45</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>8.13</td>
+      <td>9.80</td>
+      <td>6.74</td>
+      <td>3.47</td>
+    </tr>
+    <tr>
+      <th>40</th>
+      <td>2035_baseline</td>
+      <td>2.01</td>
+      <td>2.06</td>
+      <td>4.07</td>
+      <td>43.41</td>
+      <td>52.52</td>
+      <td>29.33</td>
+      <td>23.19</td>
+      <td>4</td>
+      <td>96.00</td>
+      <td>384.0</td>
+      <td>3</td>
+      <td>1</td>
+      <td>3.80</td>
+      <td>35.47</td>
+      <td>2.22</td>
+      <td>21.64</td>
+      <td>10.71</td>
+      <td>9.27</td>
+      <td>8.37</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>63</th>
+      <td>2036_6months</td>
+      <td>0.00</td>
+      <td>0.64</td>
+      <td>0.64</td>
+      <td>90.61</td>
+      <td>8.75</td>
+      <td>8.75</td>
+      <td>0.00</td>
+      <td>1</td>
+      <td>25.00</td>
+      <td>25.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1.73</td>
+      <td>22.64</td>
+      <td>3.72</td>
+      <td>12.82</td>
+      <td>7.62</td>
+      <td>4.36</td>
+      <td>6.42</td>
+      <td>4.80</td>
+    </tr>
+    <tr>
+      <th>86</th>
+      <td>2036_baseline</td>
+      <td>0.00</td>
+      <td>2.42</td>
+      <td>2.42</td>
+      <td>89.25</td>
+      <td>8.33</td>
+      <td>6.51</td>
+      <td>1.82</td>
+      <td>7</td>
+      <td>29.29</td>
+      <td>205.0</td>
+      <td>7</td>
+      <td>0</td>
+      <td>2.21</td>
+      <td>31.33</td>
+      <td>3.27</td>
+      <td>18.20</td>
+      <td>7.04</td>
+      <td>5.01</td>
+      <td>6.06</td>
+      <td>0.45</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>2038_6months</td>
+      <td>2.58</td>
+      <td>4.43</td>
+      <td>7.01</td>
+      <td>47.42</td>
+      <td>45.57</td>
+      <td>18.30</td>
+      <td>27.27</td>
+      <td>11</td>
+      <td>51.36</td>
+      <td>565.0</td>
+      <td>5</td>
+      <td>6</td>
+      <td>5.42</td>
+      <td>52.37</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>10.35</td>
+      <td>12.82</td>
+      <td>8.14</td>
+      <td>2.22</td>
+    </tr>
+    <tr>
+      <th>87</th>
+      <td>2039_baseline</td>
+      <td>0.63</td>
+      <td>3.77</td>
+      <td>4.40</td>
+      <td>49.74</td>
+      <td>45.86</td>
+      <td>33.75</td>
+      <td>12.11</td>
+      <td>5</td>
+      <td>79.00</td>
+      <td>395.0</td>
+      <td>4</td>
+      <td>1</td>
+      <td>3.59</td>
+      <td>37.49</td>
+      <td>2.55</td>
+      <td>19.70</td>
+      <td>9.57</td>
+      <td>10.34</td>
+      <td>7.65</td>
+      <td>2.99</td>
+    </tr>
+    <tr>
+      <th>70</th>
+      <td>2040_6months</td>
+      <td>0.00</td>
+      <td>0.34</td>
+      <td>0.34</td>
+      <td>34.56</td>
+      <td>65.10</td>
+      <td>29.28</td>
+      <td>35.81</td>
+      <td>1</td>
+      <td>25.00</td>
+      <td>25.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>4.22</td>
+      <td>33.91</td>
+      <td>3.27</td>
+      <td>22.20</td>
+      <td>12.44</td>
+      <td>9.86</td>
+      <td>9.45</td>
+      <td>3.61</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>2040_baseline</td>
+      <td>1.73</td>
+      <td>6.65</td>
+      <td>8.38</td>
+      <td>53.03</td>
+      <td>38.59</td>
+      <td>28.38</td>
+      <td>10.21</td>
+      <td>8</td>
+      <td>105.62</td>
+      <td>845.0</td>
+      <td>5</td>
+      <td>3</td>
+      <td>3.96</td>
+      <td>43.84</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>9.03</td>
+      <td>8.99</td>
+      <td>7.31</td>
+      <td>4.64</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>2041_6months</td>
+      <td>0.00</td>
+      <td>1.00</td>
+      <td>1.00</td>
+      <td>64.19</td>
+      <td>34.81</td>
+      <td>25.54</td>
+      <td>9.27</td>
+      <td>2</td>
+      <td>30.00</td>
+      <td>60.0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>3.15</td>
+      <td>33.64</td>
+      <td>3.33</td>
+      <td>20.64</td>
+      <td>9.35</td>
+      <td>7.69</td>
+      <td>7.51</td>
+      <td>4.43</td>
+    </tr>
+    <tr>
+      <th>53</th>
+      <td>2041_baseline</td>
+      <td>0.00</td>
+      <td>4.30</td>
+      <td>4.30</td>
+      <td>66.58</td>
+      <td>29.11</td>
+      <td>20.71</td>
+      <td>8.41</td>
+      <td>5</td>
+      <td>81.00</td>
+      <td>405.0</td>
+      <td>5</td>
+      <td>0</td>
+      <td>3.38</td>
+      <td>38.12</td>
+      <td>3.05</td>
+      <td>20.42</td>
+      <td>8.86</td>
+      <td>8.72</td>
+      <td>7.20</td>
+      <td>0.59</td>
+    </tr>
+    <tr>
+      <th>105</th>
+      <td>2042_6months</td>
+      <td>0.71</td>
+      <td>1.16</td>
+      <td>1.87</td>
+      <td>27.83</td>
+      <td>70.30</td>
+      <td>34.85</td>
+      <td>35.45</td>
+      <td>4</td>
+      <td>41.25</td>
+      <td>165.0</td>
+      <td>2</td>
+      <td>2</td>
+      <td>4.73</td>
+      <td>37.86</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>12.50</td>
+      <td>10.24</td>
+      <td>9.49</td>
+      <td>0.44</td>
+    </tr>
+    <tr>
+      <th>67</th>
+      <td>2043_6months</td>
+      <td>7.78</td>
+      <td>3.81</td>
+      <td>11.58</td>
+      <td>55.32</td>
+      <td>33.09</td>
+      <td>19.64</td>
+      <td>13.46</td>
+      <td>8</td>
+      <td>125.62</td>
+      <td>1005.0</td>
+      <td>5</td>
+      <td>3</td>
+      <td>4.20</td>
+      <td>47.26</td>
+      <td>2.22</td>
+      <td>21.53</td>
+      <td>8.89</td>
+      <td>9.49</td>
+      <td>7.22</td>
+      <td>8.71</td>
+    </tr>
+    <tr>
+      <th>46</th>
+      <td>2043_baseline</td>
+      <td>2.09</td>
+      <td>8.03</td>
+      <td>10.12</td>
+      <td>57.76</td>
+      <td>32.12</td>
+      <td>18.96</td>
+      <td>13.16</td>
+      <td>8</td>
+      <td>95.00</td>
+      <td>760.0</td>
+      <td>5</td>
+      <td>3</td>
+      <td>4.48</td>
+      <td>51.37</td>
+      <td>2.22</td>
+      <td>22.20</td>
+      <td>8.71</td>
+      <td>11.62</td>
+      <td>7.11</td>
+      <td>25.38</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>2045_6months</td>
+      <td>0.67</td>
+      <td>7.37</td>
+      <td>8.04</td>
+      <td>64.47</td>
+      <td>27.49</td>
+      <td>17.35</td>
+      <td>10.14</td>
+      <td>6</td>
+      <td>115.00</td>
+      <td>690.0</td>
+      <td>5</td>
+      <td>1</td>
+      <td>3.72</td>
+      <td>44.11</td>
+      <td>2.66</td>
+      <td>21.75</td>
+      <td>8.43</td>
+      <td>8.24</td>
+      <td>6.93</td>
+      <td>0.33</td>
+    </tr>
+    <tr>
+      <th>54</th>
+      <td>2045_baseline</td>
+      <td>0.15</td>
+      <td>1.41</td>
+      <td>1.56</td>
+      <td>35.37</td>
+      <td>63.07</td>
+      <td>36.32</td>
+      <td>26.75</td>
+      <td>2</td>
+      <td>72.50</td>
+      <td>145.0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>3.96</td>
+      <td>33.90</td>
+      <td>2.33</td>
+      <td>22.20</td>
+      <td>11.69</td>
+      <td>9.66</td>
+      <td>8.98</td>
+      <td>0.14</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results_dict</span><span class="p">[</span><span class="s1">&#39;glc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">ea1c</span> <span class="o">=</span> <span class="p">(</span><span class="n">results_dict</span><span class="p">[</span><span class="s1">&#39;glc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">ea1c</span><span class="o">-</span><span class="mf">2.152</span><span class="p">)</span><span class="o">/</span><span class="mf">0.09148</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Statistical overview of diabetes metrics for 5-minute data</span>
+<span class="n">results_dict</span><span class="p">[</span><span class="s1">&#39;glc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>TIR_lv2_hypo</th>
+      <th>TIR_lv1_hypo</th>
+      <th>TIR_hypo</th>
+      <th>TIR_norm</th>
+      <th>TIR_hyper</th>
+      <th>TIR_lv1_hyper</th>
+      <th>TIR_lv2_hyper</th>
+      <th>number_hypos</th>
+      <th>avg_length_of_hypo</th>
+      <th>total_time_in_hypos</th>
+      <th>number_lv1_hypos</th>
+      <th>number_lv2_hypos</th>
+      <th>sd</th>
+      <th>cv</th>
+      <th>minimum_glucose</th>
+      <th>maximum_glucose</th>
+      <th>average_glucose</th>
+      <th>mage_mean</th>
+      <th>ea1c</th>
+      <th>percent_missing</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>106.00</td>
+      <td>106.00</td>
+      <td>106.00</td>
+      <td>106.00</td>
+      <td>106.00</td>
+      <td>106.00</td>
+      <td>106.00</td>
+      <td>106.00</td>
+      <td>106.00</td>
+      <td>106.00</td>
+      <td>106.00</td>
+      <td>106.00</td>
+      <td>106.00</td>
+      <td>106.00</td>
+      <td>106.00</td>
+      <td>106.00</td>
+      <td>106.00</td>
+      <td>106.00</td>
+      <td>106.00</td>
+      <td>106.00</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>1.48</td>
+      <td>2.71</td>
+      <td>4.20</td>
+      <td>51.06</td>
+      <td>44.74</td>
+      <td>25.18</td>
+      <td>19.56</td>
+      <td>4.73</td>
+      <td>59.14</td>
+      <td>366.74</td>
+      <td>2.86</td>
+      <td>1.87</td>
+      <td>3.81</td>
+      <td>37.70</td>
+      <td>2.73</td>
+      <td>20.68</td>
+      <td>10.19</td>
+      <td>9.15</td>
+      <td>64.31</td>
+      <td>4.36</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>2.48</td>
+      <td>2.77</td>
+      <td>4.80</td>
+      <td>18.34</td>
+      <td>19.54</td>
+      <td>9.59</td>
+      <td>16.36</td>
+      <td>4.36</td>
+      <td>44.14</td>
+      <td>442.76</td>
+      <td>2.63</td>
+      <td>2.25</td>
+      <td>0.95</td>
+      <td>7.95</td>
+      <td>0.76</td>
+      <td>2.44</td>
+      <td>2.08</td>
+      <td>2.36</td>
+      <td>14.28</td>
+      <td>5.66</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>10.43</td>
+      <td>3.70</td>
+      <td>3.70</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>0.00</td>
+      <td>1.73</td>
+      <td>17.34</td>
+      <td>2.22</td>
+      <td>12.21</td>
+      <td>6.44</td>
+      <td>4.31</td>
+      <td>38.52</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>0.00</td>
+      <td>0.64</td>
+      <td>0.82</td>
+      <td>38.47</td>
+      <td>28.66</td>
+      <td>18.98</td>
+      <td>7.80</td>
+      <td>2.00</td>
+      <td>27.81</td>
+      <td>56.25</td>
+      <td>1.00</td>
+      <td>0.00</td>
+      <td>3.17</td>
+      <td>31.68</td>
+      <td>2.22</td>
+      <td>19.88</td>
+      <td>8.64</td>
+      <td>7.72</td>
+      <td>53.70</td>
+      <td>0.52</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.62</td>
+      <td>1.55</td>
+      <td>2.44</td>
+      <td>48.92</td>
+      <td>45.97</td>
+      <td>23.78</td>
+      <td>16.11</td>
+      <td>4.00</td>
+      <td>53.07</td>
+      <td>197.50</td>
+      <td>2.00</td>
+      <td>1.00</td>
+      <td>3.85</td>
+      <td>36.60</td>
+      <td>2.25</td>
+      <td>22.20</td>
+      <td>10.16</td>
+      <td>9.24</td>
+      <td>64.13</td>
+      <td>2.18</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>2.04</td>
+      <td>3.80</td>
+      <td>5.48</td>
+      <td>63.55</td>
+      <td>57.15</td>
+      <td>32.16</td>
+      <td>27.51</td>
+      <td>6.00</td>
+      <td>80.75</td>
+      <td>507.50</td>
+      <td>4.00</td>
+      <td>3.00</td>
+      <td>4.51</td>
+      <td>43.50</td>
+      <td>3.10</td>
+      <td>22.20</td>
+      <td>11.33</td>
+      <td>10.83</td>
+      <td>72.17</td>
+      <td>5.16</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>16.02</td>
+      <td>11.32</td>
+      <td>24.27</td>
+      <td>92.60</td>
+      <td>88.95</td>
+      <td>61.64</td>
+      <td>78.74</td>
+      <td>20.00</td>
+      <td>225.00</td>
+      <td>2290.00</td>
+      <td>15.00</td>
+      <td>11.00</td>
+      <td>6.32</td>
+      <td>59.94</td>
+      <td>6.22</td>
+      <td>22.22</td>
+      <td>17.38</td>
+      <td>16.23</td>
+      <td>113.75</td>
+      <td>25.51</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="mean-difference-for-all-of-the-metrics">
+<h2>4.3. Mean difference for all of the metrics<a class="headerlink" href="#mean-difference-for-all-of-the-metrics" title="Permalink to this heading">#</a></h2>
+<p>Here I calculate the mean difference between the interpolation methods with the original 5-minute data for all of the metrics of diabetes control.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results_dict</span><span class="p">[</span><span class="s1">&#39;glc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;ID&#39;, &#39;TIR_lv2_hypo&#39;, &#39;TIR_lv1_hypo&#39;, &#39;TIR_hypo&#39;, &#39;TIR_norm&#39;,
+       &#39;TIR_hyper&#39;, &#39;TIR_lv1_hyper&#39;, &#39;TIR_lv2_hyper&#39;, &#39;number_hypos&#39;,
+       &#39;avg_length_of_hypo&#39;, &#39;total_time_in_hypos&#39;, &#39;number_lv1_hypos&#39;,
+       &#39;number_lv2_hypos&#39;, &#39;sd&#39;, &#39;cv&#39;, &#39;minimum_glucose&#39;, &#39;maximum_glucose&#39;,
+       &#39;average_glucose&#39;, &#39;mage_mean&#39;, &#39;ea1c&#39;, &#39;percent_missing&#39;],
+      dtype=&#39;object&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># List of the metrics of diabetes control</span>
+<span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;TIR_lv2_hypo&#39;</span><span class="p">,</span> <span class="s1">&#39;TIR_lv1_hypo&#39;</span><span class="p">,</span> <span class="s1">&#39;TIR_hypo&#39;</span><span class="p">,</span> <span class="s1">&#39;TIR_norm&#39;</span><span class="p">,</span> <span class="s1">&#39;TIR_hyper&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;TIR_lv1_hyper&#39;</span><span class="p">,</span> <span class="s1">&#39;TIR_lv2_hyper&#39;</span><span class="p">,</span> <span class="s1">&#39;number_hypos&#39;</span><span class="p">,</span> <span class="s1">&#39;number_lv1_hypos&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;number_lv2_hypos&#39;</span><span class="p">,</span> <span class="s1">&#39;sd&#39;</span><span class="p">,</span> <span class="s1">&#39;cv&#39;</span><span class="p">,</span> <span class="s1">&#39;ea1c&#39;</span><span class="p">,</span> <span class="s1">&#39;average_glucose&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;mage_mean&#39;</span><span class="p">]</span>
+<span class="c1"># Get the interpolation methods from the keys of the dictionary</span>
+<span class="n">methods</span> <span class="o">=</span> <span class="n">results_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Declare list for results</span>
+<span class="n">perc_diff_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1"># For each metric in each method, calculate the mean difference compared to 5-minute data</span>
+<span class="k">for</span> <span class="n">method</span> <span class="ow">in</span> <span class="n">methods</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">:</span>
+        <span class="n">diff</span> <span class="o">=</span>  <span class="n">results_dict</span><span class="p">[</span><span class="s1">&#39;glc&#39;</span><span class="p">][</span><span class="n">metric</span><span class="p">]</span> <span class="o">-</span> <span class="n">results_dict</span><span class="p">[</span><span class="n">method</span><span class="p">][</span><span class="n">metric</span><span class="p">]</span>
+        <span class="n">mean_diff</span> <span class="o">=</span> <span class="n">diff</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">perc_diff_list</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">method</span><span class="p">,</span> <span class="n">metric</span><span class="p">,</span> <span class="n">mean_diff</span><span class="p">])</span>
+<span class="c1"># Convert to dataframe       </span>
+<span class="n">perc_diff_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">perc_diff_list</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">,</span> <span class="s1">&#39;metric&#39;</span><span class="p">,</span> <span class="s1">&#39;mean_diff&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Mean difference table</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">perc_diff_df</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;metric&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th colspan="15" halign="left">mean_diff</th>
+    </tr>
+    <tr>
+      <th>metric</th>
+      <th>TIR_hyper</th>
+      <th>TIR_hypo</th>
+      <th>TIR_lv1_hyper</th>
+      <th>TIR_lv1_hypo</th>
+      <th>TIR_lv2_hyper</th>
+      <th>TIR_lv2_hypo</th>
+      <th>TIR_norm</th>
+      <th>average_glucose</th>
+      <th>cv</th>
+      <th>ea1c</th>
+      <th>mage_mean</th>
+      <th>number_hypos</th>
+      <th>number_lv1_hypos</th>
+      <th>number_lv2_hypos</th>
+      <th>sd</th>
+    </tr>
+    <tr>
+      <th>method</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>akima</th>
+      <td>-0.049443</td>
+      <td>0.074163</td>
+      <td>-0.068171</td>
+      <td>0.085566</td>
+      <td>0.018728</td>
+      <td>-0.011403</td>
+      <td>-0.024720</td>
+      <td>-0.001017</td>
+      <td>0.063899</td>
+      <td>56.273469</td>
+      <td>-0.005974</td>
+      <td>-0.028302</td>
+      <td>-0.018868</td>
+      <td>-0.009434</td>
+      <td>0.005777</td>
+    </tr>
+    <tr>
+      <th>cubicspline</th>
+      <td>-0.069906</td>
+      <td>0.069820</td>
+      <td>-0.075706</td>
+      <td>0.092910</td>
+      <td>0.005800</td>
+      <td>-0.023090</td>
+      <td>0.000086</td>
+      <td>-0.001048</td>
+      <td>0.028157</td>
+      <td>56.273450</td>
+      <td>-0.034853</td>
+      <td>-0.056604</td>
+      <td>0.000000</td>
+      <td>-0.056604</td>
+      <td>0.002336</td>
+    </tr>
+    <tr>
+      <th>cut_glc</th>
+      <td>-0.073143</td>
+      <td>0.001064</td>
+      <td>-0.079584</td>
+      <td>-0.006481</td>
+      <td>0.006441</td>
+      <td>0.007545</td>
+      <td>0.072079</td>
+      <td>-0.003562</td>
+      <td>-0.016730</td>
+      <td>56.271868</td>
+      <td>-0.043147</td>
+      <td>0.320755</td>
+      <td>0.132075</td>
+      <td>0.188679</td>
+      <td>-0.003617</td>
+    </tr>
+    <tr>
+      <th>glc</th>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>linear</th>
+      <td>-0.067395</td>
+      <td>0.158806</td>
+      <td>-0.119230</td>
+      <td>0.103625</td>
+      <td>0.051835</td>
+      <td>0.055181</td>
+      <td>-0.091411</td>
+      <td>-0.001030</td>
+      <td>0.200557</td>
+      <td>56.273461</td>
+      <td>-0.008218</td>
+      <td>0.122642</td>
+      <td>0.028302</td>
+      <td>0.094340</td>
+      <td>0.019149</td>
+    </tr>
+    <tr>
+      <th>matern</th>
+      <td>0.047175</td>
+      <td>0.055540</td>
+      <td>-0.035152</td>
+      <td>0.092878</td>
+      <td>0.082326</td>
+      <td>-0.037338</td>
+      <td>-0.102715</td>
+      <td>0.011468</td>
+      <td>0.015301</td>
+      <td>56.281322</td>
+      <td>0.024755</td>
+      <td>-0.084906</td>
+      <td>-0.028302</td>
+      <td>-0.056604</td>
+      <td>0.005702</td>
+    </tr>
+    <tr>
+      <th>pchip</th>
+      <td>-0.054257</td>
+      <td>0.088024</td>
+      <td>-0.075739</td>
+      <td>0.087637</td>
+      <td>0.021481</td>
+      <td>0.000387</td>
+      <td>-0.033767</td>
+      <td>-0.001041</td>
+      <td>0.080393</td>
+      <td>56.273454</td>
+      <td>-0.029781</td>
+      <td>0.000000</td>
+      <td>-0.009434</td>
+      <td>0.009434</td>
+      <td>0.007371</td>
+    </tr>
+    <tr>
+      <th>polynomial_3</th>
+      <td>-0.069906</td>
+      <td>0.069820</td>
+      <td>-0.075706</td>
+      <td>0.092910</td>
+      <td>0.005800</td>
+      <td>-0.023090</td>
+      <td>0.000086</td>
+      <td>-0.001048</td>
+      <td>0.028157</td>
+      <td>56.273450</td>
+      <td>-0.034853</td>
+      <td>-0.056604</td>
+      <td>0.000000</td>
+      <td>-0.056604</td>
+      <td>0.002336</td>
+    </tr>
+    <tr>
+      <th>polynomial_5</th>
+      <td>-0.078953</td>
+      <td>0.068714</td>
+      <td>-0.084136</td>
+      <td>0.099394</td>
+      <td>0.005183</td>
+      <td>-0.030680</td>
+      <td>0.010239</td>
+      <td>-0.001070</td>
+      <td>0.015339</td>
+      <td>56.273436</td>
+      <td>-0.045190</td>
+      <td>-0.084906</td>
+      <td>-0.009434</td>
+      <td>-0.075472</td>
+      <td>0.001093</td>
+    </tr>
+    <tr>
+      <th>polynomial_7</th>
+      <td>-0.086635</td>
+      <td>0.067512</td>
+      <td>-0.087231</td>
+      <td>0.101304</td>
+      <td>0.000596</td>
+      <td>-0.033793</td>
+      <td>0.019123</td>
+      <td>-0.000964</td>
+      <td>0.002729</td>
+      <td>56.273502</td>
+      <td>-0.048499</td>
+      <td>-0.075472</td>
+      <td>0.000000</td>
+      <td>-0.075472</td>
+      <td>-0.000125</td>
+    </tr>
+    <tr>
+      <th>rbf</th>
+      <td>-0.076566</td>
+      <td>0.071242</td>
+      <td>-0.088923</td>
+      <td>0.102211</td>
+      <td>0.012357</td>
+      <td>-0.030969</td>
+      <td>0.005324</td>
+      <td>-0.000043</td>
+      <td>0.008068</td>
+      <td>56.274082</td>
+      <td>-0.018138</td>
+      <td>-0.066038</td>
+      <td>-0.009434</td>
+      <td>-0.056604</td>
+      <td>0.000748</td>
+    </tr>
+    <tr>
+      <th>rq</th>
+      <td>-0.049614</td>
+      <td>0.137469</td>
+      <td>-0.115785</td>
+      <td>0.108464</td>
+      <td>0.066171</td>
+      <td>0.029005</td>
+      <td>-0.087855</td>
+      <td>0.000184</td>
+      <td>0.181857</td>
+      <td>56.274225</td>
+      <td>-0.002133</td>
+      <td>0.056604</td>
+      <td>0.018868</td>
+      <td>0.037736</td>
+      <td>0.017964</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="bland-altman-plots">
+<h2>4.4. Bland-Altman plots<a class="headerlink" href="#bland-altman-plots" title="Permalink to this heading">#</a></h2>
+<p>Blant-Altman plots show us a more detailed spread than the mean difference alone.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create matplotlib figure</span>
+<span class="n">fig</span><span class="p">,</span> <span class="p">((</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">),</span> <span class="p">(</span><span class="n">ax3</span><span class="p">,</span> <span class="n">ax4</span><span class="p">),</span> <span class="p">(</span><span class="n">ax5</span><span class="p">,</span> <span class="n">ax6</span><span class="p">))</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">13</span><span class="p">))</span>
+<span class="c1"># Number of hypoglycaemic episodes</span>
+<span class="n">pyCompare</span><span class="o">.</span><span class="n">blandAltman</span><span class="p">(</span><span class="n">results_dict</span><span class="p">[</span><span class="s1">&#39;glc&#39;</span><span class="p">][</span><span class="s1">&#39;number_hypos&#39;</span><span class="p">],</span> 
+                      <span class="n">results_dict</span><span class="p">[</span><span class="s1">&#39;cut_glc&#39;</span><span class="p">][</span><span class="s1">&#39;number_hypos&#39;</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;(a) Number of hypoglycemic episodes&#39;</span><span class="p">)</span>
+
+<span class="c1"># Average glucose</span>
+<span class="n">pyCompare</span><span class="o">.</span><span class="n">blandAltman</span><span class="p">(</span><span class="n">results_dict</span><span class="p">[</span><span class="s1">&#39;glc&#39;</span><span class="p">][</span><span class="s1">&#39;average_glucose&#39;</span><span class="p">],</span> 
+                      <span class="n">results_dict</span><span class="p">[</span><span class="s1">&#39;cut_glc&#39;</span><span class="p">][</span><span class="s1">&#39;average_glucose&#39;</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;(b) Average glucose&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Mean of methods (mmol/L)&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Difference between methods (mmol/L)&#39;</span><span class="p">)</span>
+<span class="c1"># Standard deviation/glycaemic variability</span>
+<span class="n">pyCompare</span><span class="o">.</span><span class="n">blandAltman</span><span class="p">(</span><span class="n">results_dict</span><span class="p">[</span><span class="s1">&#39;glc&#39;</span><span class="p">][</span><span class="s1">&#39;cv&#39;</span><span class="p">],</span> 
+                      <span class="n">results_dict</span><span class="p">[</span><span class="s1">&#39;cut_glc&#39;</span><span class="p">][</span><span class="s1">&#39;cv&#39;</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax3</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;(c) CV&#39;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Mean of methods (%)&#39;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Difference between methods (%)&#39;</span><span class="p">)</span>
+<span class="c1"># Time in range (TIR) hyperglycaemia </span>
+<span class="n">pyCompare</span><span class="o">.</span><span class="n">blandAltman</span><span class="p">(</span><span class="n">results_dict</span><span class="p">[</span><span class="s1">&#39;glc&#39;</span><span class="p">][</span><span class="s1">&#39;TIR_hyper&#39;</span><span class="p">],</span> 
+                      <span class="n">results_dict</span><span class="p">[</span><span class="s1">&#39;cut_glc&#39;</span><span class="p">][</span><span class="s1">&#39;TIR_hyper&#39;</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax4</span><span class="p">)</span>
+<span class="n">ax4</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;(d) Percentage time in hyperglycemia&#39;</span><span class="p">)</span>
+<span class="n">ax4</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Mean of methods (%)&#39;</span><span class="p">)</span>
+<span class="n">ax4</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Difference between methods (%)&#39;</span><span class="p">)</span>
+<span class="c1"># TIR normal</span>
+<span class="n">pyCompare</span><span class="o">.</span><span class="n">blandAltman</span><span class="p">(</span><span class="n">results_dict</span><span class="p">[</span><span class="s1">&#39;glc&#39;</span><span class="p">][</span><span class="s1">&#39;TIR_norm&#39;</span><span class="p">],</span> 
+                      <span class="n">results_dict</span><span class="p">[</span><span class="s1">&#39;cut_glc&#39;</span><span class="p">][</span><span class="s1">&#39;TIR_norm&#39;</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax5</span><span class="p">)</span>
+<span class="n">ax5</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;(e) Percentage time in normal range&#39;</span><span class="p">)</span>
+<span class="n">ax5</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Mean of methods (%)&#39;</span><span class="p">)</span>
+<span class="n">ax5</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Difference between methods (%)&#39;</span><span class="p">)</span>
+<span class="c1"># TIR hyperglycaemia</span>
+<span class="n">pyCompare</span><span class="o">.</span><span class="n">blandAltman</span><span class="p">(</span><span class="n">results_dict</span><span class="p">[</span><span class="s1">&#39;glc&#39;</span><span class="p">][</span><span class="s1">&#39;TIR_hypo&#39;</span><span class="p">],</span> 
+                      <span class="n">results_dict</span><span class="p">[</span><span class="s1">&#39;cut_glc&#39;</span><span class="p">][</span><span class="s1">&#39;TIR_hypo&#39;</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax6</span><span class="p">)</span>
+<span class="c1"># Set title and save</span>
+<span class="n">ax6</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;(f) Percentage time in hypoglycemia&#39;</span><span class="p">)</span>
+<span class="n">ax6</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Mean of methods (%)&#39;</span><span class="p">)</span>
+<span class="n">ax6</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Difference between methods (%)&#39;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;Fig2.svg&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/295d0c6fd1f40359a4a490a8ccc707740bf0d5f9a5a59f09d9f9ac56d36968e5.png" src="../_images/295d0c6fd1f40359a4a490a8ccc707740bf0d5f9a5a59f09d9f9ac56d36968e5.png" />
+</div>
+</div>
+</section>
+<section id="distribution-of-hypos-per-person">
+<h2>4.5. Distribution of hypos per person<a class="headerlink" href="#distribution-of-hypos-per-person" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Number of people having more than 10 hypos</span>
+<span class="p">(</span><span class="n">results_dict</span><span class="p">[</span><span class="s1">&#39;glc&#39;</span><span class="p">][</span><span class="s1">&#39;number_hypos&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>False    94
+True     12
+Name: number_hypos, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Number of hypos per trace</span>
+<span class="n">results_dict</span><span class="p">[</span><span class="s1">&#39;glc&#39;</span><span class="p">][[</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="s1">&#39;number_hypos&#39;</span><span class="p">,</span> <span class="s1">&#39;number_lv1_hypos&#39;</span><span class="p">,</span> <span class="s1">&#39;number_lv2_hypos&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>number_hypos</th>
+      <th>number_lv1_hypos</th>
+      <th>number_lv2_hypos</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1032_baseline</td>
+      <td>4</td>
+      <td>2</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2018_baseline</td>
+      <td>4</td>
+      <td>2</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2031_6months</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1040_6months</td>
+      <td>15</td>
+      <td>8</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2008_baseline</td>
+      <td>6</td>
+      <td>2</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>1030_baseline</td>
+      <td>2</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>2028_baseline</td>
+      <td>4</td>
+      <td>1</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>2031_baseline</td>
+      <td>7</td>
+      <td>6</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>2036_6months</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>1020_baseline</td>
+      <td>8</td>
+      <td>4</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>1048_baseline</td>
+      <td>4</td>
+      <td>2</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>1042_baseline</td>
+      <td>6</td>
+      <td>4</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>1048_6months</td>
+      <td>6</td>
+      <td>4</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>2030_baseline</td>
+      <td>6</td>
+      <td>3</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>2036_baseline</td>
+      <td>7</td>
+      <td>7</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>2024_6months</td>
+      <td>5</td>
+      <td>4</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>2043_6months</td>
+      <td>8</td>
+      <td>5</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>1046_6months</td>
+      <td>3</td>
+      <td>2</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>2003_baseline</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>2030_6months</td>
+      <td>4</td>
+      <td>2</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>1019_baseline</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>2019_6months</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>2029_6months</td>
+      <td>2</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>1051_baseline</td>
+      <td>7</td>
+      <td>3</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>1047_baseline</td>
+      <td>2</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>2017_baseline</td>
+      <td>3</td>
+      <td>3</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>1010_6months</td>
+      <td>13</td>
+      <td>4</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>1049_baseline</td>
+      <td>20</td>
+      <td>9</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>2003_6months</td>
+      <td>2</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>2042_6months</td>
+      <td>4</td>
+      <td>2</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>2029_baseline</td>
+      <td>7</td>
+      <td>6</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>2041_6months</td>
+      <td>2</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>2032_baseline</td>
+      <td>4</td>
+      <td>3</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>1003_baseline</td>
+      <td>10</td>
+      <td>5</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>2010_baseline</td>
+      <td>11</td>
+      <td>8</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>2032_6months</td>
+      <td>3</td>
+      <td>2</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>1007_baseline</td>
+      <td>2</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>2011_baseline</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>38</th>
+      <td>1026_baseline</td>
+      <td>3</td>
+      <td>1</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>1015_baseline</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>40</th>
+      <td>1014_baseline</td>
+      <td>12</td>
+      <td>7</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>2040_6months</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>42</th>
+      <td>1004_6months</td>
+      <td>3</td>
+      <td>0</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>43</th>
+      <td>1049_6months</td>
+      <td>10</td>
+      <td>4</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>44</th>
+      <td>1026_6months</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>45</th>
+      <td>1034_baseline</td>
+      <td>6</td>
+      <td>4</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>46</th>
+      <td>1024_baseline</td>
+      <td>3</td>
+      <td>2</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>47</th>
+      <td>1014_6months</td>
+      <td>4</td>
+      <td>1</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>48</th>
+      <td>1011_baseline</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>49</th>
+      <td>2026_baseline</td>
+      <td>4</td>
+      <td>2</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>50</th>
+      <td>1024_6months</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>51</th>
+      <td>1004_baseline</td>
+      <td>6</td>
+      <td>4</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>52</th>
+      <td>1022_baseline</td>
+      <td>5</td>
+      <td>3</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>53</th>
+      <td>1051_6months</td>
+      <td>5</td>
+      <td>1</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>54</th>
+      <td>1046_baseline</td>
+      <td>4</td>
+      <td>1</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>55</th>
+      <td>1045_6months</td>
+      <td>3</td>
+      <td>1</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>56</th>
+      <td>2016_baseline</td>
+      <td>3</td>
+      <td>2</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>57</th>
+      <td>1025_6months</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>58</th>
+      <td>2041_baseline</td>
+      <td>5</td>
+      <td>5</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>59</th>
+      <td>2004_baseline</td>
+      <td>15</td>
+      <td>9</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>60</th>
+      <td>1005_6months</td>
+      <td>2</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>61</th>
+      <td>2012_6months</td>
+      <td>2</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>62</th>
+      <td>2027_6months</td>
+      <td>5</td>
+      <td>2</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>63</th>
+      <td>1040_baseline</td>
+      <td>2</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>64</th>
+      <td>2035_baseline</td>
+      <td>4</td>
+      <td>3</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>65</th>
+      <td>1035_baseline</td>
+      <td>5</td>
+      <td>4</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>66</th>
+      <td>1027_baseline</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>67</th>
+      <td>2005_baseline</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>68</th>
+      <td>1045_baseline</td>
+      <td>2</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>69</th>
+      <td>1008_baseline</td>
+      <td>17</td>
+      <td>11</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>70</th>
+      <td>2013_baseline</td>
+      <td>5</td>
+      <td>5</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>71</th>
+      <td>1047_6months</td>
+      <td>2</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>72</th>
+      <td>2038_6months</td>
+      <td>11</td>
+      <td>5</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>73</th>
+      <td>1031_6months</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>74</th>
+      <td>2001_baseline</td>
+      <td>8</td>
+      <td>4</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>75</th>
+      <td>2023_baseline</td>
+      <td>2</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>76</th>
+      <td>1025_baseline</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>77</th>
+      <td>2017_6months</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>78</th>
+      <td>1010_baseline</td>
+      <td>20</td>
+      <td>15</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>79</th>
+      <td>2039_baseline</td>
+      <td>5</td>
+      <td>4</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>80</th>
+      <td>2034_baseline</td>
+      <td>13</td>
+      <td>6</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>81</th>
+      <td>2020_baseline</td>
+      <td>12</td>
+      <td>3</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>82</th>
+      <td>1029_6months</td>
+      <td>4</td>
+      <td>3</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>83</th>
+      <td>2043_baseline</td>
+      <td>8</td>
+      <td>5</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>84</th>
+      <td>1035_6months</td>
+      <td>3</td>
+      <td>3</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>85</th>
+      <td>2012_baseline</td>
+      <td>3</td>
+      <td>3</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>86</th>
+      <td>2045_6months</td>
+      <td>6</td>
+      <td>5</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>87</th>
+      <td>1013_6months</td>
+      <td>13</td>
+      <td>8</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>88</th>
+      <td>1029_baseline</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>89</th>
+      <td>1012_baseline</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>90</th>
+      <td>1027_6months</td>
+      <td>2</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>91</th>
+      <td>2011_6months</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>92</th>
+      <td>1013_baseline</td>
+      <td>7</td>
+      <td>4</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>93</th>
+      <td>1034_6months</td>
+      <td>8</td>
+      <td>6</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>94</th>
+      <td>1021_6months</td>
+      <td>2</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>95</th>
+      <td>2045_baseline</td>
+      <td>2</td>
+      <td>2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>96</th>
+      <td>1003_6months</td>
+      <td>9</td>
+      <td>6</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>97</th>
+      <td>2009_baseline</td>
+      <td>6</td>
+      <td>4</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>98</th>
+      <td>1032_6months</td>
+      <td>2</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>99</th>
+      <td>2005_6months</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>100</th>
+      <td>1012_6months</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>101</th>
+      <td>2024_baseline</td>
+      <td>4</td>
+      <td>2</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>102</th>
+      <td>2040_baseline</td>
+      <td>8</td>
+      <td>5</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>103</th>
+      <td>1021_baseline</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>104</th>
+      <td>1031_baseline</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>105</th>
+      <td>2019_baseline</td>
+      <td>4</td>
+      <td>2</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./interpolation"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="2_EDA.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">2. Exploratory data analysis</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="4_identifying_hypos.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">4. Hypoglycaemic episodes</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-packages-and-upload-data">3.1. Import packages and upload data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diabetes-metrics-for-each-person-for-each-interpolation-method">3.2. Diabetes metrics for each person for each interpolation method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mean-difference-for-all-of-the-metrics">4.3. Mean difference for all of the metrics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bland-altman-plots">4.4. Bland-Altman plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distribution-of-hypos-per-person">4.5. Distribution of hypos per person</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Catherine Russon
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

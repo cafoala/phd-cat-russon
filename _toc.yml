@@ -1,0 +1,31 @@
+format: jb-book
+root: 0_landing_page
+parts:
+  - caption: Chapter 1 - Python package and Webapp for calculating the metrics of glycemic control
+    chapters:
+    - file: diametrics/0_overview
+    - file: diametrics/1_upload_demo
+    - file: diametrics/2_preprocessing_demo
+    - file: diametrics/3_metrics_demo
+    - file: diametrics/4_visualizations_demo
+    - file: diametrics/5_webapp
+  - caption: Chapter 2 - Interpolation for the improved identification of hypoglycaemic episodes
+    chapters:
+    - file: interpolation/1_create_df
+    - file: interpolation/2_EDA
+    - file: interpolation/3_other_metrics
+    - file: interpolation/4_identifying_hypos
+  - caption: Chapter 3 - Machine learning to predict hypoglycemia during exercise
+    chapters:
+    - file: ml_heatmap/1_preprocessing/0_landing
+      sections:
+      - file: ml_heatmap/1_preprocessing/1_preprocessing_101
+      - file: ml_heatmap/1_preprocessing/2_preprocessing_edu
+      - file: ml_heatmap/1_preprocessing/3_target_creation
+      - file: ml_heatmap/1_preprocessing/4_ml_preparation
+    - file: ml_heatmap/2_feature_selection/forward_feature_selection
+    - file: ml_heatmap/3_ml/0_landing
+      sections:
+      - file: ml_heatmap/3_ml/figs_during_5
+      - file: ml_heatmap/3_ml/contour_plot_lr
+      - file: ml_heatmap/3_ml/ml_helper

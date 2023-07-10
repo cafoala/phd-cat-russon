@@ -1,0 +1,1816 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Simple model &#8212; Machine learning for glycaemia prediction around exercise</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'ml_heatmap/4_interpretation/7_subgroup_analysis';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../0_landing_page.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">Machine learning for glycaemia prediction around exercise</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../0_landing_page.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Chapter 1 - Python package and Webapp for calculating the metrics of glycemic control</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../diametrics/0_overview.html">Diametrics Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../diametrics/1_upload_demo.html">1. Uploading and transforming data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../diametrics/2_preprocessing_demo.html">2. Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../diametrics/3_metrics_demo.html">3. Metrics of glycemic control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../diametrics/4_visualizations_demo.html">4. Visualizations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../diametrics/5_webapp.html">5. Web Application</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Chapter 2 - Interpolation for the improved identification of hypoglycaemic episodes</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../interpolation/1_create_df.html">1. Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../interpolation/2_EDA.html">2. Exploratory data analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../interpolation/3_other_metrics.html">3. Comparing metrics of glycemic control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../interpolation/4_identifying_hypos.html">4. Hypoglycaemic episodes</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Chapter 3 - Machine learning to predict hypoglycemia during exercise</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../1_preprocessing/0_landing.html">Preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../1_preprocessing/1_preprocessing_101.html">1. Preprocessing of EXTOD 101 for ML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../1_preprocessing/2_preprocessing_edu.html">2. Preprocessing EXTOD education dataset</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="../1_preprocessing/3_target_creation.html">3. Target creation</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../1_preprocessing/4_ml_preparation.html">4. Preparation for machine learning</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../2_feature_selection/forward_feature_selection.html">Forward feature selection</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../3_ml/0_landing.html">Machine learning</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../3_ml/figs_during_5.html">4. Predicting Euglycemia During Exercise</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../3_ml/contour_plot_lr.html">Heatmap (countour plot) of model predictions</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/ml_heatmap/4_interpretation/7_subgroup_analysis.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Simple model</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Simple model</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#study">Study</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bmi">BMI</a></li>
+</ul>
+</li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">ml_helper</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">roc_auc_score</span><span class="p">,</span> <span class="n">accuracy_score</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="c1">#import seaborn as sns</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;../../Results/probability_resultsduring_hypo_5_probas.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">y_hypo</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0      False
+1      False
+2      False
+3      False
+4       True
+       ...  
+973    False
+974    False
+975    False
+976    False
+977    False
+Name: y_hypo, Length: 978, dtype: bool
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>bout_id</th>
+      <th>before_TIR_lv2_hypo</th>
+      <th>before_TIR_lv1_hypo</th>
+      <th>before_TIR_hypo</th>
+      <th>before_TIR_norm</th>
+      <th>before_TIR_hyper</th>
+      <th>before_TIR_lv1_hyper</th>
+      <th>before_TIR_lv2_hyper</th>
+      <th>before_TIR_hypo_exercise</th>
+      <th>before_TIR_normal_exercise</th>
+      <th>...</th>
+      <th>probas_xgb_simp</th>
+      <th>probas_xgb_simp_fold</th>
+      <th>probas_lr_glyc</th>
+      <th>probas_lr_glyc_fold</th>
+      <th>probas_xgb_glyc</th>
+      <th>probas_xgb_glyc_fold</th>
+      <th>probas_lr_ts</th>
+      <th>probas_lr_ts_fold</th>
+      <th>probas_xgb_ts</th>
+      <th>probas_xgb_ts_fold</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>3046_675</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>100.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>100.0</td>
+      <td>...</td>
+      <td>0.534135</td>
+      <td>1</td>
+      <td>0.166125</td>
+      <td>1</td>
+      <td>0.726409</td>
+      <td>1</td>
+      <td>0.132608</td>
+      <td>1</td>
+      <td>0.510617</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>3046_678</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>100.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>100.0</td>
+      <td>...</td>
+      <td>0.064066</td>
+      <td>4</td>
+      <td>0.167974</td>
+      <td>4</td>
+      <td>0.022543</td>
+      <td>4</td>
+      <td>0.138579</td>
+      <td>4</td>
+      <td>0.002314</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3046_674</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>100.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>100.0</td>
+      <td>...</td>
+      <td>0.157334</td>
+      <td>2</td>
+      <td>0.404142</td>
+      <td>2</td>
+      <td>0.868260</td>
+      <td>2</td>
+      <td>0.480229</td>
+      <td>2</td>
+      <td>0.734898</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3046_676</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>100.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>100.0</td>
+      <td>...</td>
+      <td>0.146307</td>
+      <td>0</td>
+      <td>0.285637</td>
+      <td>0</td>
+      <td>0.011705</td>
+      <td>0</td>
+      <td>0.258788</td>
+      <td>0</td>
+      <td>0.147804</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>3046_680</td>
+      <td>0.0</td>
+      <td>50.0</td>
+      <td>50.0</td>
+      <td>50.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>75.0</td>
+      <td>25.0</td>
+      <td>...</td>
+      <td>0.067248</td>
+      <td>5</td>
+      <td>0.786705</td>
+      <td>5</td>
+      <td>0.661435</td>
+      <td>5</td>
+      <td>0.835011</td>
+      <td>5</td>
+      <td>0.867799</td>
+      <td>5</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 213 columns</p>
+</div></div></div>
+</div>
+<section id="simple-model">
+<h1>Simple model<a class="headerlink" href="#simple-model" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">subgroup_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;bout_id&#39;</span><span class="p">,</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span><span class="s1">&#39;age&#39;</span><span class="p">,</span><span class="s1">&#39;bmi&#39;</span><span class="p">,</span><span class="s1">&#39;sex&#39;</span><span class="p">,</span><span class="s1">&#39;start_glc&#39;</span><span class="p">,</span><span class="s1">&#39;duration&#39;</span><span class="p">,</span><span class="s1">&#39;form_of_exercise&#39;</span><span class="p">,</span> <span class="s1">&#39;time_of_day&#39;</span><span class="p">,</span><span class="s1">&#39;hba1c&#39;</span><span class="p">,</span><span class="s1">&#39;cpep&#39;</span><span class="p">,</span><span class="s1">&#39;y_hypo&#39;</span><span class="p">,</span> <span class="s1">&#39;probas_lr_two&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">id_key</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;../1_preprocessing/id_key.csv&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#during_hypo = during_hypo.merge(id_key, on=&#39;ID&#39;)</span>
+<span class="n">during_hypo</span> <span class="o">=</span> <span class="n">subgroup_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">id_key</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;bout_id&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">during_hypo</span><span class="o">.</span><span class="n">start_glc</span><span class="o">.</span><span class="n">hist</span><span class="p">()</span> <span class="c1">#title=&#39;Starting glucose&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:&gt;
+</pre></div>
+</div>
+<img alt="../../_images/db5a59a4044e4ace7fbd9d7061d2e77c09e9142fa6b1dd4147f96e52cd7176aa.png" src="../../_images/db5a59a4044e4ace7fbd9d7061d2e77c09e9142fa6b1dd4147f96e52cd7176aa.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">during_hypo</span><span class="o">.</span><span class="n">start_glc</span><span class="p">,</span> <span class="n">during_hypo</span><span class="o">.</span><span class="n">probas_lr_two</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="n">during_hypo</span><span class="o">.</span><span class="n">y_hypo_3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Start glucose (mmol/L)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Predicted probability&#39;</span><span class="p">)</span>
+<span class="c1">#fig.savefig(&#39;scatter_during_3.svg&#39;)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/4b2a926bba594f42ba60c9e502f2843bac7ed0a5ea57d58fc4f12ebdb3320774.png" src="../../_images/4b2a926bba594f42ba60c9e502f2843bac7ed0a5ea57d58fc4f12ebdb3320774.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">during_hypo</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>before_TIR_lv2_hypo</th>
+      <th>before_TIR_lv1_hypo</th>
+      <th>before_TIR_hypo</th>
+      <th>before_TIR_norm</th>
+      <th>before_TIR_hyper</th>
+      <th>before_TIR_lv1_hyper</th>
+      <th>before_TIR_lv2_hyper</th>
+      <th>before_TIR_hypo_exercise</th>
+      <th>before_TIR_normal_exercise</th>
+      <th>before_TIR_hyper_exercise</th>
+      <th>before_number_hypos</th>
+      <th>before_avg_length_of_hypo</th>
+      <th>before_total_time_in_hypos</th>
+      <th>before_number_lv1_hypos</th>
+      <th>before_number_lv2_hypos</th>
+      <th>before_number_hypos_below_5</th>
+      <th>before_avg_length_hypo_below_5</th>
+      <th>before_total_time_in_hypos_below_5</th>
+      <th>before_sd</th>
+      <th>before_cv</th>
+      <th>before_minimum_glucose</th>
+      <th>before_maximum_glucose</th>
+      <th>before_average_glucose</th>
+      <th>before_mage_mean</th>
+      <th>before_ea1c</th>
+      <th>before_percent_missing</th>
+      <th>ID</th>
+      <th>intensity</th>
+      <th>month</th>
+      <th>day</th>
+      <th>day_of_week</th>
+      <th>time_of_day</th>
+      <th>duration</th>
+      <th>form_of_exercise</th>
+      <th>start_glc</th>
+      <th>y_hypo</th>
+      <th>age</th>
+      <th>sex</th>
+      <th>years_since_diagnosis</th>
+      <th>bmi</th>
+      <th>hba1c</th>
+      <th>cpep</th>
+      <th>stratify</th>
+      <th>predicted</th>
+      <th>predicted_proba</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.0</td>
+      <td>20.0</td>
+      <td>20.0</td>
+      <td>46.666667</td>
+      <td>33.333333</td>
+      <td>33.333333</td>
+      <td>0.000000</td>
+      <td>26.666667</td>
+      <td>73.333333</td>
+      <td>0.000000</td>
+      <td>1</td>
+      <td>30.0</td>
+      <td>30.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>46.0</td>
+      <td>46.0</td>
+      <td>2.892848</td>
+      <td>38.063794</td>
+      <td>3.2</td>
+      <td>10.8</td>
+      <td>7.60000</td>
+      <td>5.8</td>
+      <td>6.408805</td>
+      <td>7.33</td>
+      <td>3004</td>
+      <td>14.0</td>
+      <td>6</td>
+      <td>13</td>
+      <td>2</td>
+      <td>evening</td>
+      <td>37.0</td>
+      <td>aer</td>
+      <td>10.4</td>
+      <td>False</td>
+      <td>30.047912</td>
+      <td>male</td>
+      <td>21.560575</td>
+      <td>24.957697</td>
+      <td>55.0</td>
+      <td>3.0</td>
+      <td>3004_False</td>
+      <td>0.0</td>
+      <td>0.164611</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.0</td>
+      <td>12.5</td>
+      <td>12.5</td>
+      <td>75.000000</td>
+      <td>12.500000</td>
+      <td>12.500000</td>
+      <td>0.000000</td>
+      <td>43.750000</td>
+      <td>50.000000</td>
+      <td>6.250000</td>
+      <td>1</td>
+      <td>15.0</td>
+      <td>15.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>2</td>
+      <td>37.5</td>
+      <td>75.0</td>
+      <td>2.616287</td>
+      <td>42.411949</td>
+      <td>3.6</td>
+      <td>12.1</td>
+      <td>6.16875</td>
+      <td>8.2</td>
+      <td>5.508648</td>
+      <td>0.43</td>
+      <td>3004</td>
+      <td>14.0</td>
+      <td>7</td>
+      <td>6</td>
+      <td>4</td>
+      <td>evening</td>
+      <td>58.0</td>
+      <td>aer</td>
+      <td>11.9</td>
+      <td>False</td>
+      <td>30.047912</td>
+      <td>male</td>
+      <td>21.560575</td>
+      <td>24.957697</td>
+      <td>55.0</td>
+      <td>3.0</td>
+      <td>3004_False</td>
+      <td>0.0</td>
+      <td>0.143539</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>18.750000</td>
+      <td>81.250000</td>
+      <td>81.250000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>68.750000</td>
+      <td>31.250000</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.518278</td>
+      <td>13.274558</td>
+      <td>8.3</td>
+      <td>13.3</td>
+      <td>11.43750</td>
+      <td>5.0</td>
+      <td>8.822327</td>
+      <td>0.00</td>
+      <td>3018</td>
+      <td>15.0</td>
+      <td>6</td>
+      <td>18</td>
+      <td>0</td>
+      <td>evening</td>
+      <td>35.0</td>
+      <td>aer</td>
+      <td>13.4</td>
+      <td>False</td>
+      <td>30.913073</td>
+      <td>female</td>
+      <td>22.395619</td>
+      <td>22.309356</td>
+      <td>57.0</td>
+      <td>3.0</td>
+      <td>3018_False</td>
+      <td>0.0</td>
+      <td>0.062199</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.0</td>
+      <td>20.0</td>
+      <td>20.0</td>
+      <td>46.666667</td>
+      <td>33.333333</td>
+      <td>20.000000</td>
+      <td>13.333333</td>
+      <td>40.000000</td>
+      <td>33.333333</td>
+      <td>26.666667</td>
+      <td>1</td>
+      <td>30.0</td>
+      <td>30.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>76.0</td>
+      <td>76.0</td>
+      <td>4.116517</td>
+      <td>53.461263</td>
+      <td>3.4</td>
+      <td>14.3</td>
+      <td>7.70000</td>
+      <td>6.5</td>
+      <td>6.471698</td>
+      <td>0.46</td>
+      <td>3027</td>
+      <td>12.0</td>
+      <td>6</td>
+      <td>5</td>
+      <td>1</td>
+      <td>afternoon</td>
+      <td>60.0</td>
+      <td>aer</td>
+      <td>12.1</td>
+      <td>False</td>
+      <td>27.663244</td>
+      <td>female</td>
+      <td>23.310062</td>
+      <td>27.514848</td>
+      <td>67.0</td>
+      <td>3.0</td>
+      <td>3027_False</td>
+      <td>0.0</td>
+      <td>0.131660</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>75.000000</td>
+      <td>25.000000</td>
+      <td>6.250000</td>
+      <td>18.750000</td>
+      <td>0.000000</td>
+      <td>75.000000</td>
+      <td>25.000000</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>4.128635</td>
+      <td>48.679555</td>
+      <td>5.4</td>
+      <td>16.5</td>
+      <td>8.48125</td>
+      <td>10.5</td>
+      <td>6.963050</td>
+      <td>0.00</td>
+      <td>3032</td>
+      <td>18.0</td>
+      <td>6</td>
+      <td>16</td>
+      <td>5</td>
+      <td>morning</td>
+      <td>50.0</td>
+      <td>aer</td>
+      <td>16.4</td>
+      <td>False</td>
+      <td>55.572895</td>
+      <td>female</td>
+      <td>35.394935</td>
+      <td>27.660138</td>
+      <td>59.0</td>
+      <td>3.0</td>
+      <td>3032_False</td>
+      <td>0.0</td>
+      <td>0.033212</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">during_hypo</span><span class="p">[</span><span class="s1">&#39;start_glc_bin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">during_hypo</span><span class="p">[</span><span class="s1">&#39;start_glc&#39;</span><span class="p">],</span> <span class="n">q</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">during_hypo</span><span class="p">[</span><span class="s1">&#39;bmi_bin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">during_hypo</span><span class="p">[</span><span class="s1">&#39;bmi&#39;</span><span class="p">],</span> <span class="n">q</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">during_hypo</span><span class="p">[</span><span class="s1">&#39;age_bin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">during_hypo</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">],</span> <span class="n">q</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">during_hypo</span><span class="p">[</span><span class="s1">&#39;duration_bin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">during_hypo</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">],</span> <span class="n">q</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">during_hypo</span><span class="p">[</span><span class="s1">&#39;hba1c_bin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">during_hypo</span><span class="p">[</span><span class="s1">&#39;hba1c&#39;</span><span class="p">],</span> <span class="n">q</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">roc</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([[</span><span class="n">roc_auc_score</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">y_hypo</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">probas_lr_two</span><span class="p">),</span>
+                          <span class="c1">#accuracy_score(df.y_hypo_3, df.probas_lr_two), </span>
+                          <span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                          <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ID_y</span><span class="p">)),</span> <span class="n">df</span><span class="o">.</span><span class="n">y_hypo</span><span class="o">.</span><span class="n">mean</span><span class="p">()]],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;roc&#39;</span><span class="p">,</span> <span class="s1">&#39;bouts&#39;</span><span class="p">,</span>
+                                                      <span class="s1">&#39;participants&#39;</span><span class="p">,</span> <span class="s1">&#39;ratio hypos&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="study">
+<h1>Study<a class="headerlink" href="#study" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">during_hypo</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;study&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">roc</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>roc</th>
+      <th>bouts</th>
+      <th>participants</th>
+      <th>ratio hypos</th>
+    </tr>
+    <tr>
+      <th>study</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>extod_101</th>
+      <th>0</th>
+      <td>0.826</td>
+      <td>533</td>
+      <td>34</td>
+      <td>0.225</td>
+    </tr>
+    <tr>
+      <th>extod_edu</th>
+      <th>0</th>
+      <td>0.866</td>
+      <td>445</td>
+      <td>58</td>
+      <td>0.225</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">during_hypo</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;sex&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">roc</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>roc</th>
+      <th>bouts</th>
+      <th>participants</th>
+      <th>ratio hypos</th>
+    </tr>
+    <tr>
+      <th>sex</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>female</th>
+      <th>0</th>
+      <td>0.854</td>
+      <td>515</td>
+      <td>43</td>
+      <td>0.235</td>
+    </tr>
+    <tr>
+      <th>male</th>
+      <th>0</th>
+      <td>0.828</td>
+      <td>463</td>
+      <td>49</td>
+      <td>0.214</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">during_hypo</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;study&#39;</span><span class="p">,</span> <span class="s1">&#39;sex&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">roc</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th></th>
+      <th>roc</th>
+      <th>bouts</th>
+      <th>participants</th>
+      <th>ratio hypos</th>
+    </tr>
+    <tr>
+      <th>study</th>
+      <th>sex</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2" valign="top">extod_101</th>
+      <th>female</th>
+      <th>0</th>
+      <td>0.854</td>
+      <td>324</td>
+      <td>20</td>
+      <td>0.259</td>
+    </tr>
+    <tr>
+      <th>male</th>
+      <th>0</th>
+      <td>0.753</td>
+      <td>209</td>
+      <td>14</td>
+      <td>0.172</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">extod_edu</th>
+      <th>female</th>
+      <th>0</th>
+      <td>0.859</td>
+      <td>191</td>
+      <td>23</td>
+      <td>0.194</td>
+    </tr>
+    <tr>
+      <th>male</th>
+      <th>0</th>
+      <td>0.877</td>
+      <td>254</td>
+      <td>35</td>
+      <td>0.248</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">during_hypo</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;time_of_day&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">roc</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>roc</th>
+      <th>bouts</th>
+      <th>participants</th>
+      <th>ratio hypos</th>
+    </tr>
+    <tr>
+      <th>time_of_day</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>afternoon</th>
+      <th>0</th>
+      <td>0.861</td>
+      <td>214</td>
+      <td>65</td>
+      <td>0.271</td>
+    </tr>
+    <tr>
+      <th>evening</th>
+      <th>0</th>
+      <td>0.833</td>
+      <td>348</td>
+      <td>70</td>
+      <td>0.264</td>
+    </tr>
+    <tr>
+      <th>morning</th>
+      <th>0</th>
+      <td>0.848</td>
+      <td>416</td>
+      <td>75</td>
+      <td>0.168</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">during_hypo</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;form_of_exercise&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">roc</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>roc</th>
+      <th>bouts</th>
+      <th>participants</th>
+      <th>ratio hypos</th>
+    </tr>
+    <tr>
+      <th>form_of_exercise</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>aer</th>
+      <th>0</th>
+      <td>0.844</td>
+      <td>778</td>
+      <td>89</td>
+      <td>0.230</td>
+    </tr>
+    <tr>
+      <th>ana</th>
+      <th>0</th>
+      <td>0.934</td>
+      <td>102</td>
+      <td>28</td>
+      <td>0.167</td>
+    </tr>
+    <tr>
+      <th>mix</th>
+      <th>0</th>
+      <td>0.815</td>
+      <td>97</td>
+      <td>30</td>
+      <td>0.247</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<section id="bmi">
+<h2>BMI<a class="headerlink" href="#bmi" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">during_hypo</span><span class="o">.</span><span class="n">bmi</span><span class="o">.</span><span class="n">hist</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:&gt;
+</pre></div>
+</div>
+<img alt="../../_images/392eacfde3b6e9aa0a336c24d5ec20ec202f2b57f1a496cb213a8f2bb3e0617d.png" src="../../_images/392eacfde3b6e9aa0a336c24d5ec20ec202f2b57f1a496cb213a8f2bb3e0617d.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">during_hypo</span><span class="o">.</span><span class="n">bmi</span><span class="o">.</span><span class="n">hist</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">during_hypo</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;bmi_bin&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">roc</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>roc</th>
+      <th>bouts</th>
+      <th>participants</th>
+      <th>ratio hypos</th>
+    </tr>
+    <tr>
+      <th>bmi_bin</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>(18.517, 22.914]</th>
+      <th>0</th>
+      <td>0.804</td>
+      <td>333</td>
+      <td>26</td>
+      <td>0.204</td>
+    </tr>
+    <tr>
+      <th>(22.914, 26.523]</th>
+      <th>0</th>
+      <td>0.849</td>
+      <td>306</td>
+      <td>32</td>
+      <td>0.199</td>
+    </tr>
+    <tr>
+      <th>(26.523, 34.294]</th>
+      <th>0</th>
+      <td>0.874</td>
+      <td>297</td>
+      <td>28</td>
+      <td>0.269</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">during_hypo</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;duration_bin&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">roc</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>roc</th>
+      <th>bouts</th>
+      <th>participants</th>
+      <th>ratio hypos</th>
+    </tr>
+    <tr>
+      <th>duration_bin</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>(9.999, 35.0]</th>
+      <th>0</th>
+      <td>0.926</td>
+      <td>329</td>
+      <td>67</td>
+      <td>0.176</td>
+    </tr>
+    <tr>
+      <th>(35.0, 60.0]</th>
+      <th>0</th>
+      <td>0.831</td>
+      <td>444</td>
+      <td>80</td>
+      <td>0.234</td>
+    </tr>
+    <tr>
+      <th>(60.0, 120.0]</th>
+      <th>0</th>
+      <td>0.760</td>
+      <td>205</td>
+      <td>69</td>
+      <td>0.283</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">during_hypo</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;start_glc_bin&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">roc</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>roc</th>
+      <th>bouts</th>
+      <th>participants</th>
+      <th>ratio hypos</th>
+    </tr>
+    <tr>
+      <th>start_glc_bin</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>(2.1990000000000003, 7.4]</th>
+      <th>0</th>
+      <td>0.745</td>
+      <td>335</td>
+      <td>68</td>
+      <td>0.457</td>
+    </tr>
+    <tr>
+      <th>(7.4, 10.9]</th>
+      <th>0</th>
+      <td>0.712</td>
+      <td>320</td>
+      <td>80</td>
+      <td>0.162</td>
+    </tr>
+    <tr>
+      <th>(10.9, 22.6]</th>
+      <th>0</th>
+      <td>0.880</td>
+      <td>323</td>
+      <td>75</td>
+      <td>0.046</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">during_hypo</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;age_bin&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">roc</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>roc</th>
+      <th>bouts</th>
+      <th>participants</th>
+      <th>ratio hypos</th>
+    </tr>
+    <tr>
+      <th>age_bin</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>(19.766, 44.742]</th>
+      <th>0</th>
+      <td>0.841</td>
+      <td>332</td>
+      <td>38</td>
+      <td>0.190</td>
+    </tr>
+    <tr>
+      <th>(44.742, 52.049]</th>
+      <th>0</th>
+      <td>0.840</td>
+      <td>311</td>
+      <td>26</td>
+      <td>0.206</td>
+    </tr>
+    <tr>
+      <th>(52.049, 80.159]</th>
+      <th>0</th>
+      <td>0.840</td>
+      <td>303</td>
+      <td>27</td>
+      <td>0.277</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">during_hypo</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;hba1c_bin&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">roc</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>roc</th>
+      <th>bouts</th>
+      <th>participants</th>
+      <th>ratio hypos</th>
+    </tr>
+    <tr>
+      <th>hba1c_bin</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>(41.999, 53.0]</th>
+      <th>0</th>
+      <td>0.779</td>
+      <td>325</td>
+      <td>24</td>
+      <td>0.295</td>
+    </tr>
+    <tr>
+      <th>(53.0, 61.0]</th>
+      <th>0</th>
+      <td>0.876</td>
+      <td>354</td>
+      <td>35</td>
+      <td>0.220</td>
+    </tr>
+    <tr>
+      <th>(61.0, 88.0]</th>
+      <th>0</th>
+      <td>0.833</td>
+      <td>243</td>
+      <td>29</td>
+      <td>0.148</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">during_hypo</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filenames</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">during_hypo_split</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;study&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">group</span><span class="p">:</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">group</span><span class="o">.</span><span class="n">y_hypo</span><span class="p">,</span> <span class="n">group</span><span class="o">.</span><span class="n">predicted_proba</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">during_hypo</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;ID&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">group</span><span class="p">:</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">group</span><span class="o">.</span><span class="n">y_hypo</span><span class="p">,</span> <span class="n">group</span><span class="o">.</span><span class="n">predicted</span><span class="p">))</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>count    88.000000
+mean      0.834875
+std       0.174037
+min       0.333333
+25%       0.744318
+50%       0.881176
+75%       1.000000
+max       1.000000
+dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./ml_heatmap/4_interpretation"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Simple model</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#study">Study</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bmi">BMI</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Catherine Russon
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

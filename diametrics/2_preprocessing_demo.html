@@ -1,0 +1,1503 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>2. Preprocessing &#8212; Machine learning for glycaemia prediction around exercise</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'diametrics/2_preprocessing_demo';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3. Metrics of glycemic control" href="3_metrics_demo.html" />
+    <link rel="prev" title="1. Uploading and transforming data" href="1_upload_demo.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../0_landing_page.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">Machine learning for glycaemia prediction around exercise</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../0_landing_page.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Chapter 1 - Python package and Webapp for calculating the metrics of glycemic control</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="0_overview.html">Diametrics Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_upload_demo.html">1. Uploading and transforming data</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">2. Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_metrics_demo.html">3. Metrics of glycemic control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_visualizations_demo.html">4. Visualizations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5_webapp.html">5. Web Application</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Chapter 2 - Interpolation for the improved identification of hypoglycaemic episodes</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../interpolation/1_create_df.html">1. Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interpolation/2_EDA.html">2. Exploratory data analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interpolation/3_other_metrics.html">3. Comparing metrics of glycemic control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interpolation/4_identifying_hypos.html">4. Hypoglycaemic episodes</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Chapter 3 - Machine learning to predict hypoglycemia during exercise</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ml_heatmap/1_preprocessing/0_landing.html">Preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ml_heatmap/1_preprocessing/1_preprocessing_101.html">1. Preprocessing of EXTOD 101 for ML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml_heatmap/1_preprocessing/2_preprocessing_edu.html">2. Preprocessing EXTOD education dataset</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="../ml_heatmap/1_preprocessing/3_target_creation.html">3. Target creation</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../ml_heatmap/1_preprocessing/4_ml_preparation.html">4. Preparation for machine learning</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ml_heatmap/2_feature_selection/forward_feature_selection.html">Forward feature selection</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ml_heatmap/3_ml/0_landing.html">Machine learning</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ml_heatmap/3_ml/figs_during_5.html">4. Predicting Euglycemia During Exercise</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../ml_heatmap/3_ml/contour_plot_lr.html">Heatmap (countour plot) of model predictions</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/diametrics/2_preprocessing_demo.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>2. Preprocessing</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#check-if-df-is-usable">2.1. Check if df is usable</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#replacing-the-lo-hi-cutoff-values">2.2. Replacing the lo/hi cutoff values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#change-start-and-end-times">2.3. Change start and end times</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#individual-with-one-start-time-for-all">2.3.1. Individual with one start time for all</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-a-dictionary">2.3.2. Using a dictionary</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpolate-missing-data">2.4. Interpolate missing data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#change-units">2.5. Change units</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="preprocessing">
+<h1>2. Preprocessing<a class="headerlink" href="#preprocessing" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">src.diametrics</span> <span class="kn">import</span> <span class="n">transform</span><span class="p">,</span> <span class="n">preprocessing</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dexcom_data</span> <span class="o">=</span> <span class="n">transform</span><span class="o">.</span><span class="n">transform_directory</span><span class="p">(</span><span class="n">directory</span><span class="o">=</span><span class="s1">&#39;tests/test_data/dexcom/&#39;</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;dexcom&#39;</span><span class="p">)</span>
+<span class="n">libre1</span> <span class="o">=</span> <span class="n">transform</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="s1">&#39;tests/test_data/libre/libre_amer_01.csv&#39;</span><span class="p">)</span>
+<span class="n">libre1_transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="o">.</span><span class="n">convert_libre</span><span class="p">(</span><span class="n">libre1</span><span class="p">)</span>
+<span class="n">dxcm2</span> <span class="o">=</span> <span class="n">transform</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="s1">&#39;tests/test_data/dexcom/dexcom_eur_02.xlsx&#39;</span><span class="p">)</span>
+<span class="n">dxcm2_transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="o">.</span><span class="n">convert_dexcom</span><span class="p">(</span><span class="n">dxcm2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/cat/Desktop/projects/diametrics/src/diametrics/transform.py:41: UserWarning: Could not infer format, so each element will be parsed individually, falling back to `dateutil`. To ensure parsing is consistent and as-expected, please specify a format.
+  df[&#39;time&#39;] = pd.to_datetime(df[&#39;time&#39;])
+</pre></div>
+</div>
+</div>
+</div>
+<section id="check-if-df-is-usable">
+<h2>2.1. Check if df is usable<a class="headerlink" href="#check-if-df-is-usable" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">check_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function check_df in module src.diametrics.preprocessing:
+
+check_df(df)
+    Check if the given object is a valid DataFrame.
+    
+    Args:
+        df (object): The object to be checked.
+    
+    Returns:
+        bool: True if the object is a valid DataFrame, False otherwise.
+    
+    Note:
+        - If the object is not a DataFrame, a warning will be issued.
+        - If the DataFrame has null values in the &#39;time&#39; or &#39;glc&#39; columns, it will be considered invalid.
+        - An empty DataFrame will also be considered invalid.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">preprocessing</span><span class="o">.</span><span class="n">check_df</span><span class="p">(</span><span class="n">dexcom_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">preprocessing</span><span class="o">.</span><span class="n">check_df</span><span class="p">(</span><span class="n">dxcm2_transformed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="replacing-the-lo-hi-cutoff-values">
+<h2>2.2. Replacing the lo/hi cutoff values<a class="headerlink" href="#replacing-the-lo-hi-cutoff-values" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">replace_cutoffs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function replace_cutoffs in module src.diametrics.preprocessing:
+
+replace_cutoffs(df, remove=False, cap=True, lo_cutoff=2.1, hi_cutoff=22.3)
+    Replace values in the &#39;glc&#39; column of the given DataFrame based on specified cutoffs.
+    
+    Args:
+        df (pandas.DataFrame): The DataFrame in which values will be replaced.
+        remove (bool, optional): Indicates whether to remove rows with non-numeric &#39;glc&#39; values. Defaults to False.
+        cap (bool, optional): Indicates whether to cap values above the high cutoff and below the low cutoff. Defaults to True.
+        lo_cutoff (float, optional): The low cutoff value for replacing &#39;glc&#39; values. Defaults to 2.1.
+        hi_cutoff (float, optional): The high cutoff value for replacing &#39;glc&#39; values. Defaults to 22.3.
+    
+    Returns:
+        pandas.DataFrame: The modified DataFrame with replaced &#39;glc&#39; values and optionally removed rows.
+    
+    Note:
+        - If remove is True, the function replaces non-numeric values in the &#39;glc&#39; column with the respective cutoff values.
+        - If cap is True, the function caps values above hi_cutoff and below lo_cutoff with the respective cutoff values.
+        - The function also converts the &#39;glc&#39; column to numeric values and converts the &#39;time&#39; column to datetime.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dexcom_data</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">replace_cutoffs</span><span class="p">(</span><span class="n">dexcom_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">libre1_transformed</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">replace_cutoffs</span><span class="p">(</span><span class="n">libre1_transformed</span><span class="p">,</span> <span class="n">lo_cutoff</span><span class="o">=</span><span class="mf">2.1</span><span class="p">,</span> <span class="n">hi_cutoff</span><span class="o">=</span><span class="mf">27.8</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dxcm2_transformed</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">replace_cutoffs</span><span class="p">(</span><span class="n">dxcm2_transformed</span><span class="p">,</span> <span class="n">remove</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="change-start-and-end-times">
+<h2>2.3. Change start and end times<a class="headerlink" href="#change-start-and-end-times" title="Permalink to this heading">#</a></h2>
+<section id="individual-with-one-start-time-for-all">
+<h3>2.3.1. Individual with one start time for all<a class="headerlink" href="#individual-with-one-start-time-for-all" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">set_time_frame</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function set_time_frame in module src.diametrics.preprocessing:
+
+set_time_frame(df, window)
+    Filter the given DataFrame based on the specified time period.
+    
+    Args:
+        df (pandas.DataFrame): The DataFrame to be filtered.
+        period (list or dict): The time period to filter the DataFrame. It can be specified as a list or a dictionary.
+    
+            - If period is a list, it should contain two elements representing the start and end times of the period.
+            Only the rows with &#39;time&#39; values greater than or equal to the start time and less than the end time will be returned.
+    
+            - If period is a dictionary, it should contain key-value pairs where the keys represent IDs and the values
+            are two-element lists representing the start and end times for each ID. The function will return all rows
+            where the &#39;ID&#39; column matches the specified IDs and the &#39;time&#39; values fall within the respective time windows.
+    
+    Returns:
+        pandas.DataFrame: The filtered DataFrame containing only the rows that match the specified time period.
+    
+    Raises:
+        ValueError: If the period argument is not of type list or dict.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">preprocessing</span><span class="o">.</span><span class="n">set_time_frame</span><span class="p">(</span><span class="n">libre1_transformed</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;2021-03-21&#39;</span><span class="p">,</span> <span class="s1">&#39;2021-04-01&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>time</th>
+      <th>glc</th>
+      <th>scan_glc</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>26</th>
+      <td>2021-03-21 00:08:00</td>
+      <td>188</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>2021-03-21 00:23:00</td>
+      <td>178</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>2021-03-21 00:38:00</td>
+      <td>163</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>2021-03-21 00:53:00</td>
+      <td>160</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>2021-03-21 01:08:00</td>
+      <td>158</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>1077</th>
+      <td>2021-03-31 22:53:00</td>
+      <td>162</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1078</th>
+      <td>2021-03-31 23:08:00</td>
+      <td>156</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1079</th>
+      <td>2021-03-31 23:23:00</td>
+      <td>155</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1080</th>
+      <td>2021-03-31 23:38:00</td>
+      <td>145</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1081</th>
+      <td>2021-03-31 23:53:00</td>
+      <td>135</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>1056 rows × 3 columns</p>
+</div></div></div>
+</div>
+</section>
+<section id="using-a-dictionary">
+<h3>2.3.2. Using a dictionary<a class="headerlink" href="#using-a-dictionary" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;dexcom_eur_01&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;2023-03-13 03:00:00&#39;</span><span class="p">,</span> <span class="s1">&#39;2023-03-20 14:30:00&#39;</span><span class="p">],</span>
+     <span class="s1">&#39;dexcom_eur_02&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;2023-03-09&#39;</span><span class="p">,</span> <span class="s1">&#39;2023-03-18&#39;</span><span class="p">],</span>
+     <span class="s1">&#39;dexcom_eur_03&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;2023-03-14&#39;</span><span class="p">,</span> <span class="s1">&#39;2023-03-21&#39;</span><span class="p">]}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">preprocessing</span><span class="o">.</span><span class="n">set_time_frame</span><span class="p">(</span><span class="n">dexcom_data</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>time</th>
+      <th>glc</th>
+      <th>ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2023-03-13 03:04:11</td>
+      <td>14.7</td>
+      <td>dexcom_eur_01</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2023-03-13 03:09:11</td>
+      <td>14.7</td>
+      <td>dexcom_eur_01</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2023-03-13 03:14:11</td>
+      <td>14.2</td>
+      <td>dexcom_eur_01</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2023-03-13 03:19:11</td>
+      <td>13.8</td>
+      <td>dexcom_eur_01</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2023-03-13 03:24:11</td>
+      <td>13.8</td>
+      <td>dexcom_eur_01</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>6562</th>
+      <td>2023-03-20 23:35:18</td>
+      <td>7.2</td>
+      <td>dexcom_eur_03</td>
+    </tr>
+    <tr>
+      <th>6563</th>
+      <td>2023-03-20 23:40:18</td>
+      <td>7.3</td>
+      <td>dexcom_eur_03</td>
+    </tr>
+    <tr>
+      <th>6564</th>
+      <td>2023-03-20 23:45:18</td>
+      <td>7.3</td>
+      <td>dexcom_eur_03</td>
+    </tr>
+    <tr>
+      <th>6565</th>
+      <td>2023-03-20 23:50:18</td>
+      <td>7.3</td>
+      <td>dexcom_eur_03</td>
+    </tr>
+    <tr>
+      <th>6566</th>
+      <td>2023-03-20 23:55:18</td>
+      <td>7.2</td>
+      <td>dexcom_eur_03</td>
+    </tr>
+  </tbody>
+</table>
+<p>6567 rows × 3 columns</p>
+</div></div></div>
+</div>
+</section>
+</section>
+<section id="interpolate-missing-data">
+<h2>2.4. Interpolate missing data<a class="headerlink" href="#interpolate-missing-data" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">fill_missing_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function fill_missing_data in module src.diametrics.preprocessing:
+
+fill_missing_data(df, interval=5, method=&#39;pchip&#39;, limit=30, order=5)
+    Interpolate missing data in a time series using a specified interpolation method.
+    
+    Args:
+        df (pandas.DataFrame): The time series dataset with a &#39;time&#39; column and a numeric data column.
+        interval (int): The resampling interval in minutes. Defaults to 5.
+        method (str): The interpolation method to use. Defaults to &#39;pchip&#39;.
+        limit (int): The maximum number of consecutive missing data points to interpolate. Defaults to 30.
+        order (int): The order of the interpolation method if &#39;method&#39; is &#39;polynomial&#39; or &#39;spline&#39;. Defaults to 5.
+    
+    Returns:
+        pandas.DataFrame: The DataFrame with missing data interpolated using the specified method.
+    
+    Note:
+        - The &#39;time&#39; column should be set as the DataFrame index before calling this function.
+        - The &#39;time&#39; column should be in datetime format.
+        - Missing data points are identified as NaN values in the data column.
+        - The function resamples the DataFrame at the specified interval using the mean aggregation.
+        - The specified interpolation method is applied to fill in the missing data points.
+        - The &#39;limit&#39; parameter controls the maximum number of consecutive missing data points to interpolate.
+        - For polynomial or spline interpolation, the &#39;order&#39; parameter specifies the order of the interpolation.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a chunk of data from the transformed DataFrame</span>
+<span class="n">dxcm2_chunk</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">dxcm2_transformed</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">30</span><span class="p">))</span>
+<span class="c1"># Set certain rows in the &#39;glc&#39; column to NaN to simulate missing data</span>
+<span class="n">dxcm2_chunk</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">14</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">17</span><span class="p">,</span><span class="mi">18</span><span class="p">,</span><span class="mi">19</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">21</span><span class="p">,</span><span class="mi">26</span><span class="p">,</span><span class="mi">27</span><span class="p">],</span><span class="s1">&#39;glc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="c1"># Display the first 10 rows of the chunk DataFrame</span>
+<span class="n">dxcm2_chunk</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>time</th>
+      <th>glc</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2023-03-08 00:00:44</td>
+      <td>10.4</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2023-03-08 00:05:44</td>
+      <td>10.3</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2023-03-08 00:10:44</td>
+      <td>10.2</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2023-03-08 00:15:44</td>
+      <td>10.1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2023-03-08 00:20:44</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2023-03-08 00:25:44</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>2023-03-08 00:30:44</td>
+      <td>9.9</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>2023-03-08 00:35:44</td>
+      <td>9.9</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>2023-03-08 00:40:44</td>
+      <td>9.5</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>2023-03-08 00:45:44</td>
+      <td>9.5</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fill missing data using the preprocessing function</span>
+<span class="n">preprocessing</span><span class="o">.</span><span class="n">fill_missing_data</span><span class="p">(</span><span class="n">dxcm2_chunk</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;pchip&#39;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>time</th>
+      <th>glc</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2023-03-08 00:00:00</td>
+      <td>10.4</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2023-03-08 00:05:00</td>
+      <td>10.3</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2023-03-08 00:10:00</td>
+      <td>10.2</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2023-03-08 00:15:00</td>
+      <td>10.1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2023-03-08 00:20:00</td>
+      <td>10.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2023-03-08 00:25:00</td>
+      <td>9.9</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>2023-03-08 00:30:00</td>
+      <td>9.9</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>2023-03-08 00:35:00</td>
+      <td>9.9</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>2023-03-08 00:40:00</td>
+      <td>9.5</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>2023-03-08 00:45:00</td>
+      <td>9.5</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">libre1_chunk</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">libre1_transformed</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">30</span><span class="p">))</span>
+<span class="n">libre1_chunk</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">14</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">17</span><span class="p">,</span><span class="mi">18</span><span class="p">,</span><span class="mi">19</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">21</span><span class="p">,</span><span class="mi">26</span><span class="p">,</span><span class="mi">27</span><span class="p">],</span><span class="s1">&#39;glc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">libre1_chunk</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>time</th>
+      <th>glc</th>
+      <th>scan_glc</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2021-03-20 17:38:00</td>
+      <td>127.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2021-03-20 17:53:00</td>
+      <td>124.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2021-03-20 18:08:00</td>
+      <td>121.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2021-03-20 18:23:00</td>
+      <td>131.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2021-03-20 18:38:00</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2021-03-20 18:53:00</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>2021-03-20 19:08:00</td>
+      <td>166.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>2021-03-20 19:23:00</td>
+      <td>165.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>2021-03-20 19:38:00</td>
+      <td>162.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>2021-03-20 19:53:00</td>
+      <td>154.0</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">preprocessing</span><span class="o">.</span><span class="n">fill_missing_data</span><span class="p">(</span><span class="n">libre1_chunk</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>time</th>
+      <th>glc</th>
+      <th>scan_glc</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2021-03-20 17:30:00</td>
+      <td>127.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2021-03-20 17:45:00</td>
+      <td>124.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2021-03-20 18:00:00</td>
+      <td>121.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2021-03-20 18:15:00</td>
+      <td>131.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2021-03-20 18:30:00</td>
+      <td>142.7</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2021-03-20 18:45:00</td>
+      <td>154.3</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>2021-03-20 19:00:00</td>
+      <td>166.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>2021-03-20 19:15:00</td>
+      <td>165.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>2021-03-20 19:30:00</td>
+      <td>162.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>2021-03-20 19:45:00</td>
+      <td>154.0</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="change-units">
+<h2>2.5. Change units<a class="headerlink" href="#change-units" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">change_units</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function change_units in module src.diametrics.preprocessing:
+
+change_units(df)
+    Convert glucose units in the DataFrame to a different unit based on a condition.
+    
+    Args:
+        df (pandas.DataFrame): The DataFrame containing a &#39;glc&#39; column with glucose readings.
+    
+    Returns:
+        pandas.DataFrame: The DataFrame with glucose units converted based on the condition.
+    
+    Note:
+        - The function checks the minimum glucose value in the DataFrame.
+        - If the minimum value is greater than 50, the glucose units are converted to a different unit by multiplying with 0.0557 and rounding to one decimal place.
+        - If the minimum value is less than or equal to 50, the glucose units are converted by multiplying with 0.0557 and rounding to the nearest integer.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">preprocessing</span><span class="o">.</span><span class="n">change_units</span><span class="p">(</span><span class="n">libre1_transformed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>time</th>
+      <th>glc</th>
+      <th>scan_glc</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2021-03-20 17:38:00</td>
+      <td>7.1</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2021-03-20 17:53:00</td>
+      <td>6.9</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2021-03-20 18:08:00</td>
+      <td>6.7</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2021-03-20 18:23:00</td>
+      <td>7.3</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2021-03-20 18:38:00</td>
+      <td>8.5</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>1334</th>
+      <td>2021-04-03 15:08:00</td>
+      <td>7.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1335</th>
+      <td>2021-04-03 15:23:00</td>
+      <td>6.6</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1336</th>
+      <td>2021-04-03 15:38:00</td>
+      <td>6.1</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1337</th>
+      <td>2021-04-03 15:53:00</td>
+      <td>6.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1338</th>
+      <td>2021-04-03 16:08:00</td>
+      <td>6.1</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>1339 rows × 3 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">preprocessing</span><span class="o">.</span><span class="n">change_units</span><span class="p">(</span><span class="n">dxcm2_transformed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>time</th>
+      <th>glc</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2023-03-08 00:00:44</td>
+      <td>187.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2023-03-08 00:05:44</td>
+      <td>185.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2023-03-08 00:10:44</td>
+      <td>183.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2023-03-08 00:15:44</td>
+      <td>181.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2023-03-08 00:20:44</td>
+      <td>178.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>3890</th>
+      <td>2023-03-21 15:10:57</td>
+      <td>117.0</td>
+    </tr>
+    <tr>
+      <th>3891</th>
+      <td>2023-03-21 15:15:57</td>
+      <td>122.0</td>
+    </tr>
+    <tr>
+      <th>3892</th>
+      <td>2023-03-21 15:20:57</td>
+      <td>124.0</td>
+    </tr>
+    <tr>
+      <th>3893</th>
+      <td>2023-03-21 15:25:57</td>
+      <td>129.0</td>
+    </tr>
+    <tr>
+      <th>3894</th>
+      <td>2023-03-21 15:30:56</td>
+      <td>133.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>3895 rows × 2 columns</p>
+</div></div></div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./diametrics"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="1_upload_demo.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">1. Uploading and transforming data</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="3_metrics_demo.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">3. Metrics of glycemic control</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#check-if-df-is-usable">2.1. Check if df is usable</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#replacing-the-lo-hi-cutoff-values">2.2. Replacing the lo/hi cutoff values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#change-start-and-end-times">2.3. Change start and end times</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#individual-with-one-start-time-for-all">2.3.1. Individual with one start time for all</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-a-dictionary">2.3.2. Using a dictionary</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpolate-missing-data">2.4. Interpolate missing data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#change-units">2.5. Change units</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Catherine Russon
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

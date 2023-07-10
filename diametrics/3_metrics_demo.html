@@ -1,0 +1,1841 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>3. Metrics of glycemic control &#8212; Machine learning for glycaemia prediction around exercise</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'diametrics/3_metrics_demo';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4. Visualizations" href="4_visualizations_demo.html" />
+    <link rel="prev" title="2. Preprocessing" href="2_preprocessing_demo.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../0_landing_page.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">Machine learning for glycaemia prediction around exercise</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../0_landing_page.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Chapter 1 - Python package and Webapp for calculating the metrics of glycemic control</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="0_overview.html">Diametrics Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_upload_demo.html">1. Uploading and transforming data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_preprocessing_demo.html">2. Preprocessing</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">3. Metrics of glycemic control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_visualizations_demo.html">4. Visualizations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5_webapp.html">5. Web Application</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Chapter 2 - Interpolation for the improved identification of hypoglycaemic episodes</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../interpolation/1_create_df.html">1. Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interpolation/2_EDA.html">2. Exploratory data analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interpolation/3_other_metrics.html">3. Comparing metrics of glycemic control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interpolation/4_identifying_hypos.html">4. Hypoglycaemic episodes</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Chapter 3 - Machine learning to predict hypoglycemia during exercise</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ml_heatmap/1_preprocessing/0_landing.html">Preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ml_heatmap/1_preprocessing/1_preprocessing_101.html">1. Preprocessing of EXTOD 101 for ML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ml_heatmap/1_preprocessing/2_preprocessing_edu.html">2. Preprocessing EXTOD education dataset</a></li>
+
+
+<li class="toctree-l2"><a class="reference internal" href="../ml_heatmap/1_preprocessing/3_target_creation.html">3. Target creation</a></li>
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="../ml_heatmap/1_preprocessing/4_ml_preparation.html">4. Preparation for machine learning</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ml_heatmap/2_feature_selection/forward_feature_selection.html">Forward feature selection</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ml_heatmap/3_ml/0_landing.html">Machine learning</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ml_heatmap/3_ml/figs_during_5.html">4. Predicting Euglycemia During Exercise</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="../ml_heatmap/3_ml/contour_plot_lr.html">Heatmap (countour plot) of model predictions</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/diametrics/3_metrics_demo.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>3. Metrics of glycemic control</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#individual-metrics">3.1. Individual metrics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-sufficiency">3.1.1. Data sufficiency</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#average-glucose">3.1.2. Average glucose</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#glycemic-variability">3.1.3. Glycemic variability</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-in-range">3.1.4. Time in range</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#area-under-the-curve">3.1.5. Area under the curve</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ea1c">3.1.6. eA1c</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hypoglycemic-and-hyperglycemic-episodes">3.1.7. Hypoglycemic and hyperglycemic episodes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lbgi-and-hbgi">3.1.8. LBGI and HBGI</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mean-amplitude-of-glycemic-excursions-mage">3.1.9. Mean amplitude of glycemic excursions (MAGE)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-percentiles">3.1.10. Calculate percentiles</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#all-standard-metrics">3.1. All standard metrics</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="metrics-of-glycemic-control">
+<h1>3. Metrics of glycemic control<a class="headerlink" href="#metrics-of-glycemic-control" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import modules</span>
+<span class="kn">from</span> <span class="nn">src.diametrics</span> <span class="kn">import</span> <span class="n">transform</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">preprocessing</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Upload and transform data</span>
+<span class="n">dexcom_data</span> <span class="o">=</span> <span class="n">transform</span><span class="o">.</span><span class="n">transform_directory</span><span class="p">(</span><span class="n">directory</span><span class="o">=</span><span class="s1">&#39;tests/test_data/dexcom/&#39;</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;dexcom&#39;</span><span class="p">)</span>
+<span class="n">libre_data</span> <span class="o">=</span> <span class="n">transform</span><span class="o">.</span><span class="n">transform_directory</span><span class="p">(</span><span class="n">directory</span><span class="o">=</span><span class="s1">&#39;tests/test_data/libre/&#39;</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;libre&#39;</span><span class="p">)</span>
+<span class="n">libre1</span> <span class="o">=</span> <span class="n">transform</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="s1">&#39;tests/test_data/libre/libre_amer_01.csv&#39;</span><span class="p">)</span>
+<span class="n">libre1_transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="o">.</span><span class="n">convert_libre</span><span class="p">(</span><span class="n">libre1</span><span class="p">)</span>
+<span class="n">dxcm2</span> <span class="o">=</span> <span class="n">transform</span><span class="o">.</span><span class="n">open_file</span><span class="p">(</span><span class="s1">&#39;tests/test_data/dexcom/dexcom_eur_02.xlsx&#39;</span><span class="p">)</span>
+<span class="n">dxcm2_transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="o">.</span><span class="n">convert_dexcom</span><span class="p">(</span><span class="n">dxcm2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Replace the lo/hi cutoff values</span>
+<span class="n">dexcom_data</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">replace_cutoffs</span><span class="p">(</span><span class="n">dexcom_data</span><span class="p">)</span>
+<span class="n">libre_data</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">replace_cutoffs</span><span class="p">(</span><span class="n">libre_data</span><span class="p">)</span>
+<span class="n">libre1_transformed</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">replace_cutoffs</span><span class="p">(</span><span class="n">libre1_transformed</span><span class="p">,</span> <span class="n">lo_cutoff</span><span class="o">=</span><span class="mf">2.1</span><span class="p">,</span> <span class="n">hi_cutoff</span><span class="o">=</span><span class="mf">27.8</span><span class="p">)</span>
+<span class="n">dxcm2_transformed</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">replace_cutoffs</span><span class="p">(</span><span class="n">dxcm2_transformed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="individual-metrics">
+<h2>3.1. Individual metrics<a class="headerlink" href="#individual-metrics" title="Permalink to this heading">#</a></h2>
+<section id="data-sufficiency">
+<h3>3.1.1. Data sufficiency<a class="headerlink" href="#data-sufficiency" title="Permalink to this heading">#</a></h3>
+<p>The data sufficiency is calculated using the first and last reading of the CGM trace you uploaded, unless the start and end times are edited in the ‘data overview’ section, in which case those datetimes will be used. The number of expected readings during this period are calculated based on the interval. The data sufficiency is then calculated as the 100*non-null readings/expected readings.</p>
+<p>Example:</p>
+<ul class="simple">
+<li><p>48hrs and 17 mins of CGM data would be 2897 mins</p></li>
+<li><p>For a  FreeStyle Libre we divide this by the interval of 15 mins to give the expected readings (193.1333…)</p></li>
+<li><p>The number of non-null readings are counted for the period (186)</p></li>
+<li><p>The data sufficiency is 100* 186/193.333 rounded to 2 decimal places (96.83%)</p></li>
+</ul>
+<p>Docstring:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">data_sufficiency</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function data_sufficiency in module src.diametrics.metrics:
+
+data_sufficiency(df, start_time=None, end_time=None)
+    Calculate the data sufficiency percentage based on the provided DataFrame, gap size, and time range.
+    
+    Args:
+        df (pandas.DataFrame): The DataFrame containing a &#39;glc&#39; column with glucose readings and a &#39;time&#39; column with timestamps.
+        gap_size (int): The size of the gap in minutes to check for data sufficiency.
+        start_time (datetime.datetime, optional): The start time of the time range. If not provided, it will be determined from the DataFrame. Default is None.
+        end_time (datetime.datetime, optional): The end time of the time range. If not provided, it will be determined from the DataFrame. Default is None.
+    
+    Returns:
+        dict: A dictionary containing the start and end datetimes of the time range and the data sufficiency percentage.
+    
+    Raises:
+        ValueError: If the gap size is not 5 or 15.
+    
+    Note:
+        - The function calculates the data sufficiency based on the number of non-null values within the specified gap size intervals.
+        - The start and end times of the time range are either provided or determined from the DataFrame.
+        - The gap size must be either 5 or 15. Otherwise, a ValueError is raised.
+        - The data sufficiency percentage is calculated as the ratio of non-null values to the total expected values.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Calling the function</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">data_sufficiency</span><span class="p">(</span><span class="n">dxcm2_transformed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;Start DateTime&#39;: &#39;2023-03-08 00:01:00&#39;,
+ &#39;End DateTime&#39;: &#39;2023-03-21 15:31:00&#39;,
+ &#39;Data Sufficiency (%)&#39;: 97.4}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">data_sufficiency</span><span class="p">(</span><span class="n">libre_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>Start DateTime</th>
+      <th>End DateTime</th>
+      <th>Data Sufficiency (%)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>libre_amer_01</td>
+      <td>2021-03-20 17:38:00</td>
+      <td>2021-04-03 16:08:00</td>
+      <td>100</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>libre_amer_02</td>
+      <td>2021-03-23 01:11:00</td>
+      <td>2021-04-06 12:56:00</td>
+      <td>48.8</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="average-glucose">
+<h3>3.1.2. Average glucose<a class="headerlink" href="#average-glucose" title="Permalink to this heading">#</a></h3>
+<p>The average glucose is calculated as the mean glucose reading of all the readings using a Pandas function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">average_glc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function average_glc in module src.diametrics.metrics:
+
+average_glc(df)
+    Calculate the average glucose reading from the &#39;glc&#39; column in the DataFrame.
+    
+    Args:
+        df (pandas.DataFrame): The DataFrame containing a &#39;glc&#39; column with glucose readings.
+    
+    Returns:
+        float: The average glucose reading.
+    
+    Note:
+        - The function uses the &#39;mean&#39; method from pandas.DataFrame to calculate the average.
+        - It returns the average glucose reading as a float value.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">average_glc</span><span class="p">(</span><span class="n">libre1_transformed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;Average glucose (mg/dL)&#39;: 126.06721433905899}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">average_glc</span><span class="p">(</span><span class="n">dexcom_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>Average glucose (mmol/L)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>dexcom_eur_01</td>
+      <td>9.151752</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>dexcom_eur_02</td>
+      <td>7.866179</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>dexcom_eur_03</td>
+      <td>8.212228</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="glycemic-variability">
+<h3>3.1.3. Glycemic variability<a class="headerlink" href="#glycemic-variability" title="Permalink to this heading">#</a></h3>
+<p>Standard deviation (SD) is the standard deviation of all the glucose readings (obviously), once again calculated with a Pandas function.</p>
+<p>Coefficient of variation (CV) is 100 * SD / avg. glucose.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">glycemic_variability</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function glycemic_variability in module src.diametrics.metrics:
+
+glycemic_variability(df)
+    Calculate the glycemic variability metrics for glucose readings in the DataFrame.
+    
+    Args:
+        df (pandas.DataFrame): The DataFrame containing a &#39;glc&#39; column with glucose readings.
+    
+    Returns:
+        dict: A dictionary containing the calculated glycemic variability metrics.
+    
+    Note:
+        - The function uses the &#39;average_glc&#39; function to calculate the average glucose reading.
+        - It then calculates the standard deviation (SD) of glucose readings using the &#39;std&#39; method from pandas.Series.
+        - The coefficient of variation (CV) is calculated as (SD * 100 / average glucose).
+        - The calculated SD and CV values are returned as a dictionary with corresponding labels.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">glycemic_variability</span><span class="p">(</span><span class="n">dxcm2_transformed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;SD (mmol/L)&#39;: 3.0850394980568345, &#39;CV (%)&#39;: 39.21903424368059}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">glycemic_variability</span><span class="p">(</span><span class="n">libre_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>SD (mg/dL)</th>
+      <th>CV (%)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>libre_amer_01</td>
+      <td>36.505584</td>
+      <td>28.957239</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>libre_amer_02</td>
+      <td>25.729510</td>
+      <td>20.255761</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="time-in-range">
+<h3>3.1.4. Time in range<a class="headerlink" href="#time-in-range" title="Permalink to this heading">#</a></h3>
+<p>The percentage time in range is calculated for the 5 ranges specified in the international consensus by default, with the ability to add more in the ‘analysis options’ section of the dashboard.</p>
+<p>The ranges are:</p>
+<ul class="simple">
+<li><p>Time in normal range (3.9-10.0 mmol/L)</p></li>
+<li><p>Time in level 1 hypoglycemia (3.0-3.9 mmol/L)</p></li>
+<li><p>Time in level 2 hypoglycemia (&lt;3.0 mmol/L)</p></li>
+<li><p>Time in level 1 hyperglycemia (10.0-13.9 mmol/L)</p></li>
+<li><p>Time in level 2 hyperglycemia (&gt;13.9 mmol/L)</p></li>
+</ul>
+<p>The time in range is calculated as a percentage of the readings in the specified range over the total number of readings * 100.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">time_in_range</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function time_in_range in module src.diametrics.metrics:
+
+time_in_range(df)
+    Helper function for time in range calculation with normal thresholds. Calculates the percentage of readings within
+    each threshold by dividing the number of readings within range by total length of the series.
+    
+    Args:
+        df (pandas.DataFrame): The DataFrame containing a &#39;glc&#39; column with glucose readings.
+    
+    Returns:
+        dict: A dictionary containing the percentages of readings within each threshold range.
+    
+    Note:
+        - The function calculates the percentage of readings within different threshold ranges for time in range (TIR) analysis.
+        - TIR normal represents the percentage of readings within the range [3.9, 10].
+        - TIR normal 1 represents the percentage of readings within the range [3.9, 7.8].
+        - TIR normal 2 represents the percentage of readings within the range [7.8, 10].
+        - TIR level 1 hypoglycemia represents the percentage of readings within the range [3, 3.9].
+        - TIR level 2 hypoglycemia represents the percentage of readings below 3.
+        - TIR level 1 hyperglycemia represents the percentage of readings within the range (10, 13.9].
+        - TIR level 2 hyperglycemia represents the percentage of readings above 13.9.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">time_in_range</span><span class="p">(</span><span class="n">libre1_transformed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;TIR normal (%)&#39;: 90.44,
+ &#39;TIR normal 1 (%)&#39;: 67.66,
+ &#39;TIR normal 2 (%)&#39;: 22.78,
+ &#39;TIR level 1 hypoglycemia (%)&#39;: 0.3,
+ &#39;TIR level 2 hypoglycemia (%)&#39;: 0.0,
+ &#39;TIR level 1 hyperglycemia (%)&#39;: 9.26,
+ &#39;TIR level 2 hyperglycemia (%)&#39;: 0.0}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">time_in_range</span><span class="p">(</span><span class="n">dexcom_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>TIR normal (%)</th>
+      <th>TIR normal 1 (%)</th>
+      <th>TIR normal 2 (%)</th>
+      <th>TIR level 1 hypoglycemia (%)</th>
+      <th>TIR level 2 hypoglycemia (%)</th>
+      <th>TIR level 1 hyperglycemia (%)</th>
+      <th>TIR level 2 hyperglycemia (%)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>dexcom_eur_01</td>
+      <td>64.83</td>
+      <td>37.47</td>
+      <td>27.35</td>
+      <td>0.71</td>
+      <td>0.03</td>
+      <td>26.54</td>
+      <td>7.90</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>dexcom_eur_02</td>
+      <td>67.01</td>
+      <td>46.49</td>
+      <td>20.53</td>
+      <td>5.90</td>
+      <td>1.70</td>
+      <td>22.67</td>
+      <td>2.72</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>dexcom_eur_03</td>
+      <td>67.85</td>
+      <td>44.77</td>
+      <td>23.08</td>
+      <td>4.11</td>
+      <td>1.49</td>
+      <td>21.09</td>
+      <td>5.46</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="area-under-the-curve">
+<h3>3.1.5. Area under the curve<a class="headerlink" href="#area-under-the-curve" title="Permalink to this heading">#</a></h3>
+<p>Area under the curve is calculated with SciKit Learn’s function that uses the trapezoidal rule (drawing a straight line between two points and calculating the area underneath).</p>
+<p>To get the data in the right format, the datetime needs to be rewritten as number of hours from the first reading (which is 0). E.g., for 15 minute Libre readings, the 1st reading would be 0, the next would be 0.25 etc.</p>
+<p>The trapezoidal rule is then used to give the average hourly AUC in either mmol h/L or mg h/dL.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">auc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function auc in module src.diametrics.metrics:
+
+auc(df)
+    Calculate the area under the curve (AUC) for glucose readings in the DataFrame.
+    
+    Args:
+        df (pandas.DataFrame): The DataFrame containing a &#39;glc&#39; column with glucose readings and a &#39;time&#39; column with timestamps.
+    
+    Returns:
+        dict: A dictionary containing the hourly average AUC, daily AUC breakdown, and hourly AUC breakdown.
+    
+    Note:
+        - The function calculates the AUC by breaking down the DataFrame into hourly and daily intervals.
+        - It uses the &#39;calculate_auc&#39; function to calculate the AUC for each group.
+        - The hourly AUC breakdown is a DataFrame with columns &#39;date&#39;, &#39;hour&#39;, and &#39;auc&#39;.
+        - The daily AUC breakdown is a Series with dates as the index and average AUC values as the values.
+        - The hourly average AUC is the mean of the AUC values in the hourly breakdown.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">auc</span><span class="p">(</span><span class="n">dxcm2_transformed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;AUC (mmol h/L)&#39;: 7.104192692307693}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">auc</span><span class="p">(</span><span class="n">dexcom_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>AUC (mmol h/L)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>dexcom_eur_01</td>
+      <td>8.291685</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>dexcom_eur_02</td>
+      <td>7.104193</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>dexcom_eur_03</td>
+      <td>7.369449</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#metrics.auc(libre_data)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="ea1c">
+<h3>3.1.6. eA1c<a class="headerlink" href="#ea1c" title="Permalink to this heading">#</a></h3>
+<p>eA1c is calculated as (avg. glucose + 2.59) / 1.59 for mmol/L and (avg. glucose + 46.7) / 28.7 for mg/dL.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">ea1c</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function ea1c in module src.diametrics.metrics:
+
+ea1c(df)
+    Calculate estimated average HbA1c (eA1c) based on the average glucose readings in the DataFrame.
+    
+    Args:
+        df (pandas.DataFrame): The DataFrame containing a &#39;glc&#39; column with glucose readings.
+    
+    Returns:
+        float: The estimated average HbA1c (eA1c) value.
+    
+    Note:
+        - The function calculates the average glucose reading from the &#39;glc&#39; column in the DataFrame.
+        - It determines the units of the glucose readings using the &#39;detect_units&#39; function from the &#39;preprocessing&#39; module.
+        - If the units are &#39;mmol/l&#39;, the eA1c is calculated using the formula: (average glucose + 2.59) / 1.59.
+        - If the units are not &#39;mmol/l&#39;, the eA1c is calculated using the formula: (average glucose + 46.7) / 28.7.
+        - The calculated eA1c value is returned as a float.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">ea1c</span><span class="p">(</span><span class="n">libre1_transformed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;eA1c (%)&#39;: 6.019763565820871}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">ea1c</span><span class="p">(</span><span class="n">dexcom_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>eA1c (%)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>dexcom_eur_01</td>
+      <td>7.384750</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>dexcom_eur_02</td>
+      <td>6.576213</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>dexcom_eur_03</td>
+      <td>6.793854</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="hypoglycemic-and-hyperglycemic-episodes">
+<h3>3.1.7. Hypoglycemic and hyperglycemic episodes<a class="headerlink" href="#hypoglycemic-and-hyperglycemic-episodes" title="Permalink to this heading">#</a></h3>
+<p>Hypo- and hyper-glycemic events are defined as 15 minutes or more below and above the relevant thresholds respectively.</p>
+<p>Since this metric is dependent on the progression of time, it is affected more greatly by missing data and discrepancies in recording interval. It also doesn’t help that the international consensus is incredibly vague about this metric.</p>
+<p>The way the hypoglycemic events were calculated is as follows, the same will be the case with hyperglycemic events, but just working above the thresholds rather than below.</p>
+<ul class="simple">
+<li><p>Identify all times the glucose dips below 3.9mmol/L for at least 15 mins (2 readings for FreeStyle Libre, 4 for Dexcom and Medtronic)</p></li>
+<li><p>If there is another dip below the threshold within the next 15 mins of the glucose coming back up then it is part of the same event</p></li>
+<li><p>If 15 consecutive minutes of readings go below the level 2 hypoglycemia threshold (3.0mmol/L) then it is considered to be a level 2 event. If not, it’s just a level 1 event.</p></li>
+<li><p>Only when the glucose rises above the threshold for 15 mins is the event over</p></li>
+<li><p>The start time and end time of each episode are used to calculate the total time spent in hypoglycemia and the average length of event</p></li>
+</ul>
+<p>Things get a bit more complicated if there’s missing data. These are the assumptions that have been made in order to calculate the events and may result in very high time spent in events and average glucose readings.</p>
+<ul class="simple">
+<li><p>If the glucose readings drop out during an event, if the first glucose reading after the drop out is also in hypoglycemia, this is considered to be part of the same episode. This is where you could end up with very long episodes if there’s a lot of missing data and it cuts out and cuts in in hypoglycemia.</p></li>
+<li><p>However, if the first glucose reading is not below the hypoglycemia threshold, the episode is considered to have ended with the last glucose reading</p></li>
+<li><p>If there are, for example, 10 mins of readings in hypoglycemia and then the readings cut out for 15 mins, then come back in with 10 mins of hypoglycemia, this is not considered an episode because there aren’t 15 mins of consistent readings</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">glycemic_episodes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function glycemic_episodes in module src.diametrics.metrics:
+
+glycemic_episodes(df, hypo_lv1_thresh=None, hypo_lv2_thresh=None, hyper_lv1_thresh=None, hyper_lv2_thresh=None, mins=15, long_mins=120)
+    Calculate the statistics of glycemic episodes (hypoglycemic and hyperglycemic events) based on glucose readings.
+    
+    Args:
+        df (pandas.DataFrame): The DataFrame containing a &#39;glc&#39; column with glucose readings and a &#39;time&#39; column with timestamps.
+        hypo_lv1_thresh (float, optional): Level 1 hypoglycemic threshold. If not provided, it will be determined based on the units detected. Default is None.
+        hypo_lv2_thresh (float, optional): Level 2 hypoglycemic threshold. If not provided, it will be determined based on the units detected. Default is None.
+        hyper_lv1_thresh (float, optional): Level 1 hyperglycemic threshold. If not provided, it will be determined based on the units detected. Default is None.
+        hyper_lv2_thresh (float, optional): Level 2 hyperglycemic threshold. If not provided, it will be determined based on the units detected. Default is None.
+        mins (int, optional): Minimum duration in minutes for an episode to be considered. Default is 15.
+        long_mins (int, optional): Minimum duration in minutes for a prolonged episode to be considered. Default is 120.
+    
+    Returns:
+        dict: A dictionary containing the statistics of glycemic episodes.
+    
+    Note:
+        - The function detects the units of glucose readings in the DataFrame.
+        - The threshold values for hypoglycemic and hyperglycemic episodes are determined based on the detected units, unless explicitly provided.
+        - The function calculates the statistics of glycemic episodes using the &#39;_glycemic_events_helper.calculate_episodes&#39; helper function.
+        - The calculated statistics include the total number, LV1 (Level 1) events, LV2 (Level 2) events, prolonged events, average length, and total time spent in episodes for both hypoglycemic and hyperglycemic events.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">glycemic_episodes</span><span class="p">(</span><span class="n">libre1_transformed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;Total number hypoglycemic events&#39;: 1,
+ &#39;Number LV1 hypoglycemic events&#39;: 1,
+ &#39;Number LV2 hypoglycemic events&#39;: 0,
+ &#39;Number prolonged hypoglycemic events&#39;: 0,
+ &#39;Avg. length of hypoglycemic events&#39;: &#39;0 days 01:00:00&#39;,
+ &#39;Total time spent in hypoglycemic events&#39;: &#39;0 days 01:00:00&#39;,
+ &#39;Total number hyperglycemic events&#39;: 16,
+ &#39;Number LV1 hyperglycemic events&#39;: 16,
+ &#39;Number LV2 hyperglycemic events&#39;: 0,
+ &#39;Number prolonged hyperglycemic events&#39;: 0,
+ &#39;Avg. length of hyperglycemic events&#39;: &#39;0 days 01:56:15&#39;,
+ &#39;Total time spent in hyperglycemic events&#39;: &#39;1 days 07:00:00&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">glycemic_episodes</span><span class="p">(</span><span class="n">dexcom_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>Total number hypoglycemic events</th>
+      <th>Number LV1 hypoglycemic events</th>
+      <th>Number LV2 hypoglycemic events</th>
+      <th>Number prolonged hypoglycemic events</th>
+      <th>Avg. length of hypoglycemic events</th>
+      <th>Total time spent in hypoglycemic events</th>
+      <th>Total number hyperglycemic events</th>
+      <th>Number LV1 hyperglycemic events</th>
+      <th>Number LV2 hyperglycemic events</th>
+      <th>Number prolonged hyperglycemic events</th>
+      <th>Avg. length of hyperglycemic events</th>
+      <th>Total time spent in hyperglycemic events</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>dexcom_eur_01</td>
+      <td>4</td>
+      <td>4</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0 days 00:31:16</td>
+      <td>0 days 02:05:02</td>
+      <td>33</td>
+      <td>20</td>
+      <td>13</td>
+      <td>5</td>
+      <td>0 days 03:30:37</td>
+      <td>4 days 19:50:13</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>dexcom_eur_02</td>
+      <td>26</td>
+      <td>17</td>
+      <td>9</td>
+      <td>0</td>
+      <td>0 days 01:00:58</td>
+      <td>1 days 02:25:06</td>
+      <td>25</td>
+      <td>19</td>
+      <td>6</td>
+      <td>1</td>
+      <td>0 days 03:20:48</td>
+      <td>3 days 11:40:04</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>dexcom_eur_03</td>
+      <td>16</td>
+      <td>9</td>
+      <td>7</td>
+      <td>0</td>
+      <td>0 days 01:02:11</td>
+      <td>0 days 16:35:03</td>
+      <td>40</td>
+      <td>28</td>
+      <td>12</td>
+      <td>3</td>
+      <td>0 days 02:11:45</td>
+      <td>3 days 15:49:59</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="lbgi-and-hbgi">
+<h3>3.1.8. LBGI and HBGI<a class="headerlink" href="#lbgi-and-hbgi" title="Permalink to this heading">#</a></h3>
+<p>Blood glucose (BG) readings are transformed first, using one of the following two formulas:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>mmol/L: Transformed BG = 1.794*{log(BG)^1.026 - 1.861}
+
+mg/dL: Transformed BG = 1.509*{log(BG)^1.084 - 5.381}
+</pre></div>
+</div>
+<p>This makes the transformed BG symmetric around zero, ranging from 10^1/2 to 10^1/2 . Then, a risk value is assigned to each BG reading as follows.</p>
+<p>For the low blood glucose index (LBGI) that is as follows:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>If Transformed BG is &lt; 0, Risk(BG) = 10*(Transformed BG)^2, otherwise Risk(BG) = 0
+</pre></div>
+</div>
+<p>Then take the mean of these values.</p>
+<p>For high bloood glucose index (HBGI):</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>If Transformed BG is &gt; 0, Risk(BG) = 10* (Transformed BG)^2, otherwise Risk(BG) = 0
+</pre></div>
+</div>
+<p>HBGI is the mean of all these readings.</p>
+<p>The paper can be found <a class="reference external" href="https://diabetesjournals.org/care/article/21/11/1870/23103/Assessment-of-risk-for-severe-hypoglycemia-among">here</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">bgi</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function bgi in module src.diametrics.metrics:
+
+bgi(df)
+    Calculate the Blood Glucose Index (BGI) metrics for a DataFrame of glucose readings.
+    
+    Args:
+        df (pandas.DataFrame): The DataFrame containing a &#39;glc&#39; column with glucose readings.
+    
+    Returns:
+        dict: A dictionary containing the Low Blood Glucose Index (LBGI) and High Blood Glucose Index (HBGI) values.
+    
+    Note:
+        - The function calculates the LBGI and HBGI based on the glucose readings and detects the units of measurement.
+        - The LBGI and HBGI are average values calculated from individual readings using the &#39;lbgi&#39; and &#39;hbgi&#39; functions.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">bgi</span><span class="p">(</span><span class="n">dxcm2_transformed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;LBGI&#39;: 1.7291700433451427, &#39;HBGI&#39;: 4.962552708817989}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">bgi</span><span class="p">(</span><span class="n">libre_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>LBGI</th>
+      <th>HBGI</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>libre_amer_01</td>
+      <td>0.675633</td>
+      <td>2.203471</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>libre_amer_02</td>
+      <td>0.138239</td>
+      <td>1.498385</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="mean-amplitude-of-glycemic-excursions-mage">
+<h3>3.1.9. Mean amplitude of glycemic excursions (MAGE)<a class="headerlink" href="#mean-amplitude-of-glycemic-excursions-mage" title="Permalink to this heading">#</a></h3>
+<p>The mean amplitude of glycemic excursion (MAGE) is calculated using Scipy’s signal class. The peaks and troughs with a prominence of greater than the standard deviation are selected.</p>
+<p>The difference between the peaks and troughs are then calculated separately for both the positive glucose and negative glucose differences. The mean is then calculated between the positive MAGE and the positive of the negative MAGE to calculate the final MAGE mean.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">mage</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function mage in module src.diametrics.metrics:
+
+mage(df)
+    Calculate the mean amplitude of glycemic excursions (MAGE) using scipy&#39;s signal class.
+    
+    Args:
+        df (pandas.DataFrame): The DataFrame containing a &#39;glc&#39; column with glucose readings and a &#39;time&#39; column with timestamps.
+    
+    Returns:
+        dict: A dictionary containing the MAGE value.
+    
+    Note:
+        - The function uses scipy&#39;s signal.find_peaks function to find peaks and troughs in the glucose readings.
+        - It then calculates the positive and negative MAGE and returns their mean.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">mage</span><span class="p">(</span><span class="n">dxcm2_transformed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;MAGE (mmol/L)&#39;: 7.927027027027027}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">mage</span><span class="p">(</span><span class="n">libre_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>MAGE (mg/dL)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>libre_amer_01</td>
+      <td>93.276316</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>libre_amer_02</td>
+      <td>41.270850</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="calculate-percentiles">
+<h3>3.1.10. Calculate percentiles<a class="headerlink" href="#calculate-percentiles" title="Permalink to this heading">#</a></h3>
+<p>This function will provide all of the percentiles used in the AGP, the 10th, 25th, 50th, 75th and 90th percentiles.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">percentiles</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function percentiles in module src.diametrics.metrics:
+
+percentiles(df)
+    Calculate various percentiles of glucose readings in the DataFrame.
+    
+    Args:
+        df (pandas.DataFrame): The DataFrame containing a &#39;glc&#39; column with glucose readings.
+    
+    Returns:
+        dict: A dictionary containing the calculated percentiles of glucose readings.
+    
+    Note:
+        - The function uses the numpy function np.percentile to calculate the specified percentiles.
+        - The percentiles calculated are: 0th, 10th, 25th, 50th (median), 75th, 90th, and 100th.
+        - The values are returned as a dictionary with keys representing the percentile labels and values representing the corresponding percentile values.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">percentiles</span><span class="p">(</span><span class="n">dxcm2_transformed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;Min. glucose&#39;: 2.2,
+ &#39;10th percentile&#39;: 4.2,
+ &#39;25th percentile&#39;: 5.4,
+ &#39;50th percentile&#39;: 7.3,
+ &#39;75th percentile&#39;: 10.2,
+ &#39;90th percentile&#39;: 12.0,
+ &#39;Max. glucose&#39;: 22.1}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">percentiles</span><span class="p">(</span><span class="n">dexcom_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>Min. glucose</th>
+      <th>10th percentile</th>
+      <th>25th percentile</th>
+      <th>50th percentile</th>
+      <th>75th percentile</th>
+      <th>90th percentile</th>
+      <th>Max. glucose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>dexcom_eur_01</td>
+      <td>2.4</td>
+      <td>5.7</td>
+      <td>6.9</td>
+      <td>8.5</td>
+      <td>11.0</td>
+      <td>13.20</td>
+      <td>22.1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>dexcom_eur_02</td>
+      <td>2.2</td>
+      <td>4.2</td>
+      <td>5.4</td>
+      <td>7.3</td>
+      <td>10.2</td>
+      <td>12.00</td>
+      <td>22.1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>dexcom_eur_03</td>
+      <td>2.2</td>
+      <td>4.3</td>
+      <td>5.8</td>
+      <td>7.7</td>
+      <td>10.3</td>
+      <td>12.71</td>
+      <td>19.9</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
+<section id="all-standard-metrics">
+<h2>3.1. All standard metrics<a class="headerlink" href="#all-standard-metrics" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">metrics</span><span class="o">.</span><span class="n">all_standard_metrics</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function all_standard_metrics in module src.diametrics.metrics:
+
+all_standard_metrics(df, return_df=True, lv1_hypo=None, lv2_hypo=None, lv1_hyper=None, lv2_hyper=None, additional_tirs=None, event_mins=15, event_long_mins=120)
+    Calculate standard metrics of glycemic control for glucose data.
+    
+    Args:
+        df (DataFrame): Input DataFrame containing glucose data.
+        return_df (bool, optional): Flag indicating whether to return the results as a DataFrame. Defaults to True.
+        lv1_hypo (float, optional): Level 1 hypoglycemia threshold. Defaults to None.
+        lv2_hypo (float, optional): Level 2 hypoglycemia threshold. Defaults to None.
+        lv1_hyper (float, optional): Level 1 hyperglycemia threshold. Defaults to None.
+        lv2_hyper (float, optional): Level 2 hyperglycemia threshold. Defaults to None.
+        additional_tirs (list, optional): Additional time in range thresholds. Defaults to None.
+        event_mins (int, optional): Duration in minutes for identifying glycemic events. Defaults to 15.
+        event_long_mins (int, optional): Duration in minutes for identifying long glycemic events. Defaults to 120.
+    
+    Returns:
+        DataFrame or dict: Calculated standard metrics as a DataFrame if return_df is True, or as a dictionary if return_df is False.
+    
+    Raises:
+        Exception: If the input DataFrame fails the data check.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">all_standard_metrics</span><span class="p">(</span><span class="n">libre1_transformed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;Start DateTime&#39;: &#39;2021-03-20 17:38:00&#39;,
+ &#39;End DateTime&#39;: &#39;2021-04-03 16:08:00&#39;,
+ &#39;Data Sufficiency (%)&#39;: 100,
+ &#39;Days&#39;: &#39;13 days 22:30:00&#39;,
+ &#39;Average glucose (mg/dL)&#39;: 126.06721433905899,
+ &#39;eA1c (%)&#39;: 6.019763565820871,
+ &#39;SD (mg/dL)&#39;: 36.505583973110895,
+ &#39;CV (%)&#39;: 28.95723853699882,
+ &#39;AUC (mg h/dL)&#39;: 94.38283582089552,
+ &#39;LBGI&#39;: 0.6756332098838412,
+ &#39;HBGI&#39;: 2.203470544756186,
+ &#39;MAGE (mg/dL)&#39;: 93.27631578947368,
+ &#39;TIR normal (%)&#39;: 90.44,
+ &#39;TIR normal 1 (%)&#39;: 67.66,
+ &#39;TIR normal 2 (%)&#39;: 22.78,
+ &#39;TIR level 1 hypoglycemia (%)&#39;: 0.3,
+ &#39;TIR level 2 hypoglycemia (%)&#39;: 0.0,
+ &#39;TIR level 1 hyperglycemia (%)&#39;: 9.26,
+ &#39;TIR level 2 hyperglycemia (%)&#39;: 0.0,
+ &#39;Total number hypoglycemic events&#39;: 1,
+ &#39;Number LV1 hypoglycemic events&#39;: 1,
+ &#39;Number LV2 hypoglycemic events&#39;: 0,
+ &#39;Number prolonged hypoglycemic events&#39;: 0,
+ &#39;Avg. length of hypoglycemic events&#39;: &#39;0 days 01:00:00&#39;,
+ &#39;Total time spent in hypoglycemic events&#39;: &#39;0 days 01:00:00&#39;,
+ &#39;Total number hyperglycemic events&#39;: 16,
+ &#39;Number LV1 hyperglycemic events&#39;: 16,
+ &#39;Number LV2 hyperglycemic events&#39;: 0,
+ &#39;Number prolonged hyperglycemic events&#39;: 0,
+ &#39;Avg. length of hyperglycemic events&#39;: &#39;0 days 01:56:15&#39;,
+ &#39;Total time spent in hyperglycemic events&#39;: &#39;1 days 07:00:00&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">metrics</span><span class="o">.</span><span class="n">all_standard_metrics</span><span class="p">(</span><span class="n">dexcom_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>Start DateTime</th>
+      <th>End DateTime</th>
+      <th>Data Sufficiency (%)</th>
+      <th>Days</th>
+      <th>Average glucose (mmol/L)</th>
+      <th>eA1c (%)</th>
+      <th>SD (mmol/L)</th>
+      <th>CV (%)</th>
+      <th>AUC (mmol h/L)</th>
+      <th>...</th>
+      <th>Number LV2 hypoglycemic events</th>
+      <th>Number prolonged hypoglycemic events</th>
+      <th>Avg. length of hypoglycemic events</th>
+      <th>Total time spent in hypoglycemic events</th>
+      <th>Total number hyperglycemic events</th>
+      <th>Number LV1 hyperglycemic events</th>
+      <th>Number LV2 hyperglycemic events</th>
+      <th>Number prolonged hyperglycemic events</th>
+      <th>Avg. length of hyperglycemic events</th>
+      <th>Total time spent in hyperglycemic events</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>dexcom_eur_01</td>
+      <td>2023-03-08 00:04:00</td>
+      <td>2023-03-21 15:29:00</td>
+      <td>97.3</td>
+      <td>13 days 15:25:00</td>
+      <td>9.151752</td>
+      <td>7.38475</td>
+      <td>3.121628</td>
+      <td>34.109626</td>
+      <td>8.291685</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0 days 00:31:16</td>
+      <td>0 days 02:05:02</td>
+      <td>33</td>
+      <td>20</td>
+      <td>13</td>
+      <td>5</td>
+      <td>0 days 03:30:37</td>
+      <td>4 days 19:50:13</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>dexcom_eur_02</td>
+      <td>2023-03-08 00:01:00</td>
+      <td>2023-03-21 15:31:00</td>
+      <td>97.4</td>
+      <td>13 days 15:30:00</td>
+      <td>7.866179</td>
+      <td>6.576213</td>
+      <td>3.085039</td>
+      <td>39.219034</td>
+      <td>7.104193</td>
+      <td>...</td>
+      <td>9</td>
+      <td>0</td>
+      <td>0 days 01:00:58</td>
+      <td>1 days 02:25:06</td>
+      <td>25</td>
+      <td>19</td>
+      <td>6</td>
+      <td>1</td>
+      <td>0 days 03:20:48</td>
+      <td>3 days 11:40:04</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>dexcom_eur_03</td>
+      <td>2023-03-08 00:01:00</td>
+      <td>2023-03-21 15:40:00</td>
+      <td>95.9</td>
+      <td>13 days 15:39:00</td>
+      <td>8.212228</td>
+      <td>6.793854</td>
+      <td>3.256385</td>
+      <td>39.652884</td>
+      <td>7.369449</td>
+      <td>...</td>
+      <td>7</td>
+      <td>0</td>
+      <td>0 days 01:02:11</td>
+      <td>0 days 16:35:03</td>
+      <td>40</td>
+      <td>28</td>
+      <td>12</td>
+      <td>3</td>
+      <td>0 days 02:11:45</td>
+      <td>3 days 15:49:59</td>
+    </tr>
+  </tbody>
+</table>
+<p>3 rows × 32 columns</p>
+</div></div></div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./diametrics"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="2_preprocessing_demo.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">2. Preprocessing</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="4_visualizations_demo.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">4. Visualizations</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#individual-metrics">3.1. Individual metrics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-sufficiency">3.1.1. Data sufficiency</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#average-glucose">3.1.2. Average glucose</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#glycemic-variability">3.1.3. Glycemic variability</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-in-range">3.1.4. Time in range</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#area-under-the-curve">3.1.5. Area under the curve</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ea1c">3.1.6. eA1c</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hypoglycemic-and-hyperglycemic-episodes">3.1.7. Hypoglycemic and hyperglycemic episodes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lbgi-and-hbgi">3.1.8. LBGI and HBGI</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mean-amplitude-of-glycemic-excursions-mage">3.1.9. Mean amplitude of glycemic excursions (MAGE)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-percentiles">3.1.10. Calculate percentiles</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#all-standard-metrics">3.1. All standard metrics</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Catherine Russon
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
